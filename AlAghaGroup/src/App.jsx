@@ -1,14 +1,112 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import emailjs from "@emailjs/browser";
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   IMAGE IMPORTS — Vite-bundled, production-safe
+═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Brand ── */
 import logo from "../alaghalogo.png";
+
+/* ── Project portfolio images ── */
+import projDubaiCreek from "./projectimg/Screenshot 2025-10-03 102435.png";
+import projTownSquare from "./projectimg/1649835984RD883.jpg";
+import projBeach from "./projectimg/beach.jpg";
+import projBeachfront from "./projectimg/beachfront.jpg";
+import projCity from "./projectimg/city.jpg";
+
+/* ── Leadership / Management / Engineers photos ── */
+import chairmanPhoto from "./img/CHAIRMAN.jpeg";
+import projectsDirectorPhoto from "./img/Projectdirector.jpeg";
+import technicalManagerPhoto from "./img/Technicalmanager.jpeg";
+import hrManagerPhoto from "./img/Hrmanager.jpeg";
+import projectManagerPhoto from "./img/Projectmanager.jpeg";
+import hrOfficerPhoto from "./img/HrOffice.jpeg";
+import proManagerPhoto from "./img/ProManager.jpeg";
+import proposalManagerPhoto from "./img/ProposalManager.jpeg";
+import accountingManagerPhoto from "./img/AccountingManager.jpeg";
+import accountantPhoto from "./img/Accountant.jpeg";
+import seniorPurchasingOfficerPhoto from "./img/SeniorPurchasingOfficer.png";
+import proPhoto from "./img/Pro.jpeg";
+import qsPhoto1 from "./img/Qs.jpeg";
+import qsPhoto2 from "./img/Qs2.jpeg";
+import qsPhoto3 from "./img/Qs3.jpeg";
+import qsPhoto4 from "./img/Qs4.jpeg";
+import qsPhoto5 from "./img/Qs5.jpeg";
+import technicalEngineerPhoto from "./img/Technical.jpeg";
+import architectureDesignerPhoto from "./img/ArchitectureDesigner.png";
+import mepPhoto from "./img/MEP.jpeg";
+import electricalEngineerPhoto from "./img/ElectricalEngineer.jpeg";
+import mechanicalEngineerPhoto from "./img/MechanicalEngineer.jpeg";
+import siteEngineerPhoto1 from "./img/ProjectSiteEngineer.jpeg";
+import siteEngineerPhoto2 from "./img/ProjectSiteEngineer2.jpeg";
+import siteEngineerPhoto3 from "./img/ProjectSiteEngineer3.jpeg";
+import siteEngineerPhoto4 from "./img/ProjectSiteEngineer4.jpeg";
+
+/* ── Client logos ── */
+import clientEmaar from "./Clientimg/01.png";
+import clientDamac from "./Clientimg/image (4).png";
+import clientDubaiProperties from "./Clientimg/3PhBZf70.jpg";
+import clientEmirates from "./Clientimg/2ee8f07cf98ec8ef0875a0d2e24f27e8.png";
+import clientFrenchBakery from "./Clientimg/image.png";
+import clientDubaiMunicipality from "./Clientimg/8780326-1759402541.jpg";
+import clientAurora from "./Clientimg/image (6).png";
+import clientAbanos from "./Clientimg/image (1).png";
+import clientNaffco from "./Clientimg/Naffcologo.png";
+import clientIdama from "./Clientimg/images.png";
+import clientHorton from "./Clientimg/Horton-Tech-Interiors.jpg";
+import clientJcMaclean from "./Clientimg/download.jpg";
+import clientNexus from "./Clientimg/R.png";
+import clientFamHolding from "./Clientimg/fam-holding.png";
+import clientBinHam from "./Clientimg/image (2).png";
+import clientDubaiInvestments from "./Clientimg/image (3).png";
+import clientDib from "./Clientimg/hqdefault.jpg";
+import clientMbrHousing from "./Clientimg/image (5).png";
+
+/* ── Consultant logos ── */
+import consultantAlShandagha from "./Consultantimg/1542594727588.jpg";
+import consultantRenders from "./Consultantimg/Renders-Engineering-Consultants.jpg";
+import consultantAecom from "./Consultantimg/aecom-gets-101m-army-prepositioned-stock-logistics-contract-modification.png";
+import consultantSaffarini from "./Consultantimg/Eng.-Adnan-Saffarini-Office-Architects-And-Engineering-Consultants.jpg";
+import consultantShadid from "./Consultantimg/Shadid-Engineering-Consultant-SEC.jpg";
+import consultantAlGurg from "./Consultantimg/OIP.webp";
+import consultantKmc from "./Consultantimg/1520950331901.png";
+import consultantRmjm from "./Consultantimg/b-NTG3AH_400x400.jpg";
+import consultantSsh from "./Consultantimg/njnzqbuobvqfuyg2.jpg";
+import consultantNeb from "./Consultantimg/Screenshot 2025-09-12 114748.png";
+
+/* ── Contractor logos ── */
+import contractorDubaiProperties from "./Contractorimg/3PhBZf70 (1).jpg";
+import contractorBhcUae from "./Contractorimg/1617805231454.jpg";
+import contractorEcc from "./Contractorimg/OIP (1).webp";
+import contractorDubaiCivilEng from "./Contractorimg/Dubai-Civil-Engineering.jpg";
+import contractorReemCapital from "./Contractorimg/1520863299415.jpg";
+import contractorArchgroup from "./Contractorimg/unnamed (1).jpg";
+import contractorUnec from "./Contractorimg/R (2).jpg";
+import contractorLacasa from "./Contractorimg/images (1).png";
+import contractorA2z from "./Contractorimg/a2z_logo-20180404065306.jpg";
+import contractorMbrHousing from "./Contractorimg/18102015211355775.jpg";
+import contractorAbdulRahim from "./Contractorimg/unnamed (1).png";
+import contractorBhg from "./Contractorimg/images (1).jpg";
+import contractorCscec from "./Contractorimg/CSCEC-Egypt-28116-1522062944.jpg";
+import contractorDewan from "./Contractorimg/dewan-logo-retina.png";
+import contractorEngConsortium from "./Contractorimg/ENGG-Consortium.png";
+import contractorConin from "./Contractorimg/images (1) (1).jpg";
+import contractorCityEngineering from "./Contractorimg/download_edited.jpg";
+import contractorExpo2020 from "./Contractorimg/283-2830293_transparent-dubai-png-expo-2020-logo-png-png.png";
+import contractorTav from "./Contractorimg/ga9t1p6cwfz82yaf (1).jpg";
+import contractorAlTurath from "./Contractorimg/LOGO-ATC-972_278-White (1).png";
+
+/* ── Footer / misc ── */
+import qrCodeImg from "./certimg/QRCODE.jpeg";
 
 /* ─── EMAILJS CONFIG ─────────────────────────────────────────────────────── */
 const EMAILJS_SERVICE_ID = "service_8ezhvn9";
 const EMAILJS_TEMPLATE_ID = "template_e7zjtkk";
 const EMAILJS_PUBLIC_KEY = "KccrSYU3an3UhnK3F";
 
-/* ─── GLOBAL STYLES INJECTION ────────────────────────────────────────────── */
+/* ─── GLOBAL STYLES ──────────────────────────────────────────────────────── */
 const GLOBAL_CSS = `
   :root {
     --gold: #C9A84C;
@@ -40,10 +138,6 @@ const GLOBAL_CSS = `
     33%       { transform: translate(-30px, 20px) scale(1.03); }
     66%       { transform: translate(20px, -30px) scale(0.98); }
   }
-  @keyframes ticker {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-33.333%); }
-  }
   @keyframes spin {
     from { transform: rotate(0deg); }
     to   { transform: rotate(360deg); }
@@ -51,16 +145,6 @@ const GLOBAL_CSS = `
   @keyframes pulse {
     0%, 100% { opacity: 1; box-shadow: 0 0 8px #10b981; }
     50%       { opacity: 0.5; box-shadow: 0 0 16px #10b981; }
-  }
-  @keyframes navSlideDown {
-    from { opacity: 0; transform: translateY(-8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ── GROUP CARD ANIMATIONS ── */
-  @keyframes cardReveal {
-    from { opacity: 0; transform: translateY(60px) scale(0.92); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
   }
   @keyframes shimmerSweep {
     0%   { transform: translateX(-120%) skewX(-15deg); }
@@ -74,10 +158,6 @@ const GLOBAL_CSS = `
     from { transform: rotate(0deg); }
     to   { transform: rotate(360deg); }
   }
-  @keyframes glowPulse {
-    0%, 100% { box-shadow: 0 0 20px rgba(201,168,76,0.15), 0 8px 40px rgba(0,0,0,0.3); }
-    50%       { box-shadow: 0 0 40px rgba(201,168,76,0.35), 0 16px 60px rgba(0,0,0,0.4); }
-  }
   @keyframes floatCard {
     0%, 100% { transform: translateY(0px); }
     50%       { transform: translateY(-8px); }
@@ -85,14 +165,6 @@ const GLOBAL_CSS = `
   @keyframes arabicFade {
     from { opacity: 0; letter-spacing: 0.3em; }
     to   { opacity: 1; letter-spacing: normal; }
-  }
-  @keyframes dividerExpand {
-    from { width: 0; opacity: 0; }
-    to   { width: 100%; opacity: 1; }
-  }
-  @keyframes tagSlideIn {
-    from { opacity: 0; transform: translateX(20px); }
-    to   { opacity: 1; transform: translateX(0); }
   }
   @keyframes orb {
     0%, 100% { transform: scale(1) translate(0, 0); opacity: 0.6; }
@@ -102,6 +174,29 @@ const GLOBAL_CSS = `
   @keyframes scanLine {
     from { top: 0%; }
     to   { top: 100%; }
+  }
+
+  /* ── Bidirectional reveal transition ── */
+  .reveal-el {
+    will-change: opacity, transform;
+    transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1),
+                transform 0.7s cubic-bezier(0.22,1,0.36,1);
+  }
+  .reveal-el.is-hidden-up    { opacity: 0; transform: translateY(44px); }
+  .reveal-el.is-hidden-down  { opacity: 0; transform: translateY(-44px); }
+  .reveal-el.is-hidden-left  { opacity: 0; transform: translateX(-44px); }
+  .reveal-el.is-hidden-right { opacity: 0; transform: translateX(44px); }
+  .reveal-el.is-hidden-zoom  { opacity: 0; transform: scale(0.92); }
+  .reveal-el.is-hidden-fade  { opacity: 0; }
+  .reveal-el.is-visible      { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-el { transition: none !important; }
+    .reveal-el.is-hidden-up, .reveal-el.is-hidden-down,
+    .reveal-el.is-hidden-left, .reveal-el.is-hidden-right,
+    .reveal-el.is-hidden-zoom, .reveal-el.is-hidden-fade {
+      opacity: 1; transform: none;
+    }
   }
 
   .eyebrow {
@@ -129,162 +224,78 @@ const GLOBAL_CSS = `
 
   /* Buttons */
   .btn-gold {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+    display: inline-flex; align-items: center; gap: 8px;
     background: linear-gradient(135deg, var(--gold-dk), var(--gold), var(--gold-lt));
-    color: var(--ink);
-    font-family: var(--f-body);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 12px 28px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.25s ease;
-    box-shadow: 0 4px 20px rgba(201,168,76,0.25);
+    color: var(--ink); font-family: var(--f-body); font-size: 12px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; padding: 12px 28px;
+    border-radius: 8px; border: none; cursor: pointer; text-decoration: none;
+    transition: all 0.25s ease; box-shadow: 0 4px 20px rgba(201,168,76,0.25);
   }
-  .btn-gold:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(201,168,76,0.4);
-  }
+  .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(201,168,76,0.4); }
   .btn-outline-gold {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: transparent;
-    color: var(--gold);
-    font-family: var(--f-body);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 11px 26px;
-    border-radius: 8px;
-    border: 1px solid rgba(201,168,76,0.4);
-    cursor: pointer;
-    transition: all 0.25s ease;
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; color: var(--gold); font-family: var(--f-body);
+    font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 11px 26px; border-radius: 8px; border: 1px solid rgba(201,168,76,0.4);
+    cursor: pointer; transition: all 0.25s ease;
   }
-  .btn-outline-gold:hover {
-    background: rgba(201,168,76,0.08);
-    border-color: var(--gold);
-    transform: translateY(-2px);
-  }
+  .btn-outline-gold:hover { background: rgba(201,168,76,0.08); border-color: var(--gold); transform: translateY(-2px); }
   .btn-outline-white {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: transparent;
-    color: rgba(255,255,255,0.8);
-    font-family: var(--f-body);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 14px 28px;
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.25);
-    cursor: pointer;
-    transition: all 0.25s ease;
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; color: rgba(255,255,255,0.8); font-family: var(--f-body);
+    font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 14px 28px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.25);
+    cursor: pointer; transition: all 0.25s ease;
   }
-  .btn-outline-white:hover {
-    background: rgba(255,255,255,0.07);
-    border-color: rgba(255,255,255,0.5);
-    transform: translateY(-2px);
-  }
+  .btn-outline-white:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.5); transform: translateY(-2px); }
 
   /* Nav */
   .nav-btn {
-    background: none;
-    border: none;
-    font-family: var(--f-body);
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    padding: 6px 2px;
-    position: relative;
-    transition: color 0.25s cubic-bezier(0.22,1,0.36,1);
-    letter-spacing: 0.03em;
+    background: none; border: none; font-family: var(--f-body); font-size: 13px;
+    font-weight: 500; cursor: pointer; padding: 6px 2px; position: relative;
+    transition: color 0.25s cubic-bezier(0.22,1,0.36,1); letter-spacing: 0.03em;
   }
   .nav-btn::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 1.5px;
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1.5px;
     background: linear-gradient(90deg, var(--gold), var(--gold-lt));
-    transform: scaleX(0);
-    transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+    transform: scaleX(0); transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
     transform-origin: left;
   }
   .nav-btn:hover { color: var(--gold) !important; }
-  .nav-btn:hover::after { transform: scaleX(1); transform-origin: left; }
+  .nav-btn:hover::after { transform: scaleX(1); }
   .nav-active { color: var(--gold) !important; }
-  .nav-active::after { transform: scaleX(1); transform-origin: left; }
+  .nav-active::after { transform: scaleX(1); }
 
   /* Cards */
   .svc-card {
-    border: 1px solid rgba(201,168,76,0.12);
-    border-radius: 18px;
-    padding: 36px 30px;
-    background: rgba(255,255,255,0.03);
-    transition: all 0.3s cubic-bezier(0.22,1,0.36,1);
-    backdrop-filter: blur(8px);
-    height: 100%;
+    border: 1px solid rgba(201,168,76,0.12); border-radius: 18px; padding: 36px 30px;
+    background: rgba(255,255,255,0.03); transition: all 0.3s cubic-bezier(0.22,1,0.36,1);
+    backdrop-filter: blur(8px); height: 100%;
   }
   .svc-card:hover {
-    border-color: rgba(201,168,76,0.4);
-    background: rgba(255,255,255,0.06);
-    transform: translateY(-4px);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    border-color: rgba(201,168,76,0.4); background: rgba(255,255,255,0.06);
+    transform: translateY(-4px); box-shadow: 0 20px 50px rgba(0,0,0,0.3);
   }
   .proj-card {
-    position: relative;
-    border-radius: 16px;
-    overflow: hidden;
-    cursor: pointer;
-    border: 1px solid rgba(201,168,76,0.1);
-    transition: all 0.35s ease;
+    position: relative; border-radius: 16px; overflow: hidden; cursor: pointer;
+    border: 1px solid rgba(201,168,76,0.1); transition: all 0.35s ease;
   }
-  .proj-card img {
-    width: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.6s ease;
-  }
+  .proj-card img { width: 100%; object-fit: cover; display: block; transition: transform 0.6s ease; }
   .proj-card:hover { border-color: rgba(201,168,76,0.35); box-shadow: 0 24px 60px rgba(0,0,0,0.4); }
   .proj-card:hover img { transform: scale(1.04); }
 
   .career-row {
-    border: 1px solid rgba(201,168,76,0.12);
-    border-radius: 14px;
-    padding: 20px 22px;
-    background: rgba(255,255,255,0.03);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(6px);
+    border: 1px solid rgba(201,168,76,0.12); border-radius: 14px; padding: 20px 22px;
+    background: rgba(255,255,255,0.03); display: flex; justify-content: space-between;
+    align-items: center; transition: all 0.3s ease; backdrop-filter: blur(6px);
   }
-  .career-row:hover {
-    border-color: rgba(201,168,76,0.35);
-    background: rgba(255,255,255,0.06);
-    transform: translateX(4px);
-  }
+  .career-row:hover { border-color: rgba(201,168,76,0.35); background: rgba(255,255,255,0.06); transform: translateX(4px); }
 
   .client-img-card {
-    position: relative;
-    border-radius: 14px;
-    overflow: hidden;
-    border: 1px solid rgba(201,168,76,0.12);
-    aspect-ratio: 3/2;
-    background: rgba(255,255,255,0.03);
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative; border-radius: 14px; overflow: hidden;
+    border: 1px solid rgba(201,168,76,0.12); aspect-ratio: 3/2;
+    background: rgba(255,255,255,0.03); transition: all 0.3s ease;
+    display: flex; align-items: center; justify-content: center;
   }
   .client-img-card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,0.35); }
   .client-img-card img { width: 100%; height: 100%; object-fit: contain; padding: 12px; display: block; }
@@ -301,70 +312,29 @@ const GLOBAL_CSS = `
     gap: 8px; width: 100%; height: 100%; padding: 16px; position: relative;
   }
 
-  /* ── GROUP CARD hover shimmer ── */
-  .group-card-wrap {
-    position: relative;
-    border-radius: 22px;
-    overflow: hidden;
-  }
+  /* Group card */
+  .group-card-wrap { position: relative; border-radius: 22px; overflow: hidden; }
   .group-card-wrap::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: 22px;
+    content: ''; position: absolute; inset: -1px; border-radius: 22px;
     background: linear-gradient(120deg, transparent 30%, rgba(201,168,76,0.35) 50%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: 0;
-    pointer-events: none;
+    opacity: 0; transition: opacity 0.4s ease; z-index: 0; pointer-events: none;
   }
-  .group-card-wrap:hover::before {
-    opacity: 1;
-    animation: shimmerSweep 1.2s ease forwards;
-  }
-  .group-card-inner {
-    position: relative;
-    z-index: 1;
-  }
+  .group-card-wrap:hover::before { opacity: 1; animation: shimmerSweep 1.2s ease forwards; }
+  .group-card-inner { position: relative; z-index: 1; }
 
-  /* Logo ring */
-  .logo-ring {
-    position: relative;
-    width: 80px;
-    height: 80px;
-    flex-shrink: 0;
-  }
+  .logo-ring { position: relative; width: 80px; height: 80px; flex-shrink: 0; }
   .logo-ring::before {
-    content: '';
-    position: absolute;
-    inset: -3px;
-    border-radius: 50%;
+    content: ''; position: absolute; inset: -3px; border-radius: 50%;
     background: conic-gradient(var(--gold), var(--gold-lt), transparent, var(--gold-dk), var(--gold));
-    animation: borderRotate 4s linear infinite;
-    opacity: 0;
-    transition: opacity 0.4s ease;
+    animation: borderRotate 4s linear infinite; opacity: 0; transition: opacity 0.4s ease;
   }
-  .group-card-wrap:hover .logo-ring::before {
-    opacity: 1;
-  }
+  .group-card-wrap:hover .logo-ring::before { opacity: 1; }
   .logo-ring-inner {
-    position: absolute;
-    inset: 2px;
-    border-radius: 50%;
-    background: var(--bg-deep);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+    position: absolute; inset: 2px; border-radius: 50%; background: var(--bg-deep);
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
   }
-  .logo-ring-inner img {
-    width: 88%;
-    height: 88%;
-    object-fit: contain;
-    animation: logoBreath 4s ease-in-out infinite;
-  }
+  .logo-ring-inner img { width: 88%; height: 88%; object-fit: contain; animation: logoBreath 4s ease-in-out infinite; }
 
-  /* Responsive */
   @media (max-width: 900px) {
     .grid-2 { grid-template-columns: 1fr !important; }
     .desktop-nav { display: none !important; }
@@ -376,24 +346,25 @@ const GLOBAL_CSS = `
 `;
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   GEOMETRIC BACKGROUND
+   GEOMETRIC BACKGROUNDS
 ═══════════════════════════════════════════════════════════════════════════ */
 function GeoBg({ variant = "a" }) {
   const variants = {
     a: (
-      <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
+      <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice"
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
         <defs>
-          <radialGradient id="rg1" cx="20%" cy="30%" r="60%">
+          <radialGradient id="rg1a" cx="20%" cy="30%" r="60%">
             <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.07" />
             <stop offset="100%" stopColor="#C9A84C" stopOpacity="0" />
           </radialGradient>
-          <radialGradient id="rg2" cx="85%" cy="75%" r="50%">
+          <radialGradient id="rg2a" cx="85%" cy="75%" r="50%">
             <stop offset="0%" stopColor="#1a2f6a" stopOpacity="0.9" />
             <stop offset="100%" stopColor="#020730" stopOpacity="0" />
           </radialGradient>
         </defs>
-        <rect width="1440" height="900" fill="url(#rg2)" />
-        <rect width="1440" height="900" fill="url(#rg1)" />
+        <rect width="1440" height="900" fill="url(#rg2a)" />
+        <rect width="1440" height="900" fill="url(#rg1a)" />
         <polygon points="160,20 310,105 310,275 160,360 10,275 10,105" fill="none" stroke="rgba(201,168,76,0.07)" strokeWidth="1.5" />
         <polygon points="160,60 270,122 270,248 160,310 50,248 50,122" fill="none" stroke="rgba(201,168,76,0.05)" strokeWidth="1" />
         <polygon points="1380,80 1430,108 1430,164 1380,192 1330,164 1330,108" fill="none" stroke="rgba(201,168,76,0.1)" strokeWidth="1" />
@@ -411,14 +382,15 @@ function GeoBg({ variant = "a" }) {
       </svg>
     ),
     b: (
-      <svg viewBox="0 0 1440 700" preserveAspectRatio="xMidYMid slice" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
+      <svg viewBox="0 0 1440 700" preserveAspectRatio="xMidYMid slice"
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
         <defs>
-          <linearGradient id="lgb1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="lgb1b" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#060d50" />
             <stop offset="100%" stopColor="#020730" />
           </linearGradient>
         </defs>
-        <rect width="1440" height="700" fill="url(#lgb1)" />
+        <rect width="1440" height="700" fill="url(#lgb1b)" />
         <line x1="0" y1="0" x2="1440" y2="700" stroke="rgba(201,168,76,0.05)" strokeWidth="60" />
         <line x1="1440" y1="0" x2="0" y2="700" stroke="rgba(10,24,110,0.5)" strokeWidth="60" />
         {[...Array(6)].map((_, row) => [...Array(9)].map((_, col) => {
@@ -434,7 +406,8 @@ function GeoBg({ variant = "a" }) {
       </svg>
     ),
     c: (
-      <svg viewBox="0 0 1440 600" preserveAspectRatio="xMidYMid slice" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
+      <svg viewBox="0 0 1440 600" preserveAspectRatio="xMidYMid slice"
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
         <rect width="1440" height="600" fill="#020730" />
         {[...Array(8)].map((_, i) => (
           <path key={i} d={`M 0 ${i * 80 + 40} Q 360 ${i * 80 + 40 + (i % 2 ? -40 : 40)} 720 ${i * 80 + 40} T 1440 ${i * 80 + 40}`} fill="none" stroke="rgba(201,168,76,0.04)" strokeWidth="1" />
@@ -447,27 +420,12 @@ function GeoBg({ variant = "a" }) {
       </svg>
     ),
   };
-  return (
-    <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
-      {variants[variant]}
-    </div>
-  );
+  return <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>{variants[variant]}</div>;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
    HOOKS
 ═══════════════════════════════════════════════════════════════════════════ */
-function useInView(threshold = 0.12) {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true); }, { threshold, rootMargin: "0px 0px -30px 0px" });
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return [ref, visible];
-}
-
 function useScrollY() {
   const [y, setY] = useState(0);
   useEffect(() => {
@@ -498,26 +456,57 @@ function useCountUp(target, active, duration = 2000) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   REVEAL
+   BIDIRECTIONAL REVEAL — animates in when entering viewport, out when leaving
+   dir: "up" | "down" | "left" | "right" | "zoom" | "fade"
+   exitDir: override exit direction (defaults to opposite of entry)
 ═══════════════════════════════════════════════════════════════════════════ */
-function Reveal({ children, delay = 0, dir = "up", className = "", style = {} }) {
-  const [ref, visible] = useInView(0.1);
-  const transforms = {
-    up: "translateY(44px)",
-    down: "translateY(-44px)",
-    left: "translateX(-44px)",
-    right: "translateX(44px)",
-    zoom: "scale(0.92)",
-    fade: "none",
-  };
+function Reveal({ children, delay = 0, dir = "up", exitDir, className = "", style = {} }) {
+  const ref = useRef(null);
+  const [state, setState] = useState("hidden-down"); // hidden-up | hidden-down | hidden-left | hidden-right | hidden-zoom | hidden-fade | visible
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    // Figure out which hidden class to apply when scrolled past below vs above
+    const hiddenBelow = `hidden-${dir}`;
+    const hiddenAbove = exitDir
+      ? `hidden-${exitDir}`
+      : dir === "up" ? "hidden-down"
+        : dir === "down" ? "hidden-up"
+          : dir === "left" ? "hidden-right"
+            : dir === "right" ? "hidden-left"
+              : `hidden-${dir}`;
+
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setState("visible");
+        } else {
+          // Determine if element is above or below viewport
+          const rect = entry.boundingClientRect;
+          if (rect.top < 0) {
+            // Element has been scrolled past (above viewport) → exit upward
+            setState(hiddenAbove);
+          } else {
+            // Element is below viewport (not yet reached) → entry from below
+            setState(hiddenBelow);
+          }
+        }
+      },
+      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
+    );
+
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [dir, exitDir]);
+
   return (
     <div
       ref={ref}
-      className={className}
+      className={`reveal-el is-${state} ${className}`}
       style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "none" : (transforms[dir] || "translateY(44px)"),
-        transition: `opacity 0.75s cubic-bezier(0.22,1,0.36,1) ${delay}ms, transform 0.75s cubic-bezier(0.22,1,0.36,1) ${delay}ms`,
+        transitionDelay: state === "visible" ? `${delay}ms` : "0ms",
         ...style,
       }}
     >
@@ -534,7 +523,7 @@ function ReadingProgress() {
   useEffect(() => {
     const fn = () => {
       const h = document.documentElement.scrollHeight - window.innerHeight;
-      setP(h ? window.scrollY / h * 100 : 0);
+      setP(h ? (window.scrollY / h) * 100 : 0);
     };
     window.addEventListener("scroll", fn, { passive: true });
     return () => window.removeEventListener("scroll", fn);
@@ -547,14 +536,27 @@ function ReadingProgress() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   ANIMATED STAT
+   ANIMATED STAT — only counts up when visible, resets when out of view
 ═══════════════════════════════════════════════════════════════════════════ */
 function AnimatedStat({ val, label }) {
-  const [ref, active] = useInView(0.3);
+  const ref = useRef(null);
+  const [active, setActive] = useState(false);
   const suffix = val.replace(/[0-9.]/g, "");
   const num = parseFloat(val.replace(/[^0-9.]/g, "")) || 0;
   const count = useCountUp(num, active);
   const isText = isNaN(parseFloat(val));
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => setActive(entry.isIntersecting),
+      { threshold: 0.3 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
   return (
     <div ref={ref} style={{ textAlign: "center", padding: "0 16px" }}>
       <div style={{ fontFamily: "var(--f-display)", fontSize: "clamp(2.8rem,4.5vw,4rem)", color: "var(--gold)", lineHeight: 1, fontWeight: 700, letterSpacing: "-0.02em" }}>
@@ -577,11 +579,8 @@ function ImageSlider({ images, height = 520 }) {
     return () => clearInterval(t);
   }, [hover, images.length]);
   return (
-    <div
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      style={{ position: "relative", borderRadius: 20, overflow: "hidden", boxShadow: "0 40px 80px rgba(0,0,0,0.45)", height, border: "1px solid rgba(201,168,76,0.2)" }}
-    >
+    <div onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+      style={{ position: "relative", borderRadius: 20, overflow: "hidden", boxShadow: "0 40px 80px rgba(0,0,0,0.45)", height, border: "1px solid rgba(201,168,76,0.2)" }}>
       {images.map((img, i) => (
         <div key={i} style={{ position: "absolute", inset: 0, opacity: i === cur ? 1 : 0, transition: "opacity 0.9s ease" }}>
           <img src={img.url} alt={img.caption} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
@@ -656,13 +655,9 @@ function Building4D() {
         <p style={{ fontFamily: "var(--f-body)", fontSize: 15, color: "rgba(255,255,255,0.65)", lineHeight: 1.85, marginTop: 22, maxWidth: 480 }}>
           Experience our construction process through advanced 3D visualization. Scroll to watch the structure rise in real-time — reflecting our commitment to precision, safety, and timely delivery on every project.
         </p>
-        <div style={{ marginTop: 40, display: "flex", gap: 32, flexWrap: "wrap" }}>
-          {[["ISO", "Certified Quality"]].map(([v, l]) => (
-            <div key={l}>
-              <div style={{ fontFamily: "var(--f-display)", fontSize: 30, color: "var(--gold)", fontWeight: 700 }}>{v}</div>
-              <div style={{ fontFamily: "var(--f-body)", fontSize: 10, color: "rgba(255,255,255,0.45)", letterSpacing: "0.12em", textTransform: "uppercase", marginTop: 4 }}>{l}</div>
-            </div>
-          ))}
+        <div style={{ marginTop: 40 }}>
+          <div style={{ fontFamily: "var(--f-display)", fontSize: 30, color: "var(--gold)", fontWeight: 700 }}>ISO</div>
+          <div style={{ fontFamily: "var(--f-body)", fontSize: 10, color: "rgba(255,255,255,0.45)", letterSpacing: "0.12em", textTransform: "uppercase", marginTop: 4 }}>Certified Quality</div>
         </div>
       </div>
 
@@ -677,7 +672,6 @@ function Building4D() {
           <div style={{ fontSize: 40, fontFamily: "var(--f-display)", fontWeight: 700, lineHeight: 1, color: "#fff" }}><span ref={hudRef}>0%</span></div>
           <div style={{ marginTop: 4 }}>COMPLETE</div>
         </div>
-
         <div ref={buildingRef} style={{ width: "100%", height: "100%", opacity: 0.2, transition: "opacity 0.1s, transform 0.1s" }}>
           <svg viewBox="0 0 400 580" width="100%" height="100%" style={{ overflow: "visible" }}>
             <defs>
@@ -770,16 +764,12 @@ function ClientImgCard({ name, src, badge }) {
           <div className="client-overlay" />
           <div className="client-name">{name}</div>
           {badge && (
-            <div style={{ position: "absolute", top: 10, left: 10, background: "rgba(1,4,74,0.85)", backdropFilter: "blur(6px)", border: "1px solid rgba(201,168,76,0.3)", borderRadius: 20, padding: "3px 10px", fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--gold)" }}>
-              {badge}
-            </div>
+            <div style={{ position: "absolute", top: 10, left: 10, background: "rgba(1,4,74,0.85)", backdropFilter: "blur(6px)", border: "1px solid rgba(201,168,76,0.3)", borderRadius: 20, padding: "3px 10px", fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--gold)" }}>{badge}</div>
           )}
         </>
       ) : (
         <div className="img-placeholder">
-          {badge && (
-            <div style={{ position: "absolute", top: 10, left: 10, background: "rgba(1,4,74,0.85)", border: "1px solid rgba(201,168,76,0.3)", borderRadius: 20, padding: "3px 10px", fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--gold)" }}>{badge}</div>
-          )}
+          {badge && <div style={{ position: "absolute", top: 10, left: 10, background: "rgba(1,4,74,0.85)", border: "1px solid rgba(201,168,76,0.3)", borderRadius: 20, padding: "3px 10px", fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--gold)" }}>{badge}</div>}
           <div style={{ fontSize: 28, opacity: 0.3 }}>🏢</div>
           <div style={{ fontFamily: "var(--f-display)", fontSize: 13, fontWeight: 600, color: "rgba(201,168,76,0.6)", textAlign: "center", padding: "0 12px", lineHeight: 1.4 }}>{name}</div>
           <div style={{ fontFamily: "var(--f-body)", fontSize: 9, color: "rgba(255,255,255,0.25)", letterSpacing: "0.1em", textTransform: "uppercase", marginTop: 4 }}>Add logo image</div>
@@ -836,7 +826,7 @@ function ManagementCard({ member }) {
   return (
     <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
       style={{ background: hov ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.04)", borderRadius: 16, overflow: "hidden", border: `1px solid ${hov ? "rgba(201,168,76,0.4)" : "rgba(201,168,76,0.12)"}`, transition: "all 0.3s ease", transform: hov ? "translateY(-4px)" : "none", cursor: "default", backdropFilter: "blur(8px)" }}>
-      <div style={{ height: 130, background: "linear-gradient(135deg, #01044A, #142540)", display: "flex", alignItems: "flex-end", justifyContent: "center", paddingBottom: 0, position: "relative", overflow: "hidden" }}>
+      <div style={{ height: 130, background: "linear-gradient(135deg, #01044A, #142540)", display: "flex", alignItems: "flex-end", justifyContent: "center", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", inset: 0, opacity: 0.07, backgroundImage: "radial-gradient(circle at 70% 30%, #C9A84C 0%, transparent 60%)" }} />
         <div style={{ width: 96, height: 110, overflow: "hidden", borderRadius: "10px 10px 0 0", position: "relative" }}>
           <Avatar name={member.name} photo={member.photo} size={96} />
@@ -881,7 +871,6 @@ function CareerForm({ careers }) {
   const [sendError, setSendError] = useState("");
 
   const isValidUrl = s => { try { new URL(s); return true; } catch { return false; } };
-
   const validate = () => {
     const e = {};
     if (!form.firstName.trim()) e.firstName = "Required";
@@ -894,7 +883,6 @@ function CareerForm({ careers }) {
     if (!form.startDate) e.startDate = "Required";
     return e;
   };
-
   const submit = async () => {
     const e = validate();
     if (Object.keys(e).length) { setErrors(e); return; }
@@ -907,11 +895,9 @@ function CareerForm({ careers }) {
         cvLink: form.cvLink, startDate: form.startDate, reply_to: form.email,
       }, EMAILJS_PUBLIC_KEY);
       setSubmitted(true);
-    } catch (err) {
-      setSendError("Failed to send. Email us directly: hr@alaghagroup.com");
-    } finally { setSending(false); }
+    } catch { setSendError("Failed to send. Email us directly: hr@alaghagroup.com"); }
+    finally { setSending(false); }
   };
-
   const set = (k, v) => { setForm(p => ({ ...p, [k]: v })); setErrors(p => ({ ...p, [k]: "" })); };
 
   if (submitted) return (
@@ -968,226 +954,95 @@ function CareerForm({ careers }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   GROUP COMPANY CARD  ← USES alaghalogo.png + advanced animations
+   GROUP COMPANY CARD
 ═══════════════════════════════════════════════════════════════════════════ */
 function GroupCard({ company, index = 0 }) {
   const [hov, setHov] = useState(false);
-  const [ref, visible] = useInView(0.12);
+  const ref = useRef(null);
+  const [cardState, setCardState] = useState("hidden-zoom");
   const [logoErr, setLogoErr] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setCardState("visible");
+        } else {
+          const rect = entry.boundingClientRect;
+          setCardState(rect.top < 0 ? "hidden-zoom" : "hidden-zoom");
+        }
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   return (
     <div
       ref={ref}
-      className="group-card-wrap"
+      className={`reveal-el is-${cardState} group-card-wrap`}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
-        opacity: visible ? 1 : 0,
-        transform: visible
-          ? hov ? "translateY(-8px) scale(1.015)" : "translateY(0) scale(1)"
-          : "translateY(60px) scale(0.92)",
-        transition: `
-          opacity 0.75s cubic-bezier(0.22,1,0.36,1) ${index * 130}ms,
-          transform 0.75s cubic-bezier(0.22,1,0.36,1) ${index * 130}ms,
-          box-shadow 0.4s ease
-        `.replace(/\n\s+/g, " "),
+        transitionDelay: cardState === "visible" ? `${index * 130}ms` : "0ms",
         boxShadow: hov
           ? "0 32px 70px rgba(0,0,0,0.55), 0 0 40px rgba(201,168,76,0.18), inset 0 1px 0 rgba(201,168,76,0.2)"
           : "0 8px 32px rgba(0,0,0,0.3)",
         cursor: "default",
-        /* floating loop only when NOT hovered and IS visible */
-        animation: visible && !hov ? `floatCard 5s ease-in-out ${index * 1.2}s infinite` : "none",
       }}
     >
-      {/* ── ambient orbs behind the card ── */}
-      <div style={{
-        position: "absolute", inset: 0, borderRadius: 22, overflow: "hidden",
-        pointerEvents: "none", zIndex: 0,
-        opacity: hov ? 1 : 0, transition: "opacity 0.5s ease",
-      }}>
-        <div style={{
-          position: "absolute", width: 140, height: 140, borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(201,168,76,0.22) 0%, transparent 70%)",
-          top: -40, right: -40,
-          animation: "orb 6s ease-in-out infinite",
-        }} />
-        <div style={{
-          position: "absolute", width: 100, height: 100, borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%)",
-          bottom: 20, left: -20,
-          animation: "orb 8s ease-in-out 1s infinite reverse",
-        }} />
+      {/* Ambient orbs */}
+      <div style={{ position: "absolute", inset: 0, borderRadius: 22, overflow: "hidden", pointerEvents: "none", zIndex: 0, opacity: hov ? 1 : 0, transition: "opacity 0.5s ease" }}>
+        <div style={{ position: "absolute", width: 140, height: 140, borderRadius: "50%", background: "radial-gradient(circle, rgba(201,168,76,0.22) 0%, transparent 70%)", top: -40, right: -40, animation: "orb 6s ease-in-out infinite" }} />
+        <div style={{ position: "absolute", width: 100, height: 100, borderRadius: "50%", background: "radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%)", bottom: 20, left: -20, animation: "orb 8s ease-in-out 1s infinite reverse" }} />
       </div>
 
-      {/* ── scan-line effect on hover ── */}
       {hov && (
-        <div style={{
-          position: "absolute", left: 0, right: 0, height: 2,
-          background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.5), transparent)",
-          zIndex: 2, pointerEvents: "none",
-          animation: "scanLine 1.8s linear infinite",
-        }} />
+        <div style={{ position: "absolute", left: 0, right: 0, height: 2, background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.5), transparent)", zIndex: 2, pointerEvents: "none", animation: "scanLine 1.8s linear infinite" }} />
       )}
 
-      <div
-        className="group-card-inner"
-        style={{
-          border: `1px solid ${hov ? "rgba(201,168,76,0.55)" : "rgba(201,168,76,0.18)"}`,
-          borderRadius: 22,
-          padding: "36px 30px",
-          background: hov
-            ? "rgba(10,16,60,0.95)"
-            : "rgba(4,8,36,0.88)",
-          backdropFilter: "blur(14px)",
-          transition: "border-color 0.4s ease, background 0.4s ease",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        {/* ── HEADER: logo ring + year pill ── */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 24 }}>
+      <div className="group-card-inner"
+        style={{ border: `1px solid ${hov ? "rgba(201,168,76,0.55)" : "rgba(201,168,76,0.18)"}`, borderRadius: 22, padding: "36px 30px", background: hov ? "rgba(10,16,60,0.95)" : "rgba(4,8,36,0.88)", backdropFilter: "blur(14px)", transition: "border-color 0.4s ease, background 0.4s ease", position: "relative", overflow: "hidden" }}>
 
-          {/* Logo ring with rotating conic border */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 24 }}>
           <div className="logo-ring">
             <div className="logo-ring-inner">
               {!logoErr ? (
-                <img
-                  src={logo}
-                  alt="Al Agha Group Logo"
-                  onError={() => setLogoErr(true)}
-                  style={{
-                    width: "88%",
-                    height: "88%",
-                    objectFit: "contain",
-                    animation: "logoBreath 4s ease-in-out infinite",
-                    filter: hov
-                      ? "drop-shadow(0 0 10px rgba(201,168,76,0.7)) brightness(1.1)"
-                      : "drop-shadow(0 0 5px rgba(201,168,76,0.3))",
-                    transition: "filter 0.4s ease",
-                  }}
-                />
+                <img src={logo} alt="Al Agha Group Logo" onError={() => setLogoErr(true)}
+                  style={{ width: "88%", height: "88%", objectFit: "contain", filter: hov ? "drop-shadow(0 0 10px rgba(201,168,76,0.7)) brightness(1.1)" : "drop-shadow(0 0 5px rgba(201,168,76,0.3))", transition: "filter 0.4s ease" }} />
               ) : (
-                /* fallback if logo doesn't load */
-                <div style={{
-                  fontFamily: "var(--f-display)",
-                  fontSize: 16,
-                  fontWeight: 800,
-                  color: "var(--gold)",
-                  letterSpacing: "0.04em",
-                }}>
-                  {company.abbr}
-                </div>
+                <div style={{ fontFamily: "var(--f-display)", fontSize: 16, fontWeight: 800, color: "var(--gold)", letterSpacing: "0.04em" }}>{company.abbr}</div>
               )}
             </div>
           </div>
-
-          {/* Year pill */}
-          <div style={{
-            fontFamily: "var(--f-body)",
-            fontSize: 9,
-            fontWeight: 700,
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            color: "var(--gold)",
-            background: "rgba(201,168,76,0.1)",
-            border: "1px solid rgba(201,168,76,0.28)",
-            borderRadius: 20,
-            padding: "5px 14px",
-            alignSelf: "flex-start",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateX(0)" : "translateX(20px)",
-            transition: `opacity 0.6s ease ${index * 130 + 300}ms, transform 0.6s ease ${index * 130 + 300}ms`,
-          }}>
+          <div style={{ fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold)", background: "rgba(201,168,76,0.1)", border: "1px solid rgba(201,168,76,0.28)", borderRadius: 20, padding: "5px 14px" }}>
             Est. {company.year}
           </div>
         </div>
 
-        {/* ── Company name ── */}
-        <div style={{
-          fontFamily: "var(--f-display)",
-          fontSize: 20,
-          fontWeight: 700,
-          color: hov ? "#fff" : "rgba(255,255,255,0.92)",
-          marginBottom: 10,
-          lineHeight: 1.3,
-          transition: "color 0.35s ease",
-          opacity: visible ? 1 : 0,
-          transform: visible ? "translateY(0)" : "translateY(16px)",
-          /* stagger name after the card itself */
-          transitionProperty: "opacity, transform, color",
-          transitionDuration: "0.65s, 0.65s, 0.35s",
-          transitionDelay: `${index * 130 + 180}ms, ${index * 130 + 180}ms, 0ms`,
-          transitionTimingFunction: "cubic-bezier(0.22,1,0.36,1)",
-        }}>
-          {company.name}
-        </div>
+        <div style={{ fontFamily: "var(--f-display)", fontSize: 20, fontWeight: 700, color: hov ? "#fff" : "rgba(255,255,255,0.92)", marginBottom: 10, lineHeight: 1.3, transition: "color 0.35s ease" }}>{company.name}</div>
 
-        {/* ── Animated divider ── */}
         <div style={{ overflow: "hidden", marginBottom: 14, height: 2 }}>
-          <div style={{
-            height: 2,
-            background: hov
-              ? "linear-gradient(90deg, var(--gold), var(--gold-lt), transparent)"
-              : "linear-gradient(90deg, rgba(201,168,76,0.45), transparent)",
-            borderRadius: 2,
-            width: visible ? "100%" : "0%",
-            transition: `width 0.8s cubic-bezier(0.22,1,0.36,1) ${index * 130 + 350}ms, background 0.4s ease`,
-          }} />
+          <div style={{ height: 2, background: hov ? "linear-gradient(90deg, var(--gold), var(--gold-lt), transparent)" : "linear-gradient(90deg, rgba(201,168,76,0.45), transparent)", borderRadius: 2, width: "100%", transition: "background 0.4s ease" }} />
         </div>
 
-        {/* ── Focus / description ── */}
-        <div style={{
-          fontFamily: "var(--f-body)",
-          fontSize: 13,
-          color: hov ? "rgba(255,255,255,0.72)" : "rgba(255,255,255,0.48)",
-          marginBottom: 20,
-          lineHeight: 1.75,
-          transition: "color 0.35s ease",
-          opacity: visible ? 1 : 0,
-          transform: visible ? "translateY(0)" : "translateY(12px)",
-          transitionProperty: "opacity, transform, color",
-          transitionDuration: "0.65s, 0.65s, 0.35s",
-          transitionDelay: `${index * 130 + 260}ms, ${index * 130 + 260}ms, 0ms`,
-          transitionTimingFunction: "cubic-bezier(0.22,1,0.36,1)",
-        }}>
-          {company.focus}
-        </div>
+        <div style={{ fontFamily: "var(--f-body)", fontSize: 13, color: hov ? "rgba(255,255,255,0.72)" : "rgba(255,255,255,0.48)", marginBottom: 20, lineHeight: 1.75, transition: "color 0.35s ease" }}>{company.focus}</div>
 
-        {/* ── Arabic name ── */}
-        <div style={{
-          fontFamily: "var(--f-display)",
-          fontSize: 15,
-          color: hov ? "rgba(201,168,76,0.8)" : "rgba(201,168,76,0.45)",
-          fontStyle: "italic",
-          direction: "rtl",
-          textAlign: "right",
-          transition: "color 0.4s ease",
-          paddingTop: 16,
-          borderTop: `1px solid rgba(201,168,76,${hov ? "0.2" : "0.1"})`,
-          opacity: visible ? 1 : 0,
-          animation: visible ? `arabicFade 0.9s cubic-bezier(0.22,1,0.36,1) ${index * 130 + 420}ms both` : "none",
-        }}>
+        <div style={{ fontFamily: "var(--f-display)", fontSize: 15, color: hov ? "rgba(201,168,76,0.8)" : "rgba(201,168,76,0.45)", fontStyle: "italic", direction: "rtl", textAlign: "right", transition: "color 0.4s ease", paddingTop: 16, borderTop: `1px solid rgba(201,168,76,${hov ? "0.2" : "0.1"})` }}>
           {company.arabic}
         </div>
 
-        {/* ── Corner accent ── */}
-        <div style={{
-          position: "absolute",
-          bottom: 0, right: 0,
-          width: 60, height: 60,
-          background: "linear-gradient(135deg, transparent 50%, rgba(201,168,76,0.08) 50%)",
-          borderRadius: "0 0 22px 0",
-          opacity: hov ? 1 : 0,
-          transition: "opacity 0.4s ease",
-          pointerEvents: "none",
-        }} />
+        <div style={{ position: "absolute", bottom: 0, right: 0, width: 60, height: 60, background: "linear-gradient(135deg, transparent 50%, rgba(201,168,76,0.08) 50%)", borderRadius: "0 0 22px 0", opacity: hov ? 1 : 0, transition: "opacity 0.4s ease", pointerEvents: "none" }} />
       </div>
     </div>
   );
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   SECTION WRAPPER
+   SECTION / SECTION HEADER
 ═══════════════════════════════════════════════════════════════════════════ */
 function Section({ id, children, geoVariant, lightBg = false, style = {} }) {
   return (
@@ -1198,43 +1053,38 @@ function Section({ id, children, geoVariant, lightBg = false, style = {} }) {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   SECTION HEADER
-═══════════════════════════════════════════════════════════════════════════ */
 function SectionHeader({ eyebrow, title, subtitle, light = false, center = true }) {
   return (
     <div style={{ textAlign: center ? "center" : "left", marginBottom: 64 }}>
       <span className="eyebrow">{eyebrow}</span>
-      <h2
-        className="section-title"
+      <h2 className="section-title"
         style={{ fontSize: "clamp(2rem,4vw,3.4rem)", marginTop: 14, color: light ? "var(--ink)" : "#fff", maxWidth: center ? 700 : "none", margin: center ? "14px auto 0" : "14px 0 0" }}
-        dangerouslySetInnerHTML={{ __html: title }}
-      />
+        dangerouslySetInnerHTML={{ __html: title }} />
       {subtitle && <p style={{ fontFamily: "var(--f-body)", fontSize: 15, color: light ? "#888" : "rgba(255,255,255,0.55)", maxWidth: 540, margin: "16px auto 0", lineHeight: 1.8 }}>{subtitle}</p>}
     </div>
   );
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   DATA
+   DATA — images now use imported variables instead of string paths
 ═══════════════════════════════════════════════════════════════════════════ */
 const NAV = ["Home", "Services", "Projects", "Career", "Clients", "Team", "About"];
 
 const ALL_SERVICES = [
-  { icon: "🏛️", title: "GYPSUM FALSE CEILING", desc: "We are offering services for Gypsum false ceiling works such as, regular false ceiling works (Wet and Dry Areas), partitions, bulkheads, 60 x 60 cm false ceiling tiles, Suspended ceiling works that are lightweight, sound insulated, fire resistance, soft and thermally insulated. We are experienced in the field of False Ceiling and we are focused on achieving professional goals and costumer’s satisfactions." },
-  { icon: "✨", title: "GRC & GRG DECORATIVE", desc: "We are offering GRC & GRG Decorative Works for Villas, Mosque, Buildings, etc. That used for interior and exterior decorations such as GRG ceiling panels, GRG walls, GRG domes, GRC Moldings, GRC Decorative Panels, GRC Decorative Column etc. Based on our Main Contractor / client’s approved layouts, designs and elevations details." },
-  { icon: "🧱", title: "CLADDING & PARTITION", desc: "We are offering Cladding & Partition Gypsum Works for Villas, Mosque, Buildings, etc. That used for interior and exterior decorations such as gypsum dry wall, GRG ceiling panels, GRG walls, GRG domes, GRC Moldings, GRC Decorative Panels, GRC Decorative Column etc. Based on our Main Contractor / client’s approved layouts, designs and elevation details." },
-  { icon: "🏠", title: "INTERIOR WORKS", desc: "We offer an Innovative and creative designs for Interior Works according to client needs and satisfactions. We also provide an exceptional service at every level of the project including overall project management of your interior design changes and a very strong attention to details. We will supervise ordering and tracking of all products, coordination with contractors, delivery and installation of floor and wall covering, furniture, light fixtures etc. and ensure proper maintenance of all objects that are needed for Interior works." },
-  { icon: "🎨", title: "PAINT WORKS", desc: "We are providing all kinds of decorative and standard paint works such as base coats; primer, first coat, Finish Coat; flat, eggshell, gloss and satin, Water-based and solvent-based paints, Specialty paints; bath room or kitchen paints, floor paint, metal paint, traditional paints, Painting a room; woodwork, walls and ceilings, floors. We have the experience and tools needed to coat every single wall and ceiling with the best paint finishing." },
-]
+  { icon: "🏛️", title: "GYPSUM FALSE CEILING", desc: "We are offering services for Gypsum false ceiling works such as, regular false ceiling works (Wet and Dry Areas), partitions, bulkheads, 60 x 60 cm false ceiling tiles, Suspended ceiling works that are lightweight, sound insulated, fire resistance, soft and thermally insulated. We are experienced in the field of False Ceiling and we are focused on achieving professional goals and customer's satisfactions." },
+  { icon: "✨", title: "GRC & GRG DECORATIVE", desc: "We are offering GRC & GRG Decorative Works for Villas, Mosque, Buildings, etc. That used for interior and exterior decorations such as GRG ceiling panels, GRG walls, GRG domes, GRC Moldings, GRC Decorative Panels, GRC Decorative Column etc. Based on our Main Contractor / client's approved layouts, designs and elevations details." },
+  { icon: "🧱", title: "CLADDING & PARTITION", desc: "We are offering Cladding & Partition Gypsum Works for Villas, Mosque, Buildings, etc. That used for interior and exterior decorations such as gypsum dry wall, GRG ceiling panels, GRG walls, GRG domes, GRC Moldings, GRC Decorative Panels, GRC Decorative Column etc. Based on our Main Contractor / client's approved layouts, designs and elevation details." },
+  { icon: "🏠", title: "INTERIOR WORKS", desc: "We offer Innovative and creative designs for Interior Works according to client needs and satisfactions. We also provide an exceptional service at every level of the project including overall project management of your interior design changes and a very strong attention to details." },
+  { icon: "🎨", title: "PAINT WORKS", desc: "We are providing all kinds of decorative and standard paint works such as base coats; primer, first coat, Finish Coat; flat, eggshell, gloss and satin, Water-based and solvent-based paints, Specialty paints; bath room or kitchen paints, floor paint, metal paint, traditional paints, Painting a room; woodwork, walls and ceilings, floors." },
+];
 
 const ALL_PROJECTS = [
-  { img: "./src/projectimg/Screenshot 2025-10-03 102435.png", title: "Dubai Creek Harbour Bridge District" },
-  { img: "https://images.adsttc.com/media/images/6203/2036/44ba/f701/6571/b72a/newsletter/20211023-dubaj-pavilon-3048.jpg?1644372080", title: "Hungary Pavilion — Expo 2020 Dubai", },
-  { img: "./src/projectimg/1649835984RD883.jpg", title: "Town Square — UNA Apartments" },
-  { img: "./src/projectimg/beach.jpg", title: "EMAAR Beachfront — Sunrise Bay", },
-  { img: "./src/projectimg/beachfront.jpg", title: "Al Fatan Tower", },
-  { img: "./src/projectimg/city.jpg", title: "Park Ridge", },
+  { img: projDubaiCreek, title: "Dubai Creek Harbour Bridge District" },
+  { img: "https://images.adsttc.com/media/images/6203/2036/44ba/f701/6571/b72a/newsletter/20211023-dubaj-pavilon-3048.jpg?1644372080", title: "Hungary Pavilion — Expo 2020 Dubai" },
+  { img: projTownSquare, title: "Town Square — UNA Apartments" },
+  { img: projBeach, title: "EMAAR Beachfront — Sunrise Bay" },
+  { img: projBeachfront, title: "Al Fatan Tower" },
+  { img: projCity, title: "Park Ridge" },
 ];
 
 const STATS = [
@@ -1256,64 +1106,63 @@ const CERTIFICATIONS = [
 const SLIDER_IMAGES = [
   { url: "https://cloud.famproperties.com/project/large/mulberry-at-park-heights-342681-124728.jpg", caption: "Mulberry at Park Heights — Dubai Hills" },
   { url: "https://www.299.com/images/858872grand-bleu-tower-hero.jpg", caption: "Grand Bleu Tower — Dubai Marina" },
-  { url: "data:image/jpeg;base64,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", caption: "Port De La Mer — Jumeirah, Dubai" },
   { url: "https://images.adsttc.com/media/images/6203/2036/44ba/f701/6571/b72a/newsletter/20211023-dubaj-pavilon-3048.jpg?1644372080", caption: "Hungary Pavilion — Expo 2020 Dubai" },
 ];
 
 const CLIENTS_DATA = {
   clients: [
-    { name: "EMAAR Properties", src: "./src/Clientimg/01.png" },
-    { name: "DAMAC Development", src: "./src/Clientimg/image (4).png" },
-    { name: "Dubai Properties", src: "./src/Clientimg/3PhBZf70.jpg" },
-    { name: "Emirates Airlines", src: "./src/Clientimg/2ee8f07cf98ec8ef0875a0d2e24f27e8.png" },
-    { name: "French Bakery", src: "./src/Clientimg/image.png" },
-    { name: "Dubai Municipality", src: "./src/Clientimg/8780326-1759402541.jpg" },
-    { name: "Aurora Real Estate", src: "./src/Clientimg/image (6).png" },
-    { name: "Abanos Interior Fit-Out & Joinery", src: "./src/Clientimg/image (1).png" },
-    { name: "NAFFCO", src: "./src/Clientimg/Naffcologo.png" },
-    { name: "IDAMA Facilities Management Solutions", src: "./src/Clientimg/images.png" },
-    { name: "Horton Tech Interiors", src: "./src/Clientimg/Horton-Tech-Interiors.jpg" },
-    { name: "JC MACLEAN", src: "./src/Clientimg/download.jpg" },
-    { name: "Nexus Intelegence", src: "./src/Clientimg/R.png" },
-    { name: "FAM HOLDING", src: "./src/Clientimg/fam-holding.png" },
-    { name: "Bin Ham Group", src: "./src/Clientimg/image (2).png" },
-    { name: "Dubai Investments Real Estate", src: "./src/Clientimg/image (3).png" },
-    { name: "Dubai Islamic Bank", src: "./src/Clientimg/hqdefault.jpg" },
-    { name: "Mohammed Bin Rashid Housing Est.", src: "./src/Clientimg/image (5).png" },
+    { name: "EMAAR Properties", src: clientEmaar },
+    { name: "DAMAC Development", src: clientDamac },
+    { name: "Dubai Properties", src: clientDubaiProperties },
+    { name: "Emirates Airlines", src: clientEmirates },
+    { name: "French Bakery", src: clientFrenchBakery },
+    { name: "Dubai Municipality", src: clientDubaiMunicipality },
+    { name: "Aurora Real Estate", src: clientAurora },
+    { name: "Abanos Interior Fit-Out & Joinery", src: clientAbanos },
+    { name: "NAFFCO", src: clientNaffco },
+    { name: "IDAMA Facilities Management Solutions", src: clientIdama },
+    { name: "Horton Tech Interiors", src: clientHorton },
+    { name: "JC MACLEAN", src: clientJcMaclean },
+    { name: "Nexus Intelligence", src: clientNexus },
+    { name: "FAM HOLDING", src: clientFamHolding },
+    { name: "Bin Ham Group", src: clientBinHam },
+    { name: "Dubai Investments Real Estate", src: clientDubaiInvestments },
+    { name: "Dubai Islamic Bank", src: clientDib },
+    { name: "Mohammed Bin Rashid Housing Est.", src: clientMbrHousing },
   ],
   consultants: [
-    { name: "AL SHANDAGHA MUSEUM", src: "./src/Consultantimg/1542594727588.jpg" },
-    { name: "Renders Engineering Consultants", src: "./src/Consultantimg/Renders-Engineering-Consultants.jpg" },
-    { name: "AECOM", src: "./src/Consultantimg/aecom-gets-101m-army-prepositioned-stock-logistics-contract-modification.png" },
-    { name: "Eng. Adnan Saffarini Office", src: "./src/Consultantimg/Eng.-Adnan-Saffarini-Office-Architects-And-Engineering-Consultants.jpg" },
-    { name: "Shadid Engineering Consultants", src: "./src/Consultantimg/Shadid-Engineering-Consultant-SEC.jpg" },
-    { name: "Al Gurg Consultants", src: "./src/Consultantimg/OIP.webp" },
-    { name: "KMC Management Consultants", src: "./src/Consultantimg/1520950331901.png" },
-    { name: "RMJM", src: "./src/Consultantimg/b-NTG3AH_400x400.jpg" },
-    { name: "SSH", src: "./src/Consultantimg/njnzqbuobvqfuyg2.jpg" },
-    { name: "NEB", src: "./src/Consultantimg/Screenshot 2025-09-12 114748.png" },
+    { name: "AL SHANDAGHA MUSEUM", src: consultantAlShandagha },
+    { name: "Renders Engineering Consultants", src: consultantRenders },
+    { name: "AECOM", src: consultantAecom },
+    { name: "Eng. Adnan Saffarini Office", src: consultantSaffarini },
+    { name: "Shadid Engineering Consultants", src: consultantShadid },
+    { name: "Al Gurg Consultants", src: consultantAlGurg },
+    { name: "KMC Management Consultants", src: consultantKmc },
+    { name: "RMJM", src: consultantRmjm },
+    { name: "SSH", src: consultantSsh },
+    { name: "NEB", src: consultantNeb },
   ],
   contractors: [
-    { name: "Dubai Properties", src: "./src/Contractorimg/3PhBZf70 (1).jpg" },
-    { name: "BHC UAE National Company", src: "./src/Contractorimg/1617805231454.jpg" },
-    { name: "ECC", src: "./src/Contractorimg/OIP (1).webp" },
-    { name: "Dubai Civil Engineering", src: "./src/Contractorimg/Dubai-Civil-Engineering.jpg" },
-    { name: "Reem Capital Contracting LLC", src: "./src/Contractorimg/1520863299415.jpg" },
-    { name: "ARCHGROUP", src: "./src/Contractorimg/unnamed (1).jpg" },
-    { name: "UNEC United Engineering Construction", src: "./src/Contractorimg/R (2).jpg" },
-    { name: "LACASA Architecs & Engineering Consultants", src: "./src/Contractorimg/images (1).png" },
-    { name: "A2Z Architectural Engineering Consultancies", src: "./src/Contractorimg/a2z_logo-20180404065306.jpg" },
-    { name: "Mohammed Bin Rashid Housing Est.", src: "./src/Contractorimg/18102015211355775.jpg" },
-    { name: "ABDUL RAHIM ARCHITECTURE CONSULTANTS", src: "./src/Contractorimg/unnamed (1).png" },
-    { name: "BHG", src: "./src/Contractorimg/images (1).jpg" },
-    { name: "CSCEC", src: "./src/Contractorimg/CSCEC-Egypt-28116-1522062944.jpg" },
-    { name: "Dewan Architects + Engineers", src: "./src/Contractorimg/dewan-logo-retina.png" },
-    { name: "ENGINEERING CONSORTIUM", src: "./src/Contractorimg/ENGG-Consortium.png" },
-    { name: "CONIN INCORPORATED CONSULTANT", src: "./src/Contractorimg/images (1) (1).jpg" },
-    { name: "CITY ENGINEERING", src: "./src/Contractorimg/download_edited.jpg" },
-    { name: "EXPO 2020 DUBAI UAE", src: "./src/Contractorimg/283-2830293_transparent-dubai-png-expo-2020-logo-png-png.png" },
-    { name: "TAV CONSTRUCTION", src: "./src/Contractorimg/ga9t1p6cwfz82yaf (1).jpg" },
-    { name: "AL TURATH AL ASEEL CONTRACTING LLC", src: "./src/Contractorimg/LOGO-ATC-972_278-White (1).png" },
+    { name: "Dubai Properties", src: contractorDubaiProperties },
+    { name: "BHC UAE National Company", src: contractorBhcUae },
+    { name: "ECC", src: contractorEcc },
+    { name: "Dubai Civil Engineering", src: contractorDubaiCivilEng },
+    { name: "Reem Capital Contracting LLC", src: contractorReemCapital },
+    { name: "ARCHGROUP", src: contractorArchgroup },
+    { name: "UNEC United Engineering Construction", src: contractorUnec },
+    { name: "LACASA Architects & Engineering Consultants", src: contractorLacasa },
+    { name: "A2Z Architectural Engineering Consultancies", src: contractorA2z },
+    { name: "Mohammed Bin Rashid Housing Est.", src: contractorMbrHousing },
+    { name: "ABDUL RAHIM ARCHITECTURE CONSULTANTS", src: contractorAbdulRahim },
+    { name: "BHG", src: contractorBhg },
+    { name: "CSCEC", src: contractorCscec },
+    { name: "Dewan Architects + Engineers", src: contractorDewan },
+    { name: "ENGINEERING CONSORTIUM", src: contractorEngConsortium },
+    { name: "CONIN INCORPORATED CONSULTANT", src: contractorConin },
+    { name: "CITY ENGINEERING", src: contractorCityEngineering },
+    { name: "EXPO 2020 DUBAI UAE", src: contractorExpo2020 },
+    { name: "TAV CONSTRUCTION", src: contractorTav },
+    { name: "AL TURATH AL ASEEL CONTRACTING LLC", src: contractorAlTurath },
   ],
 };
 
@@ -1328,66 +1177,48 @@ const CHAIRMAN_MESSAGE = {
   name: "Engr. Abdul Karim Ali Agha",
   role: "Chairman",
   message: "When you care about your team, show them love and treat them as your own family; they will never let you down and will always give their best. This is the secret of our success.",
-  photo: "/src/img/CHAIRMAN.jpeg",
+  photo: chairmanPhoto,
 };
 
 const LEADERSHIP = [
-  { name: "Abdul Karim Ali Agha", role: "Managing Director", note: "Founder & Group Chairman", photo: "/src/img/CHAIRMAN.jpeg" },
-  { name: "Khalid Ali Agha", role: "Projects Director", note: "Strategic Operations Lead", photo: "/src/img/Projectdirector.jpeg" },
+  { name: "Abdul Karim Ali Agha", role: "Managing Director", note: "Founder & Group Chairman", photo: chairmanPhoto },
+  { name: "Khalid Ali Agha", role: "Projects Director", note: "Strategic Operations Lead", photo: projectsDirectorPhoto },
 ];
 
 const MANAGEMENT = [
-  { name: "Abdulhamid AlAbrch", role: "Technical Manager", dept: "Engineering", photo: "/src/img/Technicalmanager.jpeg" },
-  { name: "Irashad Ahmad Islam", role: "HR Manager", dept: "Human Resources", photo: "/src/img/Hrmanager.jpeg" },
-  { name: "Sayedur Rahman", role: "Project Manager", dept: "Operations", photo: "/src/img/Projectmanager.jpeg" },
-  { name: "Hesham Abouzeid", role: "HR Officer", dept: "Human Resources", photo: "/src/img/HrOffice.jpeg" },
-  { name: "M Taha Ali Agha", role: "P.R.O. Manager", dept: "Administration", photo: "/src/img/ProManager.jpeg" },
+  { name: "Abdulhamid AlAbrch", role: "Technical Manager", dept: "Engineering", photo: technicalManagerPhoto },
+  { name: "Irashad Ahmad Islam", role: "HR Manager", dept: "Human Resources", photo: hrManagerPhoto },
+  { name: "Sayedur Rahman", role: "Project Manager", dept: "Operations", photo: projectManagerPhoto },
+  { name: "Hesham Abouzeid", role: "HR Officer", dept: "Human Resources", photo: hrOfficerPhoto },
+  { name: "M Taha Ali Agha", role: "P.R.O. Manager", dept: "Administration", photo: proManagerPhoto },
 ];
 
 const ENGINEERS = [
-  { name: "Olga Regala", role: "Proposal & Estimating Engineer", dept: "Commercial", photo: "/src/img/ProposalManager.jpeg" },
-  { name: "Omar Ibrahim", role: "Accounting Manager", dept: "Finance", photo: "/src/img/AccountingManager.jpeg" },
-  { name: "Abdelkader Mouine", role: "Accountant", dept: "Finance", photo: "/src/img/Accountant.jpeg" },
-  { name: "Fayaz Hyder Ali", role: "Senior Purchasing Officer", dept: "Procurement", photo: "/src/img/SeniorPurchasingOfficer.png" },
-  { name: "Nour Al Hayek", role: "P.R.O.", dept: "Administration", photo: "/src/img/Pro.jpeg" },
-  { name: "Jannath TP", role: "QS Engineer", dept: "Quantity Surveying", photo: "/src/img/Qs.jpeg" },
-  { name: "Vishnupriya Mohan", role: "QS Engineer", dept: "Quantity Surveying", photo: "/src/img/Qs2.jpeg" },
-  { name: "Waseem Arumanichola", role: "QS Engineer", dept: "Quantity Surveying", photo: "/src/img/Qs3.jpeg" },
-  { name: "Aneesa Noushad", role: "Senior QS Engineer", dept: "Quantity Surveying", photo: "/src/img/Qs4.jpeg" },
-  { name: "Mohamed Sana", role: "QS Engineer", dept: "Quantity Surveying", photo: "/src/img/Qs5.jpeg" },
-  { name: "Shanoob Rasheed", role: "Senior Technical Engineer", dept: "Engineering", photo: "/src/img/Technical.jpeg" },
-  { name: "Muhammed Irfan", role: "Architectural Designer", dept: "Design", photo: "/src/img/ArchitectureDesigner.png" },
-  { name: "Vijesh Vijayan", role: "MEP Operations Manager", dept: "MEP", photo: "/src/img/MEP.jpeg" },
-  { name: "Shahzad Ahmad", role: "Electrical Engineer", dept: "MEP", photo: "/src/img/ElectricalEngineer.jpeg" },
-  { name: "Sathish Jayaraman", role: "Mechanical Engineer", dept: "MEP", photo: "/src/img/MechanicalEngineer.jpeg" },
-  { name: "Mohamed Javeed", role: "Project Site Engineer", dept: "Operations", photo: "/src/img/ProjectSiteEngineer.jpeg" },
-  { name: "Muhammed Suhair", role: "Project Site Engineer", dept: "Operations", photo: "/src/img/ProjectSiteEngineer2.jpeg" },
-  { name: "Mohammed Firoz R.", role: "Project Site Engineer", dept: "Operations", photo: "/src/img/ProjectSiteEngineer3.jpeg" },
-  { name: "MUHAMMED FAYIZ N.P", role: "Project Site Engineer", dept: "Operations", photo: "/src/img/ProjectSiteEngineer4.jpeg" },
+  { name: "Olga Regala", role: "Proposal & Estimating Engineer", dept: "Commercial", photo: proposalManagerPhoto },
+  { name: "Omar Ibrahim", role: "Accounting Manager", dept: "Finance", photo: accountingManagerPhoto },
+  { name: "Abdelkader Mouine", role: "Accountant", dept: "Finance", photo: accountantPhoto },
+  { name: "Fayaz Hyder Ali", role: "Senior Purchasing Officer", dept: "Procurement", photo: seniorPurchasingOfficerPhoto },
+  { name: "Nour Al Hayek", role: "P.R.O.", dept: "Administration", photo: proPhoto },
+  { name: "Jannath TP", role: "QS Engineer", dept: "Quantity Surveying", photo: qsPhoto1 },
+  { name: "Vishnupriya Mohan", role: "QS Engineer", dept: "Quantity Surveying", photo: qsPhoto2 },
+  { name: "Waseem Arumanichola", role: "QS Engineer", dept: "Quantity Surveying", photo: qsPhoto3 },
+  { name: "Aneesa Noushad", role: "Senior QS Engineer", dept: "Quantity Surveying", photo: qsPhoto4 },
+  { name: "Mohamed Sana", role: "QS Engineer", dept: "Quantity Surveying", photo: qsPhoto5 },
+  { name: "Shanoob Rasheed", role: "Senior Technical Engineer", dept: "Engineering", photo: technicalEngineerPhoto },
+  { name: "Muhammed Irfan", role: "Architectural Designer", dept: "Design", photo: architectureDesignerPhoto },
+  { name: "Vijesh Vijayan", role: "MEP Operations Manager", dept: "MEP", photo: mepPhoto },
+  { name: "Shahzad Ahmad", role: "Electrical Engineer", dept: "MEP", photo: electricalEngineerPhoto },
+  { name: "Sathish Jayaraman", role: "Mechanical Engineer", dept: "MEP", photo: mechanicalEngineerPhoto },
+  { name: "Mohamed Javeed", role: "Project Site Engineer", dept: "Operations", photo: siteEngineerPhoto1 },
+  { name: "Muhammed Suhair", role: "Project Site Engineer", dept: "Operations", photo: siteEngineerPhoto2 },
+  { name: "Mohammed Firoz R.", role: "Project Site Engineer", dept: "Operations", photo: siteEngineerPhoto3 },
+  { name: "MUHAMMED FAYIZ N.P", role: "Project Site Engineer", dept: "Operations", photo: siteEngineerPhoto4 },
 ];
 
 const GROUP_COMPANIES = [
-  {
-    abbr: "ADW",
-    name: "Al Agha Decoration Works LLC",
-    year: "2001",
-    focus: "False Ceiling & Gypsum Decoration",
-    arabic: "الآغا لأعمال الديكور",
-  },
-  {
-    abbr: "ATS",
-    name: "Al Agha Technical Services LLC",
-    year: "2008",
-    focus: "Interior Design & Fit-Out",
-    arabic: "الآغا للخدمات الفنية",
-  },
-  {
-    abbr: "ABC",
-    name: "Al Agha Building Contracting LLC",
-    year: "2008",
-    focus: "Civil & MEP Works",
-    arabic: "الآغا لمقاولات البناء",
-  },
+  { abbr: "ADW", name: "Al Agha Decoration Works LLC", year: "2001", focus: "False Ceiling & Gypsum Decoration", arabic: "الآغا لأعمال الديكور" },
+  { abbr: "ATS", name: "Al Agha Technical Services LLC", year: "2008", focus: "Interior Design & Fit-Out", arabic: "الآغا للخدمات الفنية" },
+  { abbr: "ABC", name: "Al Agha Building Contracting LLC", year: "2008", focus: "Civil & MEP Works", arabic: "الآغا لمقاولات البناء" },
 ];
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -1403,8 +1234,7 @@ export default function AlAghaGroup() {
   const scrollTo = id => {
     setMenu(false);
     setActive(id);
-    const sectionId = id.toLowerCase().replace(/\s+/g, "-");
-    const el = document.getElementById(sectionId);
+    const el = document.getElementById(id.toLowerCase().replace(/\s+/g, "-"));
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -1413,7 +1243,6 @@ export default function AlAghaGroup() {
       label,
       el: document.getElementById(label.toLowerCase().replace(/\s+/g, "-")),
     })).filter(s => s.el);
-
     const onScroll = () => {
       const scrollMid = window.scrollY + window.innerHeight * 0.4;
       let current = "Home";
@@ -1439,7 +1268,7 @@ export default function AlAghaGroup() {
       <div style={{ color: "#fff", fontFamily: "var(--f-body)", background: "var(--bg-deep)", overflowX: "hidden" }}>
         <ReadingProgress />
 
-        {/* ── AMBIENT FLOATING SHAPES ── */}
+        {/* Ambient floating shapes */}
         <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, overflow: "hidden" }}>
           <div style={{ position: "absolute", width: 600, height: 600, top: "-200px", left: "-200px", background: "radial-gradient(circle, rgba(201,168,76,0.04) 0%, transparent 70%)", animation: "floatBg 18s ease-in-out infinite" }} />
           <div style={{ position: "absolute", width: 500, height: 500, bottom: "10%", right: "-100px", background: "radial-gradient(circle, rgba(12,24,112,0.6) 0%, transparent 70%)", animation: "floatBgReverse 22s ease-in-out infinite" }} />
@@ -1449,13 +1278,9 @@ export default function AlAghaGroup() {
         <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000, background: scrolled ? "rgba(2,7,48,0.97)" : "transparent", backdropFilter: scrolled ? "blur(20px)" : "none", boxShadow: scrolled ? "0 1px 0 rgba(201,168,76,0.1)" : "none", transition: "all 0.4s ease" }}>
           <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 36px", height: 72, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <button onClick={() => scrollTo("Home")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 12 }}>
-              <img
-                src={logo}
-                alt="Al Agha Group Logo"
-                style={{ width: 44, height: 44, objectFit: "contain", borderRadius: 8, flexShrink: 0 }}
-                onError={e => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }}
-              />
-              <div style={{ display: "none", width: 44, height: 44, borderRadius: 10, flexShrink: 0, background: "linear-gradient(135deg, var(--gold-dk), var(--gold))", alignItems: "center", justifyContent: "center", fontFamily: "var(--f-display)", fontWeight: 800, fontSize: 18, color: "var(--ink)", letterSpacing: "-0.02em" }}>AG</div>
+              <img src={logo} alt="Al Agha Group Logo" style={{ width: 44, height: 44, objectFit: "contain", borderRadius: 8, flexShrink: 0 }}
+                onError={e => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }} />
+              <div style={{ display: "none", width: 44, height: 44, borderRadius: 10, flexShrink: 0, background: "linear-gradient(135deg, var(--gold-dk), var(--gold))", alignItems: "center", justifyContent: "center", fontFamily: "var(--f-display)", fontWeight: 800, fontSize: 18, color: "var(--ink)" }}>AG</div>
               <div style={{ textAlign: "left" }}>
                 <div style={{ fontFamily: "var(--f-display)", fontWeight: 700, fontSize: 19, color: "#fff", letterSpacing: "-0.01em", lineHeight: 1.15 }}>Al Agha Group</div>
                 <div style={{ fontFamily: "var(--f-body)", fontSize: 8, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(201,168,76,0.8)" }}>of Companies</div>
@@ -1494,7 +1319,6 @@ export default function AlAghaGroup() {
             </svg>
           </div>
           <div style={{ position: "absolute", left: 0, top: "10%", bottom: "10%", width: 3, background: "linear-gradient(to bottom, transparent, var(--gold), transparent)" }} />
-
           <div style={{ maxWidth: 1320, margin: "0 auto", padding: "130px 36px 90px", position: "relative", zIndex: 1, width: "100%" }}>
             <div style={{ maxWidth: 700 }}>
               <div style={{ marginBottom: 28, animation: "fadeUp 0.8s 0.1s both" }}>
@@ -1515,7 +1339,6 @@ export default function AlAghaGroup() {
               </div>
             </div>
           </div>
-
           <div style={{ position: "absolute", bottom: 36, left: "50%", transform: "translateX(-50%)", display: "flex", flexDirection: "column", alignItems: "center", gap: 6, zIndex: 2 }}>
             <span style={{ fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 700, letterSpacing: "0.24em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)" }}>Scroll</span>
             <div style={{ width: 1, height: 52, background: "linear-gradient(to bottom, rgba(201,168,76,0.6), transparent)" }} />
@@ -1542,16 +1365,10 @@ export default function AlAghaGroup() {
         <Section id="group" geoVariant="c" style={{ padding: "100px 36px" }}>
           <div style={{ maxWidth: 1320, margin: "0 auto" }}>
             <Reveal>
-              <SectionHeader
-                eyebrow="Three Companies, One Vision"
-                title='The <em style="color:var(--gold);font-style:italic">Al Agha Group</em>'
-                subtitle="A unified group delivering excellence across decoration, technical services, and building contracting."
-              />
+              <SectionHeader eyebrow="Three Companies, One Vision" title='The <em style="color:var(--gold);font-style:italic">Al Agha Group</em>' subtitle="A unified group delivering excellence across decoration, technical services, and building contracting." />
             </Reveal>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))", gap: 28 }}>
-              {GROUP_COMPANIES.map((c, i) => (
-                <GroupCard key={c.abbr} company={c} index={i} />
-              ))}
+              {GROUP_COMPANIES.map((c, i) => <GroupCard key={c.abbr} company={c} index={i} />)}
             </div>
           </div>
         </Section>
@@ -1607,7 +1424,7 @@ export default function AlAghaGroup() {
               </div>
             </Reveal>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(340px,1fr))", gap: 20 }}>
-              {ALL_SERVICES.slice(0, 9).map((s, i) => (
+              {ALL_SERVICES.map((s, i) => (
                 <Reveal key={s.title} delay={(i % 3) * 55} dir="up">
                   <div className="svc-card">
                     <div style={{ fontSize: 36, marginBottom: 18 }}>{s.icon}</div>
@@ -1639,11 +1456,8 @@ export default function AlAghaGroup() {
                   <div className="proj-card" style={{ height: 300 }}>
                     <img src={p.img} alt={p.title} style={{ height: "100%" }} />
                     <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(2,7,48,0.92) 0%, transparent 55%)", borderRadius: 16 }} />
-                    <div style={{ position: "absolute", top: 16, right: 16, background: "rgba(2,7,48,0.8)", backdropFilter: "blur(8px)", border: "1px solid rgba(201,168,76,0.3)", padding: "4px 11px", borderRadius: 20, fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--gold)" }}>{p.cat}</div>
                     <div style={{ position: "absolute", bottom: 0, left: 0, padding: "0 22px 20px" }}>
-                      <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", color: "var(--gold)", textTransform: "uppercase", marginBottom: 4 }}>{p.client} · {p.year}</div>
                       <div style={{ fontFamily: "var(--f-display)", fontSize: 20, fontWeight: 700, color: "#fff", marginBottom: 4 }}>{p.title}</div>
-                      <div style={{ fontFamily: "var(--f-body)", fontSize: 11, color: "rgba(255,255,255,0.55)" }}>📍 {p.loc}</div>
                     </div>
                   </div>
                 </Reveal>
@@ -1659,19 +1473,13 @@ export default function AlAghaGroup() {
         <Section id="clients" geoVariant="a" style={{ padding: "110px 36px 80px" }}>
           <div style={{ maxWidth: 1320, margin: "0 auto" }}>
             <Reveal>
-              <SectionHeader
-                eyebrow="Trusted By"
-                title='Our <em style="color:var(--gold);font-style:italic">Clients, Consultants &amp; Contractors</em>'
-              />
+              <SectionHeader eyebrow="Trusted By" title='Our <em style="color:var(--gold);font-style:italic">Clients, Consultants &amp; Contractors</em>' />
             </Reveal>
             <Reveal delay={60}>
               <div style={{ display: "flex", justifyContent: "center", gap: 10, flexWrap: "wrap", marginBottom: 48 }}>
                 {Object.entries(clientTabData).map(([key, { label }]) => (
-                  <button
-                    key={key}
-                    onClick={() => setClientTab(key)}
-                    style={{ fontFamily: "var(--f-body)", fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", padding: "10px 24px", borderRadius: 8, border: `1px solid ${clientTab === key ? "var(--gold)" : "rgba(201,168,76,0.2)"}`, background: clientTab === key ? "var(--gold)" : "rgba(255,255,255,0.04)", color: clientTab === key ? "var(--ink)" : "rgba(255,255,255,0.6)", cursor: "pointer", transition: "all 0.25s", backdropFilter: "blur(6px)" }}
-                  >
+                  <button key={key} onClick={() => setClientTab(key)}
+                    style={{ fontFamily: "var(--f-body)", fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", padding: "10px 24px", borderRadius: 8, border: `1px solid ${clientTab === key ? "var(--gold)" : "rgba(201,168,76,0.2)"}`, background: clientTab === key ? "var(--gold)" : "rgba(255,255,255,0.04)", color: clientTab === key ? "var(--ink)" : "rgba(255,255,255,0.6)", cursor: "pointer", transition: "all 0.25s", backdropFilter: "blur(6px)" }}>
                     {label}
                   </button>
                 ))}
@@ -1691,11 +1499,7 @@ export default function AlAghaGroup() {
         <Section id="career" geoVariant="b" style={{ padding: "110px 36px" }}>
           <div style={{ maxWidth: 1320, margin: "0 auto" }}>
             <Reveal>
-              <SectionHeader
-                eyebrow="Join Our Team"
-                title='Build your <em style="color:var(--gold);font-style:italic">Career</em>'
-                subtitle="Join a team where your skills drive landmark developments across the UAE."
-              />
+              <SectionHeader eyebrow="Join Our Team" title='Build your <em style="color:var(--gold);font-style:italic">Career</em>' subtitle="Join a team where your skills drive landmark developments across the UAE." />
             </Reveal>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 52, alignItems: "start" }} className="grid-2">
               <div>
@@ -1738,11 +1542,7 @@ export default function AlAghaGroup() {
         <Section id="team" geoVariant="a" style={{ padding: "110px 36px" }}>
           <div style={{ maxWidth: 1320, margin: "0 auto" }}>
             <Reveal>
-              <SectionHeader
-                eyebrow="The People Behind Our Work"
-                title='Meet the <em style="color:var(--gold);font-style:italic">Team</em>'
-                subtitle="Dedicated professionals committed to excellence across every discipline."
-              />
+              <SectionHeader eyebrow="The People Behind Our Work" title='Meet the <em style="color:var(--gold);font-style:italic">Team</em>' subtitle="Dedicated professionals committed to excellence across every discipline." />
             </Reveal>
 
             <div style={{ marginBottom: 80 }}>
@@ -1796,10 +1596,7 @@ export default function AlAghaGroup() {
         <Section geoVariant="c" style={{ padding: "110px 36px" }}>
           <div style={{ maxWidth: 1320, margin: "0 auto" }}>
             <Reveal>
-              <SectionHeader
-                eyebrow="Chairman's Message"
-                title='A Word From Our <em style="color:var(--gold);font-style:italic">Chairman</em>'
-              />
+              <SectionHeader eyebrow="Chairman's Message" title='A Word From Our <em style="color:var(--gold);font-style:italic">Chairman</em>' />
             </Reveal>
             <div style={{ maxWidth: 800, margin: "0 auto" }}>
               <Reveal>
@@ -1831,7 +1628,7 @@ export default function AlAghaGroup() {
               <h2 style={{ fontFamily: "var(--f-display)", fontWeight: 700, fontSize: "clamp(2rem,4vw,3.2rem)", color: "#fff", marginBottom: 18 }}>
                 Let's bring your vision to <em style={{ color: "var(--gold)", fontStyle: "italic" }}>life</em>
               </h2>
-              <p style={{ fontFamily: "var(--f-body)", fontSize: 16, color: "rgba(255,255,255,0.5)", marginBottom: 44, maxWidth: 520, margin: "0 auto 44px", lineHeight: 1.75 }}>
+              <p style={{ fontFamily: "var(--f-body)", fontSize: 16, color: "rgba(255,255,255,0.5)", maxWidth: 520, margin: "0 auto 44px", lineHeight: 1.75 }}>
                 From false ceiling concepts to complete interior fit-out, Al Agha Group delivers results with integrity, craftsmanship, and a commitment to finishing on time.
               </p>
               <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
@@ -1849,7 +1646,8 @@ export default function AlAghaGroup() {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(230px,1fr))", gap: 48, marginBottom: 56 }}>
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-                  <img src={logo} alt="Al Agha Group Logo" style={{ width: 50, height: 50, objectFit: "contain", borderRadius: 8, flexShrink: 0 }} onError={e => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }} />
+                  <img src={logo} alt="Al Agha Group Logo" style={{ width: 50, height: 50, objectFit: "contain", borderRadius: 8, flexShrink: 0 }}
+                    onError={e => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }} />
                   <div style={{ display: "none", width: 42, height: 42, borderRadius: 10, flexShrink: 0, background: "linear-gradient(135deg, var(--gold-dk), var(--gold))", alignItems: "center", justifyContent: "center", fontFamily: "var(--f-display)", fontWeight: 800, fontSize: 16, color: "var(--ink)" }}>AG</div>
                   <div>
                     <div style={{ fontFamily: "var(--f-display)", fontSize: 17, fontWeight: 700, color: "#fff" }}>Al Agha Group</div>
@@ -1876,7 +1674,7 @@ export default function AlAghaGroup() {
 
               <div>
                 <h4 style={{ fontFamily: "var(--f-display)", fontSize: 17, fontWeight: 700, marginBottom: 18, color: "#fff" }}>Our Services</h4>
-                {ALL_SERVICES.slice(0, 6).map(s => (
+                {ALL_SERVICES.map(s => (
                   <div key={s.title} style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.3)", padding: "5px 0", lineHeight: 1.5 }}>{s.title}</div>
                 ))}
               </div>
@@ -1897,17 +1695,14 @@ export default function AlAghaGroup() {
                 <div style={{ marginTop: 18, marginBottom: 18 }}>
                   <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)", marginBottom: 8 }}>SCAN QR CODE</div>
                   <div style={{ width: 80, height: 80, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(201,168,76,0.2)", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-                    <img src="/src/certimg/QRCODE.jpeg" alt="QR Code" style={{ width: "100%", height: "100%", objectFit: "contain" }} onError={e => { e.target.style.display = "none"; e.target.parentElement.innerHTML = '<div style="font-size:10px;color:rgba(255,255,255,0.3);text-align:center">QR<br/>Code</div>'; }} />
+                    <img src={qrCodeImg} alt="QR Code" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
                   </div>
                 </div>
                 <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid rgba(201,168,76,0.15)", height: 180, marginTop: 18 }}>
-                  <iframe
-                    title="Al Agha Group Office"
+                  <iframe title="Al Agha Group Office"
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115536.95256710752!2d55.19120299696603!3d25.18535093670777!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5c89fbf4c7bf%3A0xeb51121eac30f9a!2sAbraj%20Al%20Mamzar%2C%20Block%20A!5e0!3m2!1sen!2sph!4v1781382895149!5m2!1sen!2sph"
-                    width="100%" height="100%"
-                    style={{ border: "none", display: "block", filter: "invert(90%) hue-rotate(180deg)" }}
-                    allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
-                  />
+                    width="100%" height="100%" style={{ border: "none", display: "block", filter: "invert(90%) hue-rotate(180deg)" }}
+                    allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
                 </div>
               </div>
             </div>
