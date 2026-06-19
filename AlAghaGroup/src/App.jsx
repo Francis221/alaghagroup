@@ -1167,10 +1167,10 @@ const CLIENTS_DATA = {
 };
 
 const CAREERS = [
-  { role: "Senior Construction Manager", loc: "Dubai, UAE", type: "Full-time", dept: "Operations" },
-  { role: "Structural Engineer", loc: "Dubai, UAE", type: "Full-time", dept: "Engineering" },
-  { role: "Project Architect", loc: "Dubai, UAE", type: "Full-time", dept: "Design" },
-  { role: "Safety Officer", loc: "Dubai, UAE", type: "Contract", dept: "HSE" },
+  { role: "Developer", loc: "Dubai, UAE", type: "Full-time", dept: "Operations" },
+  { role: "Product Manager", loc: "Dubai, UAE", type: "Full-time", dept: "Engineering" },
+  { role: "Graphic Designer", loc: "Dubai, UAE", type: "Full-time", dept: "Design" },
+  { role: "UX Expert", loc: "Dubai, UAE", type: "Contract", dept: "HSE" },
 ];
 
 const CHAIRMAN_MESSAGE = {
