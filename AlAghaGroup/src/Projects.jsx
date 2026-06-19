@@ -3,12 +3,107 @@ import { useNavigate } from "react-router-dom";
 import logo from "../alaghalogo.png";
 
 // Automatically glob-import all project images in the directory
+
 const projectImages = import.meta.glob("./projectimg/*.{png,jpg,jpeg,PNG,JPG,JPEG,webp}", { eager: true, import: "default" });
 
-// Explicit imports for images in other locations (e.g. src/ or src/img/)
+// ─── EXPLICIT IMAGE IMPORTS ──────────────────────────────────────────────────
+import logo from "../alaghalogo.png";
 import imgAAAAAA from "./AAAAAA.jpg";
 import qrcodeImg from "./img/QRCODE.jpeg";
 
+// ─── PROJECT IMAGE IMPORTS ───────────────────────────────────────────────────
+import imgBeach from "./projectimg/beach.jpg";
+import imgBeachfront from "./projectimg/beachfront.jpg";
+import imgCity from "./projectimg/city.jpg";
+import imgParkRidge from "./projectimg/Park-Ridge-2.jpg";
+import imgWarehouse from "./projectimg/15465160233.png";
+import imgHyati from "./projectimg/SITE -001.jpg";
+import imgOudMetha from "./projectimg/Project Perspective.jpg";
+import imgAlHamriya from "./projectimg/AL HAMRIYA & UM HURAIR 0138-0435.jpg";
+import imgLabourAccom from "./projectimg/20181003_264-0338-Labor-camp-Muhaisnah-second-1024x576.jpg";
+import imgCoralDeira from "./projectimg/coral-dubai-deira-hotel.jpg";
+import imgPointTower from "./projectimg/the-point-14096_xl.jpg";
+import imgJBR from "./projectimg/141217_366_JUMEIRAH-BEACH-RESIDENCE_AERIAL_zj-1536x1192.jpg";
+import imgMarinaWharf1 from "./projectimg/marina-wharf-1618_xl.jpg";
+import imgTorch from "./projectimg/R.jpg";
+import img72Villas from "./projectimg/Capture4.png";
+import imgIVQuattro from "./projectimg/Capture5.png";
+import imgD101 from "./projectimg/DUBAIS_1.jpg";
+import imgEmpireHeights from "./projectimg/1520077655140.jpg";
+import imgAlBareeq from "./projectimg/01_Perspective__Al Bareeq Tower.jpg";
+import imgHolidayInn from "./projectimg/Holiday Inn Hotel and Suites Dubai Science Park - Photo 03.jpg";
+import imgMarinaWharf2 from "./projectimg/10208.jpg";
+import imgBobyan from "./projectimg/bobyan-tower-1554_xl.jpg";
+import imgMediaRotana from "./projectimg/424818958.jpg";
+import imgAlNahda from "./projectimg/Capture 1.png";
+import imgAlWatani from "./projectimg/Al-Watani-Residential-Development-Project.jpg";
+import imgCitySeasons from "./projectimg/71683934.jpg";
+import imgEFTO from "./projectimg/R (3).jpg";
+import imgShatha from "./projectimg/Shatha-Tower-1.jpg";
+import img122Villas from "./projectimg/WhatsApp Image 2017-09-24 at 1.01.27 PM.jpg";
+import imgRemraam from "./projectimg/remraam-295214-121454.jpg";
+import imgUoWD from "./projectimg/3shotRecovered-Recovered.jpg";
+import imgBayCentral from "./projectimg/Untitled Design - 1 copy.jpg";
+import imgIRise from "./projectimg/irise-tower-210391-101916.jpg";
+import img23Marina from "./projectimg/Capture3.png";
+import img25VillasFalcon from "./projectimg/Eastern-Residences-Image1.jpg";
+import imgMirdiffHills from "./projectimg/1225 - c5c49ae8-4e0f-49d0-8f4b-b5b457fd9339.jpg";
+import imgStellaMaris from "./projectimg/1275- 140826_853_Areal_Hig_FINAL-logo.jpg";
+import imgAlFurjan from "./projectimg/pic1 (1).jpg";
+import imgZabeel from "./projectimg/download (3).png";
+import imgTH8 from "./projectimg/hotel-exterior.jpg";
+import imgEatonPlace from "./projectimg/eaton-place-10254.jpg";
+import imgKingdomSheba from "./projectimg/sheba_03_1920x1024.jpg";
+import imgDujaTower from "./projectimg/download (3) (1).png";
+import imgVantage from "./projectimg/download (4).png";
+import imgMirdifHillsNorth from "./projectimg/download (1) (2).png";
+import imgMulberry from "./projectimg/download (2) (1).png";
+import imgRawda from "./projectimg/download (3) (2).png";
+import imgAddressOpera from "./projectimg/the-address-residences-dubai-opera-9455_xl.jpg";
+import imgUNA from "./projectimg/1649835984RD883.jpg";
+import imgHyatiJVC from "./projectimg/download (2) (2).png";
+import imgPortDeLaMer from "./projectimg/download (5).png";
+import imgKalba from "./projectimg/download (6).png";
+import imgTerhab from "./projectimg/download (1) (4).png";
+import imgGulfTower from "./projectimg/gulf-tower.jpg";
+import imgCreekHarbour from "./projectimg/R (1).jpg";
+import imgBADR from "./projectimg/download (2) (3).png";
+import imgAreej14 from "./projectimg/download (3) (4).png";
+import imgGrandBleu from "./projectimg/1620744002_grandbleu1_result.jpg";
+import imgDubaiProsecution from "./projectimg/download (2) (4).png";
+import imgPlatinum2 from "./projectimg/PLATINUM 2.jpg";
+import imgPlatinum1 from "./projectimg/PLATINUM 1.jpg";
+import imgMiraOasis from "./projectimg/3731.jpg";
+import imgSeaGate from "./projectimg/WhatsApp Image 2025-09-08 at 08.56.35_bdefc655.jpg";
+import imgKempinski from "./projectimg/download (8).png";
+import imgInnovationHub from "./projectimg/innovation-hub-4327_xl.jpg";
+import imgDistrictOne from "./projectimg/download (2) (5).png";
+import imgShamsTownhouses from "./projectimg/download (1) (6).png";
+import imgAVA from "./projectimg/download (3) (5).png";
+import imgHyatiH3 from "./projectimg/download (9).png";
+import imgAnwaAria from "./projectimg/download (5) (1).png";
+import imgChicTower from "./projectimg/download (7) (1).png";
+import imgElegance from "./projectimg/download (8) (1).png";
+import imgGreenside from "./projectimg/download (9) (1).png";
+import imgPrimeHospital from "./projectimg/download (10).png";
+import imgAddressBay from "./projectimg/download (11).png";
+import imgAlMedif from "./projectimg/download (13).png";
+import imgNadAlShiba from "./projectimg/download (14).png";
+import imgSLS from "./projectimg/download (15).png";
+import imgSkySpiral from "./projectimg/Sky-Spiral-Tower-Day-View-614x1024.png";
+import imgParksideHills from "./projectimg/PARKSIDE_HILLS_IMAGE2-scaled.jpg";
+import imgMarsaAlArab from "./projectimg/Marsa-Al-Arab-Exterior.jpg";
+import imgMakan from "./projectimg/afssg.png";
+import imgDPWorld from "./AAAAAA.jpg";
+import imgVictoriaSchool from "./projectimg/59b0c1_3abb320e18504179a17880e6813489d0~mv2 (1).jpg";
+import imgPlots8689 from "./projectimg/2834-ALG-86-ARC-M3-PRESPECTIVE3-3384450 (1).jpg";
+import imgTechnoHub4 from "./projectimg/large_D5_Image_8_20230714_013430_342968d0e3 (1).png";
+import imgWadiAlSafa from "./projectimg/Screenshot 2025-10-03 084111 (1).png";
+import imgCreekBridge from "./projectimg/Screenshot 2025-10-03 102435.png";
+import imgMAGJLT from "./projectimg/MAG JLT R3 VIEW B.jpg";
+import imgSouthLiving from "./projectimg/South_Living.jpg";
+import imgCostaCoffee from "./projectimg/Screenshot 2026-03-06 105307.png";
+import imgMuhaisnahHousing from "./projectimg/SITE -001.jpg";
 /* ─── SHARED CSS ─────────────────────────────────────────────────────────── */
 const PAGE_CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap');
