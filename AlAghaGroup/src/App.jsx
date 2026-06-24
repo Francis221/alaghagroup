@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import emailjs from "@emailjs/browser";
+
 
 /* ═══════════════════════════════════════════════════════════════════════════
    IMAGE IMPORTS — Vite-bundled, production-safe
@@ -97,9 +98,21 @@ import contractorCityEngineering from "./Contractorimg/download_edited.jpg";
 import contractorExpo2020 from "./Contractorimg/283-2830293_transparent-dubai-png-expo-2020-logo-png-png.png";
 import contractorTav from "./Contractorimg/ga9t1p6cwfz82yaf (1).jpg";
 import contractorAlTurath from "./Contractorimg/LOGO-ATC-972_278-White (1).png";
-
-/* ── Footer / misc ── */
+/* ── Certification images ── */
+import cert1 from "./certimg/AL AGHA DECORATION WORKS - ISO 9001-2015.png";
+import cert2 from "./certimg/AL AGHA DECORATION WORKS - ISO 14001-2015.png";
+import cert3 from "./certimg/AL AGHA DECORATION WORKS - ISO 45001-2018.png";
+import cert4 from "./certimg/AL AGHA TECHNICAL SERVICES - ISO 9001-2015.png";
+import cert5 from "./certimg/AL AGHA TECHNICAL SERVICES - ISO 14001-2015.png";
+import cert6 from "./certimg/AL AGHA TECHNICAL SERVICES - ISO 45001-2018.png";
+/* ── Footer / misc  ── */
 import qrCodeImg from "./certimg/QRCODE.jpeg";
+
+/* ── Certification images ── */
+// Map each cert name to its image import.
+// Add your actual cert image imports here, e.g.:
+// import certIso9001 from "./certimg/iso9001.jpg";
+// For now we fall back to a placeholder if no image is supplied.
 
 /* ─── EMAILJS CONFIG ─────────────────────────────────────────────────────── */
 const EMAILJS_SERVICE_ID = "service_8ezhvn9";
@@ -175,6 +188,10 @@ const GLOBAL_CSS = `
     from { top: 0%; }
     to   { top: 100%; }
   }
+  @keyframes modalFadeIn {
+    from { opacity: 0; transform: scale(0.92); }
+    to   { opacity: 1; transform: scale(1); }
+  }
 
   /* ── Bidirectional reveal transition ── */
   .reveal-el {
@@ -232,14 +249,23 @@ const GLOBAL_CSS = `
     transition: all 0.25s ease; box-shadow: 0 4px 20px rgba(201,168,76,0.25);
   }
   .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(201,168,76,0.4); }
+
+  /* ④ FIX: btn-outline-gold hover — solid gold fill with dark text for clear feedback */
   .btn-outline-gold {
     display: inline-flex; align-items: center; gap: 8px;
     background: transparent; color: var(--gold); font-family: var(--f-body);
     font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    padding: 11px 26px; border-radius: 8px; border: 1px solid rgba(201,168,76,0.4);
-    cursor: pointer; transition: all 0.25s ease;
+    padding: 11px 26px; border-radius: 8px; border: 1px solid rgba(201,168,76,0.5);
+    cursor: pointer; transition: background 0.22s ease, color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
   }
-  .btn-outline-gold:hover { background: rgba(201,168,76,0.08); border-color: var(--gold); transform: translateY(-2px); }
+  .btn-outline-gold:hover {
+    background: var(--gold);
+    color: var(--ink);
+    border-color: var(--gold);
+    box-shadow: 0 6px 24px rgba(201,168,76,0.35);
+    transform: translateY(-2px);
+  }
+
   .btn-outline-white {
     display: inline-flex; align-items: center; gap: 8px;
     background: transparent; color: rgba(255,255,255,0.8); font-family: var(--f-body);
@@ -334,6 +360,41 @@ const GLOBAL_CSS = `
     display: flex; align-items: center; justify-content: center; overflow: hidden;
   }
   .logo-ring-inner img { width: 88%; height: 88%; object-fit: contain; animation: logoBreath 4s ease-in-out infinite; }
+
+  /* ③ Certification badge button */
+  .cert-badge-btn {
+    display: flex; align-items: center; gap: 7px;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 10px; padding: 7px 12px; backdrop-filter: blur(6px);
+    cursor: pointer; transition: all 0.22s ease; text-align: left;
+  }
+  .cert-badge-btn:hover {
+    background: rgba(201,168,76,0.12);
+    border-color: rgba(201,168,76,0.55);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(201,168,76,0.18);
+  }
+
+  /* ③ Cert modal */
+  .cert-modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.82);
+    backdrop-filter: blur(10px); display: flex; align-items: center;
+    justify-content: center; z-index: 9000; padding: 20px;
+  }
+  .cert-modal-box {
+    background: #080d38; border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 20px; padding: 32px; max-width: 540px; width: 100%;
+    position: relative; animation: modalFadeIn 0.28s cubic-bezier(0.22,1,0.36,1) both;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+  }
+  .cert-modal-close {
+    position: absolute; top: 14px; right: 16px; background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.7);
+    width: 34px; height: 34px; border-radius: 50%; font-size: 16px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; line-height: 1;
+  }
+  .cert-modal-close:hover { background: rgba(201,168,76,0.2); color: var(--gold); border-color: var(--gold); }
 
   @media (max-width: 900px) {
     .grid-2 { grid-template-columns: 1fr !important; }
@@ -456,19 +517,16 @@ function useCountUp(target, active, duration = 2000) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   BIDIRECTIONAL REVEAL — animates in when entering viewport, out when leaving
-   dir: "up" | "down" | "left" | "right" | "zoom" | "fade"
-   exitDir: override exit direction (defaults to opposite of entry)
+   BIDIRECTIONAL REVEAL
 ═══════════════════════════════════════════════════════════════════════════ */
 function Reveal({ children, delay = 0, dir = "up", exitDir, className = "", style = {} }) {
   const ref = useRef(null);
-  const [state, setState] = useState("hidden-down"); // hidden-up | hidden-down | hidden-left | hidden-right | hidden-zoom | hidden-fade | visible
+  const [state, setState] = useState("hidden-down");
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    // Figure out which hidden class to apply when scrolled past below vs above
     const hiddenBelow = `hidden-${dir}`;
     const hiddenAbove = exitDir
       ? `hidden-${exitDir}`
@@ -483,13 +541,10 @@ function Reveal({ children, delay = 0, dir = "up", exitDir, className = "", styl
         if (entry.isIntersecting) {
           setState("visible");
         } else {
-          // Determine if element is above or below viewport
           const rect = entry.boundingClientRect;
           if (rect.top < 0) {
-            // Element has been scrolled past (above viewport) → exit upward
             setState(hiddenAbove);
           } else {
-            // Element is below viewport (not yet reached) → entry from below
             setState(hiddenBelow);
           }
         }
@@ -536,7 +591,7 @@ function ReadingProgress() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   ANIMATED STAT — only counts up when visible, resets when out of view
+   ANIMATED STAT
 ═══════════════════════════════════════════════════════════════════════════ */
 function AnimatedStat({ val, label }) {
   const ref = useRef(null);
@@ -662,16 +717,14 @@ function Building4D() {
       </div>
 
       <div style={{ flex: 1, minWidth: 300, position: "relative", height: 580, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ position: "absolute", top: 20, left: 20, fontFamily: "var(--f-body)", fontSize: 10, color: "var(--gold)", letterSpacing: "0.15em", opacity: 0.75, zIndex: 2 }}>
-          <div style={{ marginBottom: 8, display: "flex", alignItems: "center", gap: 8 }}>
-            <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#10b981", boxShadow: "0 0 8px #10b981", animation: "pulse 2s infinite" }} />
-          </div>
-          <div style={{ opacity: 0.5 }}>SYS.INIT // 3D_VIZ</div>
-        </div>
+        { }
+
+        {/* % COMPLETE HUD — kept (bottom right) */}
         <div style={{ position: "absolute", bottom: 20, right: 20, textAlign: "right", fontFamily: "var(--f-body)", fontSize: 10, color: "var(--gold)", letterSpacing: "0.15em", opacity: 0.8, zIndex: 2 }}>
           <div style={{ fontSize: 40, fontFamily: "var(--f-display)", fontWeight: 700, lineHeight: 1, color: "#fff" }}><span ref={hudRef}>0%</span></div>
           <div style={{ marginTop: 4 }}>COMPLETE</div>
         </div>
+
         <div ref={buildingRef} style={{ width: "100%", height: "100%", opacity: 0.2, transition: "opacity 0.1s, transform 0.1s" }}>
           <svg viewBox="0 0 400 580" width="100%" height="100%" style={{ overflow: "visible" }}>
             <defs>
@@ -970,8 +1023,7 @@ function GroupCard({ company, index = 0 }) {
         if (entry.isIntersecting) {
           setCardState("visible");
         } else {
-          const rect = entry.boundingClientRect;
-          setCardState(rect.top < 0 ? "hidden-zoom" : "hidden-zoom");
+          setCardState("hidden-zoom");
         }
       },
       { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
@@ -994,7 +1046,6 @@ function GroupCard({ company, index = 0 }) {
         cursor: "default",
       }}
     >
-      {/* Ambient orbs */}
       <div style={{ position: "absolute", inset: 0, borderRadius: 22, overflow: "hidden", pointerEvents: "none", zIndex: 0, opacity: hov ? 1 : 0, transition: "opacity 0.5s ease" }}>
         <div style={{ position: "absolute", width: 140, height: 140, borderRadius: "50%", background: "radial-gradient(circle, rgba(201,168,76,0.22) 0%, transparent 70%)", top: -40, right: -40, animation: "orb 6s ease-in-out infinite" }} />
         <div style={{ position: "absolute", width: 100, height: 100, borderRadius: "50%", background: "radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%)", bottom: 20, left: -20, animation: "orb 8s ease-in-out 1s infinite reverse" }} />
@@ -1042,6 +1093,86 @@ function GroupCard({ company, index = 0 }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
+   ③ CERTIFICATION MODAL
+═══════════════════════════════════════════════════════════════════════════ */
+function CertModal({ cert, onClose }) {
+  // Close on overlay click or Escape key
+  useEffect(() => {
+    const onKey = e => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  // Prevent body scroll while modal is open
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  return (
+    <div className="cert-modal-overlay" onClick={onClose}>
+      <div className="cert-modal-box" onClick={e => e.stopPropagation()}>
+        <button className="cert-modal-close" onClick={onClose} aria-label="Close">✕</button>
+
+        {/* Header */}
+        <div style={{ marginBottom: 24, paddingRight: 40 }}>
+          <span className="eyebrow" style={{ marginBottom: 6, display: "block" }}>Certification</span>
+          <div style={{ fontFamily: "var(--f-display)", fontSize: 22, fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>
+            {cert.name}
+          </div>
+          <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.45)", marginTop: 6 }}>
+            {cert.desc}
+          </div>
+        </div>
+
+        {/* Certificate image area */}
+        <div style={{
+          background: "rgba(255,255,255,0.04)",
+          border: "1px solid rgba(201,168,76,0.2)",
+          borderRadius: 14,
+          overflow: "hidden",
+          minHeight: 280,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          position: "relative",
+        }}>
+          {cert.image ? (
+            <img
+              src={cert.image}
+              alt={`${cert.name} certificate`}
+              style={{ width: "100%", height: "auto", display: "block", maxHeight: 400, objectFit: "contain" }}
+            />
+          ) : (
+            /* Placeholder when no image is provided */
+            <div style={{ textAlign: "center", padding: "48px 32px" }}>
+              <div style={{ fontSize: 52, marginBottom: 16, opacity: 0.4 }}>📜</div>
+              <div style={{ fontFamily: "var(--f-display)", fontSize: 18, color: "var(--gold)", fontWeight: 700, marginBottom: 8 }}>
+                {cert.name}
+              </div>
+              <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.3)", lineHeight: 1.6 }}>
+                Certificate image will appear here.<br />
+                Add the image path to the CERTIFICATIONS data array.
+              </div>
+              {/* Gold divider */}
+              <div style={{ width: 48, height: 2, background: "linear-gradient(90deg, transparent, var(--gold), transparent)", margin: "20px auto 0" }} />
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div style={{ marginTop: 20, display: "flex", alignItems: "center", gap: 10 }}>
+          <span style={{ color: "var(--gold)", fontSize: 18 }}>✓</span>
+          <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.45)", lineHeight: 1.5 }}>
+            Al Agha Group holds valid {cert.name} certification, demonstrating our commitment to {cert.desc.toLowerCase()}.
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
    SECTION / SECTION HEADER
 ═══════════════════════════════════════════════════════════════════════════ */
 function Section({ id, children, geoVariant, lightBg = false, style = {} }) {
@@ -1066,7 +1197,7 @@ function SectionHeader({ eyebrow, title, subtitle, light = false, center = true 
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   DATA — images now use imported variables instead of string paths
+   DATA
 ═══════════════════════════════════════════════════════════════════════════ */
 const NAV = ["Home", "Services", "Projects", "Career", "Clients", "Team", "About"];
 
@@ -1094,13 +1225,15 @@ const STATS = [
   { val: "15+", label: "YEARS EXCELLENCE" },
 ];
 
+// ③ Each cert can optionally have an `image` property pointing to an imported cert image.
+// e.g. import certIso9001 from "./certimg/iso9001.jpg"; then add: image: certIso9001
 const CERTIFICATIONS = [
-  { name: "ISO 9001:2015", desc: "Quality Management" },
-  { name: "ISO 14001:2015", desc: "Environmental Mgmt" },
-  { name: "OHSAS 18001:2007", desc: "Occupational Safety" },
-  { name: "First Q Certified", desc: "Quality Assurance" },
-  { name: "ASCB Accredited", desc: "Business Excellence" },
-  { name: "IRQA Accredited", desc: "Best Practices" },
+  { name: "ISO 9001:2015", desc: "Quality Management", image: cert1 },
+  { name: "ISO 14001:2015", desc: "Environmental Mgmt", image: cert2 },
+  { name: "ISO 45001-2018", desc: "Occupational Safety", image: cert3 },
+  { name: "ISO 9001-2015", desc: "Quality Assurance", image: cert4 },
+  { name: "ISO 14001-2015", desc: "Business Excellence", image: cert5 },
+  { name: "ISO 45001-2018", desc: "Best Practices", image: cert6 },
 ];
 
 const SLIDER_IMAGES = [
@@ -1226,10 +1359,29 @@ const GROUP_COMPANIES = [
 ═══════════════════════════════════════════════════════════════════════════ */
 export default function AlAghaGroup() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [menu, setMenu] = useState(false);
   const [active, setActive] = useState("Home");
   const scrollY = useScrollY();
   const scrolled = scrollY > 60;
+
+  // ③ Certification modal state
+  const [activeCert, setActiveCert] = useState(null);
+
+  // Scroll to section from Projects page
+  useEffect(() => {
+    if (!location.state?.scrollTo) return;
+    const id = location.state.scrollTo;
+    const attempt = (tries = 0) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      } else if (tries < 10) {
+        setTimeout(() => attempt(tries + 1), 80);
+      }
+    };
+    attempt();
+  }, [location.state]);
 
   const scrollTo = id => {
     setMenu(false);
@@ -1265,6 +1417,10 @@ export default function AlAghaGroup() {
   return (
     <>
       <style>{GLOBAL_CSS}</style>
+
+      {/* ③ Certification modal portal */}
+      {activeCert && <CertModal cert={activeCert} onClose={() => setActiveCert(null)} />}
+
       <div style={{ color: "#fff", fontFamily: "var(--f-body)", background: "var(--bg-deep)", overflowX: "hidden" }}>
         <ReadingProgress />
 
@@ -1339,10 +1495,7 @@ export default function AlAghaGroup() {
               </div>
             </div>
           </div>
-          <div style={{ position: "absolute", bottom: 36, left: "50%", transform: "translateX(-50%)", display: "flex", flexDirection: "column", alignItems: "center", gap: 6, zIndex: 2 }}>
-            <span style={{ fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 700, letterSpacing: "0.24em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)" }}>Scroll</span>
-            <div style={{ width: 1, height: 52, background: "linear-gradient(to bottom, rgba(201,168,76,0.6), transparent)" }} />
-          </div>
+          {/* ① SCROLL INDICATOR REMOVED — "Scroll" text + vertical line gone */}
         </section>
 
         {/* ══ STATS BAND ══ */}
@@ -1388,17 +1541,26 @@ export default function AlAghaGroup() {
               <p style={{ color: "rgba(255,255,255,0.45)", lineHeight: 1.9, marginBottom: 40, fontSize: 14 }}>
                 Our aim was to prove we can finalise any work without mistake or delay. Client satisfaction is our top priority; accuracy and dedication in execution is what distinguishes us from others.
               </p>
+
+              {/* ③ Certifications — now clickable buttons that open a modal with certificate image */}
               <div style={{ marginBottom: 36 }}>
-                <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", marginBottom: 16 }}>Certifications &amp; Accreditations</div>
+                <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", marginBottom: 16 }}>
+                  Certifications &amp; Accreditations
+                </div>
                 <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                   {CERTIFICATIONS.map((cert, i) => (
-                    <div key={i} style={{ display: "flex", alignItems: "center", gap: 7, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(201,168,76,0.2)", borderRadius: 10, padding: "7px 12px", backdropFilter: "blur(6px)" }}>
+                    <button
+                      key={i}
+                      className="cert-badge-btn"
+                      onClick={() => setActiveCert(cert)}
+                      title={`View ${cert.name} certificate`}
+                    >
                       <span style={{ color: "var(--gold)", fontSize: 12 }}>✓</span>
                       <div>
                         <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 600, color: "var(--gold)", letterSpacing: "0.04em" }}>{cert.name}</div>
                         <div style={{ fontFamily: "var(--f-body)", fontSize: 9, color: "rgba(255,255,255,0.35)" }}>{cert.desc}</div>
                       </div>
-                    </div>
+                    </button>
                   ))}
                 </div>
               </div>
@@ -1420,6 +1582,7 @@ export default function AlAghaGroup() {
                     Our <em style={{ color: "var(--gold)", fontStyle: "italic" }}>Services</em>
                   </h2>
                 </div>
+                {/* ④ btn-outline-gold hover FIXED via CSS — fills solid gold on hover */}
                 <button className="btn-outline-gold" onClick={() => navigate("/services")}>View All Services →</button>
               </div>
             </Reveal>
@@ -1679,6 +1842,7 @@ export default function AlAghaGroup() {
                 ))}
               </div>
 
+              {/* ⑤ Contact column — QR code moved to left side, side-by-side with map */}
               <div>
                 <h4 style={{ fontFamily: "var(--f-display)", fontSize: 17, fontWeight: 700, marginBottom: 18, color: "#fff" }}>Contact</h4>
                 {[
@@ -1692,17 +1856,28 @@ export default function AlAghaGroup() {
                     <span style={{ flexShrink: 0 }}>{icon}</span><span>{txt}</span>
                   </div>
                 ))}
-                <div style={{ marginTop: 18, marginBottom: 18 }}>
-                  <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)", marginBottom: 8 }}>SCAN QR CODE</div>
-                  <div style={{ width: 80, height: 80, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(201,168,76,0.2)", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-                    <img src={qrCodeImg} alt="QR Code" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+
+                {/* ⑤ QR code LEFT + Map RIGHT — side-by-side layout */}
+                <div style={{ marginTop: 18, display: "flex", gap: 14, alignItems: "flex-start" }}>
+                  {/* QR code — LEFT side */}
+                  <div style={{ flexShrink: 0 }}>
+                    <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)", marginBottom: 8 }}>SCAN QR CODE</div>
+                    <div style={{ width: 80, height: 80, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(201,168,76,0.2)", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+                      <img src={qrCodeImg} alt="QR Code" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                    </div>
                   </div>
+
+
                 </div>
-                <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid rgba(201,168,76,0.15)", height: 180, marginTop: 18 }}>
-                  <iframe title="Al Agha Group Office"
+
+                {/* Full-width map below — larger view */}
+                <div style={{ marginTop: 12, borderRadius: 12, overflow: "hidden", border: "1px solid rgba(201,168,76,0.15)", height: 120 }}>
+                  <iframe
+                    title="Al Agha Group Office Map Large"
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115536.95256710752!2d55.19120299696603!3d25.18535093670777!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5c89fbf4c7bf%3A0xeb51121eac30f9a!2sAbraj%20Al%20Mamzar%2C%20Block%20A!5e0!3m2!1sen!2sph!4v1781382895149!5m2!1sen!2sph"
                     width="100%" height="100%" style={{ border: "none", display: "block", filter: "invert(90%) hue-rotate(180deg)" }}
-                    allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+                    allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
+                  />
                 </div>
               </div>
             </div>
