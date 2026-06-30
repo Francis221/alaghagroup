@@ -98,6 +98,7 @@ import contractorCityEngineering from "./Contractorimg/download_edited.jpg";
 import contractorExpo2020 from "./Contractorimg/283-2830293_transparent-dubai-png-expo-2020-logo-png-png.png";
 import contractorTav from "./Contractorimg/ga9t1p6cwfz82yaf (1).jpg";
 import contractorAlTurath from "./Contractorimg/LOGO-ATC-972_278-White (1).png";
+
 /* ── Certification images ── */
 import cert1 from "./certimg/AL AGHA DECORATION WORKS - ISO 9001-2015.png";
 import cert2 from "./certimg/AL AGHA DECORATION WORKS - ISO 14001-2015.png";
@@ -105,14 +106,20 @@ import cert3 from "./certimg/AL AGHA DECORATION WORKS - ISO 45001-2018.png";
 import cert4 from "./certimg/AL AGHA TECHNICAL SERVICES - ISO 9001-2015.png";
 import cert5 from "./certimg/AL AGHA TECHNICAL SERVICES - ISO 14001-2015.png";
 import cert6 from "./certimg/AL AGHA TECHNICAL SERVICES - ISO 45001-2018.png";
-/* ── Footer / misc  ── */
+
+/* ── Footer / misc ── */
 import qrCodeImg from "./certimg/QRCODE.jpeg";
 
-/* ── Certification images ── */
-// Map each cert name to its image import.
-// Add your actual cert image imports here, e.g.:
-// import certIso9001 from "./certimg/iso9001.jpg";
-// For now we fall back to a placeholder if no image is supplied.
+/*video*/
+import v1 from "./video/v1.mp4";
+
+/* ─── PROJECT VIDEO SHOWCASE SOURCES ────────────────────────────────────────
+   Change these to swap the videos shown in the "Project Video Showcases"
+   section without touching any JSX below. If you add a new file (e.g.
+   v2.mp4), import it above and reassign the constant you want to change.
+═══════════════════════════════════════════════════════════════════════════ */
+const VIDEO_GYPSUM_CEILING = v1;     // "Gypsum False Ceiling Showreel" card
+const VIDEO_FITOUT_MEP = v1;         // "Complete Fit-Out & MEP Integration" card
 
 /* ─── EMAILJS CONFIG ─────────────────────────────────────────────────────── */
 const EMAILJS_SERVICE_ID = "service_8ezhvn9";
@@ -193,7 +200,6 @@ const GLOBAL_CSS = `
     to   { opacity: 1; transform: scale(1); }
   }
 
-  /* ── Bidirectional reveal transition ── */
   .reveal-el {
     will-change: opacity, transform;
     transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1),
@@ -239,7 +245,6 @@ const GLOBAL_CSS = `
     margin: 12px 0;
   }
 
-  /* Buttons */
   .btn-gold {
     display: inline-flex; align-items: center; gap: 8px;
     background: linear-gradient(135deg, var(--gold-dk), var(--gold), var(--gold-lt));
@@ -250,7 +255,6 @@ const GLOBAL_CSS = `
   }
   .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(201,168,76,0.4); }
 
-  /* ④ FIX: btn-outline-gold hover — solid gold fill with dark text for clear feedback */
   .btn-outline-gold {
     display: inline-flex; align-items: center; gap: 8px;
     background: transparent; color: var(--gold); font-family: var(--f-body);
@@ -275,7 +279,6 @@ const GLOBAL_CSS = `
   }
   .btn-outline-white:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.5); transform: translateY(-2px); }
 
-  /* Nav */
   .nav-btn {
     background: none; border: none; font-family: var(--f-body); font-size: 13px;
     font-weight: 500; cursor: pointer; padding: 6px 2px; position: relative;
@@ -292,7 +295,6 @@ const GLOBAL_CSS = `
   .nav-active { color: var(--gold) !important; }
   .nav-active::after { transform: scaleX(1); }
 
-  /* Cards */
   .svc-card {
     border: 1px solid rgba(201,168,76,0.12); border-radius: 18px; padding: 36px 30px;
     background: rgba(255,255,255,0.03); transition: all 0.3s cubic-bezier(0.22,1,0.36,1);
@@ -338,7 +340,6 @@ const GLOBAL_CSS = `
     gap: 8px; width: 100%; height: 100%; padding: 16px; position: relative;
   }
 
-  /* Group card */
   .group-card-wrap { position: relative; border-radius: 22px; overflow: hidden; }
   .group-card-wrap::before {
     content: ''; position: absolute; inset: -1px; border-radius: 22px;
@@ -361,7 +362,6 @@ const GLOBAL_CSS = `
   }
   .logo-ring-inner img { width: 88%; height: 88%; object-fit: contain; animation: logoBreath 4s ease-in-out infinite; }
 
-  /* ③ Certification badge button */
   .cert-badge-btn {
     display: flex; align-items: center; gap: 7px;
     background: rgba(255,255,255,0.05); border: 1px solid rgba(201,168,76,0.2);
@@ -375,7 +375,6 @@ const GLOBAL_CSS = `
     box-shadow: 0 4px 14px rgba(201,168,76,0.18);
   }
 
-  /* ③ Cert modal */
   .cert-modal-overlay {
     position: fixed; inset: 0; background: rgba(0,0,0,0.82);
     backdrop-filter: blur(10px); display: flex; align-items: center;
@@ -396,10 +395,44 @@ const GLOBAL_CSS = `
   }
   .cert-modal-close:hover { background: rgba(201,168,76,0.2); color: var(--gold); border-color: var(--gold); }
 
+  /* ── Hero video ── */
+  .hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    pointer-events: none;
+  }
+
+  .hero-video-wrap {
+    position: absolute;
+    inset: 0;
+    background: #02071c;
+    overflow: hidden;
+  }
+
+  .video-showcase-card:hover {
+    border-color: rgba(201, 168, 76, 0.5) !important;
+    box-shadow: 0 20px 40px rgba(201, 168, 76, 0.15), 0 15px 50px rgba(0, 0, 0, 0.5) !important;
+    transform: translateY(-4px);
+  }
+  .video-showcase-card:hover .play-btn-circle {
+    background: var(--gold) !important;
+    transform: translate(-50%, -50%) scale(1.15) !important;
+    box-shadow: 0 0 30px rgba(201, 168, 76, 0.8) !important;
+  }
+  .video-showcase-card:hover .play-btn-circle svg {
+    fill: var(--ink) !important;
+  }
+
   @media (max-width: 900px) {
     .grid-2 { grid-template-columns: 1fr !important; }
     .desktop-nav { display: none !important; }
     .mobile-menu-btn { display: block !important; }
+    /* Keep video full-height on mobile portrait */
+    .hero-video { object-position: center center; }
   }
   @media (max-width: 600px) {
     .grid-6 { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important; }
@@ -717,9 +750,6 @@ function Building4D() {
       </div>
 
       <div style={{ flex: 1, minWidth: 300, position: "relative", height: 580, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        { }
-
-        {/* % COMPLETE HUD — kept (bottom right) */}
         <div style={{ position: "absolute", bottom: 20, right: 20, textAlign: "right", fontFamily: "var(--f-body)", fontSize: 10, color: "var(--gold)", letterSpacing: "0.15em", opacity: 0.8, zIndex: 2 }}>
           <div style={{ fontSize: 40, fontFamily: "var(--f-display)", fontWeight: 700, lineHeight: 1, color: "#fff" }}><span ref={hudRef}>0%</span></div>
           <div style={{ marginTop: 4 }}>COMPLETE</div>
@@ -850,6 +880,184 @@ function SocialBtn({ href, label, children }) {
     </a>
   );
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FEATURED VIDEO CARD
+   ═══════════════════════════════════════════════════════════════════════════ */
+function FeaturedVideoCard({ videoUrl, title, subtitle, posterImg, onClick }) {
+  const videoRef = useRef(null);
+  const [isPlayingPreview, setIsPlayingPreview] = useState(false);
+
+  const handleMouseEnter = () => {
+    if (videoRef.current) {
+      videoRef.current.play()
+        .then(() => setIsPlayingPreview(true))
+        .catch(() => { });
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+      setIsPlayingPreview(false);
+    }
+  };
+
+  return (
+    <div
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={onClick}
+      style={{
+        position: "relative",
+        borderRadius: 20,
+        overflow: "hidden",
+        border: "1px solid rgba(201, 168, 76, 0.15)",
+        background: "rgba(255, 255, 255, 0.03)",
+        boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
+        transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
+        cursor: "pointer",
+        aspectRatio: "16/9",
+      }}
+      className="video-showcase-card"
+    >
+      {/* Video element */}
+      <video
+        ref={videoRef}
+        src={videoUrl}
+        muted
+        loop
+        playsInline
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          transition: "transform 0.6s ease",
+          opacity: isPlayingPreview ? 1 : 0,
+          position: "absolute",
+          inset: 0,
+          zIndex: 1,
+        }}
+      />
+
+      {/* Poster Image */}
+      <img
+        src={posterImg}
+        alt={title}
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          transition: "all 0.6s ease",
+          opacity: isPlayingPreview ? 0 : 1,
+          transform: isPlayingPreview ? "scale(1.05)" : "scale(1)",
+          position: "absolute",
+          inset: 0,
+          zIndex: 0,
+        }}
+      />
+
+      {/* Dark overlay */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "linear-gradient(to top, rgba(2, 7, 48, 0.95) 0%, rgba(2, 7, 48, 0.4) 50%, rgba(2, 7, 48, 0.2) 100%)",
+          zIndex: 2,
+        }}
+      />
+
+      {/* Play Button Overlay */}
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          zIndex: 3,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: 64,
+          height: 64,
+          borderRadius: "50%",
+          background: "rgba(2, 7, 48, 0.6)",
+          border: "2px solid var(--gold)",
+          backdropFilter: "blur(4px)",
+          boxShadow: "0 0 20px rgba(201, 168, 76, 0.4)",
+          transition: "all 0.3s cubic-bezier(0.22, 1, 0.36, 1)",
+        }}
+        className="play-btn-circle"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--gold)" style={{ marginLeft: 3 }}>
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </div>
+
+      {/* Text Content */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          padding: "24px",
+          zIndex: 3,
+          textAlign: "left",
+        }}
+      >
+        <span
+          style={{
+            background: "rgba(201, 168, 76, 0.15)",
+            border: "1px solid rgba(201, 168, 76, 0.3)",
+            backdropFilter: "blur(6px)",
+            padding: "4px 10px",
+            borderRadius: 4,
+            fontSize: 9,
+            fontWeight: 700,
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            color: "var(--gold)",
+            display: "inline-block",
+            marginBottom: 8,
+          }}
+        >
+          {isPlayingPreview ? "Previewing" : "Watch Video"}
+        </span>
+        <h3
+          style={{
+            fontFamily: "var(--f-display)",
+            fontSize: "clamp(1.1rem, 2vw, 1.4rem)",
+            fontWeight: 700,
+            color: "#fff",
+            marginBottom: 6,
+            lineHeight: 1.2,
+          }}
+        >
+          {title}
+        </h3>
+        <p
+          style={{
+            fontFamily: "var(--f-body)",
+            fontSize: 12,
+            color: "rgba(255, 255, 255, 0.65)",
+            lineHeight: 1.5,
+            margin: 0,
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {subtitle}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 
 /* ═══════════════════════════════════════════════════════════════════════════
    TEAM CARDS
@@ -1093,17 +1301,15 @@ function GroupCard({ company, index = 0 }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   ③ CERTIFICATION MODAL
+   CERTIFICATION MODAL
 ═══════════════════════════════════════════════════════════════════════════ */
 function CertModal({ cert, onClose }) {
-  // Close on overlay click or Escape key
   useEffect(() => {
     const onKey = e => { if (e.key === "Escape") onClose(); };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  // Prevent body scroll while modal is open
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = ""; };
@@ -1113,58 +1319,69 @@ function CertModal({ cert, onClose }) {
     <div className="cert-modal-overlay" onClick={onClose}>
       <div className="cert-modal-box" onClick={e => e.stopPropagation()}>
         <button className="cert-modal-close" onClick={onClose} aria-label="Close">✕</button>
-
-        {/* Header */}
         <div style={{ marginBottom: 24, paddingRight: 40 }}>
           <span className="eyebrow" style={{ marginBottom: 6, display: "block" }}>Certification</span>
-          <div style={{ fontFamily: "var(--f-display)", fontSize: 22, fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>
-            {cert.name}
-          </div>
-          <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.45)", marginTop: 6 }}>
-            {cert.desc}
-          </div>
+          <div style={{ fontFamily: "var(--f-display)", fontSize: 22, fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>{cert.name}</div>
+          <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.45)", marginTop: 6 }}>{cert.desc}</div>
         </div>
-
-        {/* Certificate image area */}
-        <div style={{
-          background: "rgba(255,255,255,0.04)",
-          border: "1px solid rgba(201,168,76,0.2)",
-          borderRadius: 14,
-          overflow: "hidden",
-          minHeight: 280,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          position: "relative",
-        }}>
+        <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(201,168,76,0.2)", borderRadius: 14, overflow: "hidden", minHeight: 280, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
           {cert.image ? (
-            <img
-              src={cert.image}
-              alt={`${cert.name} certificate`}
-              style={{ width: "100%", height: "auto", display: "block", maxHeight: 400, objectFit: "contain" }}
-            />
+            <img src={cert.image} alt={`${cert.name} certificate`} style={{ width: "100%", height: "auto", display: "block", maxHeight: 400, objectFit: "contain" }} />
           ) : (
-            /* Placeholder when no image is provided */
             <div style={{ textAlign: "center", padding: "48px 32px" }}>
               <div style={{ fontSize: 52, marginBottom: 16, opacity: 0.4 }}>📜</div>
-              <div style={{ fontFamily: "var(--f-display)", fontSize: 18, color: "var(--gold)", fontWeight: 700, marginBottom: 8 }}>
-                {cert.name}
-              </div>
-              <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.3)", lineHeight: 1.6 }}>
-                Certificate image will appear here.<br />
-                Add the image path to the CERTIFICATIONS data array.
-              </div>
-              {/* Gold divider */}
+              <div style={{ fontFamily: "var(--f-display)", fontSize: 18, color: "var(--gold)", fontWeight: 700, marginBottom: 8 }}>{cert.name}</div>
+              <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.3)", lineHeight: 1.6 }}>Certificate image will appear here.<br />Add the image path to the CERTIFICATIONS data array.</div>
               <div style={{ width: 48, height: 2, background: "linear-gradient(90deg, transparent, var(--gold), transparent)", margin: "20px auto 0" }} />
             </div>
           )}
         </div>
-
-        {/* Footer */}
         <div style={{ marginTop: 20, display: "flex", alignItems: "center", gap: 10 }}>
           <span style={{ color: "var(--gold)", fontSize: 18 }}>✓</span>
           <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.45)", lineHeight: 1.5 }}>
             Al Agha Group holds valid {cert.name} certification, demonstrating our commitment to {cert.desc.toLowerCase()}.
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   VIDEO MODAL
+   ═══════════════════════════════════════════════════════════════════════════ */
+function VideoModal({ video, onClose }) {
+  useEffect(() => {
+    const onKey = e => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  return (
+    <div className="cert-modal-overlay" onClick={onClose}>
+      <div className="cert-modal-box" style={{ maxWidth: 880, padding: 24, background: "#010430" }} onClick={e => e.stopPropagation()}>
+        <button className="cert-modal-close" onClick={onClose} aria-label="Close">✕</button>
+        <div style={{ marginBottom: 16, paddingRight: 40 }}>
+          <span className="eyebrow" style={{ marginBottom: 4, display: "block" }}>Project Tour</span>
+          <div style={{ fontFamily: "var(--f-display)", fontSize: 22, fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>{video.title}</div>
+        </div>
+        <div style={{ position: "relative", width: "100%", paddingBottom: "56.25%", borderRadius: 14, overflow: "hidden", background: "#000", border: "1px solid rgba(201,168,76,0.3)" }}>
+          <video
+            src={video.url}
+            controls
+            autoPlay
+            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain" }}
+          />
+        </div>
+        <div style={{ marginTop: 18, display: "flex", alignItems: "center", gap: 10 }}>
+          <span style={{ color: "var(--gold)", fontSize: 18 }}>▶</span>
+          <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.45)", lineHeight: 1.5 }}>
+            Watch the full video walkthrough showcasing our dedicated decoration, interior design, and contracting engineering.
           </div>
         </div>
       </div>
@@ -1187,7 +1404,7 @@ function Section({ id, children, geoVariant, lightBg = false, style = {} }) {
 function SectionHeader({ eyebrow, title, subtitle, light = false, center = true }) {
   return (
     <div style={{ textAlign: center ? "center" : "left", marginBottom: 64 }}>
-      <span className="eyebrow">{eyebrow}</span>
+      {eyebrow && <span className="eyebrow">{eyebrow}</span>}
       <h2 className="section-title"
         style={{ fontSize: "clamp(2rem,4vw,3.4rem)", marginTop: 14, color: light ? "var(--ink)" : "#fff", maxWidth: center ? 700 : "none", margin: center ? "14px auto 0" : "14px 0 0" }}
         dangerouslySetInnerHTML={{ __html: title }} />
@@ -1220,13 +1437,11 @@ const ALL_PROJECTS = [
 
 const STATS = [
   { val: "2008", label: "ESTABLISHED" },
-  { val: "500+", label: "EMPLOYEES" },
+  { val: "800+", label: "EMPLOYEES" },
   { val: "100+", label: "MAJOR PROJECTS" },
-  { val: "15+", label: "YEARS EXCELLENCE" },
+  { val: "18+", label: "YEARS EXCELLENCE" },
 ];
 
-// ③ Each cert can optionally have an `image` property pointing to an imported cert image.
-// e.g. import certIso9001 from "./certimg/iso9001.jpg"; then add: image: certIso9001
 const CERTIFICATIONS = [
   { name: "ISO 9001:2015", desc: "Quality Management", image: cert1 },
   { name: "ISO 14001:2015", desc: "Environmental Mgmt", image: cert2 },
@@ -1345,7 +1560,7 @@ const ENGINEERS = [
   { name: "Mohamed Javeed", role: "Project Site Engineer", dept: "Operations", photo: siteEngineerPhoto1 },
   { name: "Muhammed Suhair", role: "Project Site Engineer", dept: "Operations", photo: siteEngineerPhoto2 },
   { name: "Mohammed Firoz R.", role: "Project Site Engineer", dept: "Operations", photo: siteEngineerPhoto3 },
-  { name: "MUHAMMED FAYIZ N.P", role: "Project Site Engineer", dept: "Operations", photo: siteEngineerPhoto4 },
+  { name: "Muhammed Fayiz N.P", role: "Project Site Engineer", dept: "Operations", photo: siteEngineerPhoto4 },
 ];
 
 const GROUP_COMPANIES = [
@@ -1365,10 +1580,9 @@ export default function AlAghaGroup() {
   const scrollY = useScrollY();
   const scrolled = scrollY > 60;
 
-  // ③ Certification modal state
   const [activeCert, setActiveCert] = useState(null);
+  const [activeVideo, setActiveVideo] = useState(null);
 
-  // Scroll to section from Projects page
   useEffect(() => {
     if (!location.state?.scrollTo) return;
     const id = location.state.scrollTo;
@@ -1418,8 +1632,8 @@ export default function AlAghaGroup() {
     <>
       <style>{GLOBAL_CSS}</style>
 
-      {/* ③ Certification modal portal */}
       {activeCert && <CertModal cert={activeCert} onClose={() => setActiveCert(null)} />}
+      {activeVideo && <VideoModal video={activeVideo} onClose={() => setActiveVideo(null)} />}
 
       <div style={{ color: "#fff", fontFamily: "var(--f-body)", background: "var(--bg-deep)", overflowX: "hidden" }}>
         <ReadingProgress />
@@ -1463,8 +1677,29 @@ export default function AlAghaGroup() {
 
         {/* ══ HERO ══ */}
         <section id="home" style={{ minHeight: "100vh", position: "relative", display: "flex", alignItems: "center", overflow: "hidden" }}>
-          <div style={{ position: "absolute", inset: 0, backgroundImage: "url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1800&q=80')", backgroundSize: "cover", backgroundPosition: "center" }} />
+
+          {/* ── Video background ── */}
+          <div className="hero-video-wrap">
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              webkit-playsinline="true"
+              x5-playsinline="true"
+              x5-video-player-type="h5"
+              x5-video-player-fullscreen="false"
+              preload="auto"
+              className="hero-video"
+              src={v1}
+
+            />
+          </div>
+
+          {/* Dark overlay — keeps text legible over any video */}
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(115deg, rgba(2,7,48,0.95) 0%, rgba(1,4,74,0.85) 45%, rgba(6,13,80,0.6) 100%)" }} />
+
+          {/* Geometric overlay */}
           <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
             <svg viewBox="0 0 1440 900" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} preserveAspectRatio="xMidYMid slice">
               <line x1="0" y1="0" x2="400" y2="900" stroke="rgba(201,168,76,0.06)" strokeWidth="1" />
@@ -1474,12 +1709,15 @@ export default function AlAghaGroup() {
               <circle cx="1200" cy="200" r="200" fill="none" stroke="rgba(201,168,76,0.04)" strokeWidth="1" />
             </svg>
           </div>
+
           <div style={{ position: "absolute", left: 0, top: "10%", bottom: "10%", width: 3, background: "linear-gradient(to bottom, transparent, var(--gold), transparent)" }} />
+
+          {/* Hero content */}
           <div style={{ maxWidth: 1320, margin: "0 auto", padding: "130px 36px 90px", position: "relative", zIndex: 1, width: "100%" }}>
             <div style={{ maxWidth: 700 }}>
               <div style={{ marginBottom: 28, animation: "fadeUp 0.8s 0.1s both" }}>
                 <span style={{ background: "rgba(201,168,76,0.12)", border: "1px solid rgba(201,168,76,0.3)", backdropFilter: "blur(10px)", padding: "7px 18px", borderRadius: 40, fontSize: 10, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold)" }}>
-                  Est. 2008 · Dubai, UAE · Three Companies, One Vision
+                  Est. 2008 · Dubai, UAE
                 </span>
               </div>
               <h1 style={{ fontFamily: "var(--f-display)", fontWeight: 700, lineHeight: 1.04, letterSpacing: "-0.02em", fontSize: "clamp(3rem,7.5vw,5.5rem)", color: "#fff", marginBottom: 28, animation: "fadeUp 0.9s 0.2s both" }}>
@@ -1495,7 +1733,6 @@ export default function AlAghaGroup() {
               </div>
             </div>
           </div>
-          {/* ① SCROLL INDICATOR REMOVED — "Scroll" text + vertical line gone */}
         </section>
 
         {/* ══ STATS BAND ══ */}
@@ -1518,7 +1755,7 @@ export default function AlAghaGroup() {
         <Section id="group" geoVariant="c" style={{ padding: "100px 36px" }}>
           <div style={{ maxWidth: 1320, margin: "0 auto" }}>
             <Reveal>
-              <SectionHeader eyebrow="Three Companies, One Vision" title='The <em style="color:var(--gold);font-style:italic">Al Agha Group</em>' subtitle="A unified group delivering excellence across decoration, technical services, and building contracting." />
+              <SectionHeader title='The <em style="color:var(--gold);font-style:italic">Al Agha Group</em>' subtitle="A unified group delivering excellence across decoration, technical services, and building contracting." />
             </Reveal>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))", gap: 28 }}>
               {GROUP_COMPANIES.map((c, i) => <GroupCard key={c.abbr} company={c} index={i} />)}
@@ -1541,20 +1778,13 @@ export default function AlAghaGroup() {
               <p style={{ color: "rgba(255,255,255,0.45)", lineHeight: 1.9, marginBottom: 40, fontSize: 14 }}>
                 Our aim was to prove we can finalise any work without mistake or delay. Client satisfaction is our top priority; accuracy and dedication in execution is what distinguishes us from others.
               </p>
-
-              {/* ③ Certifications — now clickable buttons that open a modal with certificate image */}
               <div style={{ marginBottom: 36 }}>
                 <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", marginBottom: 16 }}>
                   Certifications &amp; Accreditations
                 </div>
                 <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                   {CERTIFICATIONS.map((cert, i) => (
-                    <button
-                      key={i}
-                      className="cert-badge-btn"
-                      onClick={() => setActiveCert(cert)}
-                      title={`View ${cert.name} certificate`}
-                    >
+                    <button key={i} className="cert-badge-btn" onClick={() => setActiveCert(cert)} title={`View ${cert.name} certificate`}>
                       <span style={{ color: "var(--gold)", fontSize: 12 }}>✓</span>
                       <div>
                         <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 600, color: "var(--gold)", letterSpacing: "0.04em" }}>{cert.name}</div>
@@ -1582,7 +1812,6 @@ export default function AlAghaGroup() {
                     Our <em style={{ color: "var(--gold)", fontStyle: "italic" }}>Services</em>
                   </h2>
                 </div>
-                {/* ④ btn-outline-gold hover FIXED via CSS — fills solid gold on hover */}
                 <button className="btn-outline-gold" onClick={() => navigate("/services")}>View All Services →</button>
               </div>
             </Reveal>
@@ -1626,7 +1855,39 @@ export default function AlAghaGroup() {
                 </Reveal>
               ))}
             </div>
-            <div style={{ textAlign: "center", marginTop: 40 }}>
+
+            {/* ── Video Showcases (2 in a row) ── */}
+            <div style={{ marginTop: 56 }}>
+              <Reveal>
+                <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 32 }}>
+                  <div style={{ width: 28, height: 2, background: "var(--gold)" }} />
+                  <span style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.6)" }}>Project Video Showcases</span>
+                  <div style={{ flex: 1, height: 1, background: "rgba(201,168,76,0.1)" }} />
+                </div>
+              </Reveal>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 28 }}>
+                <Reveal delay={60} dir="up">
+                  <FeaturedVideoCard
+                    videoUrl={VIDEO_GYPSUM_CEILING}
+                    title="Gypsum False Ceiling Showreel"
+                    subtitle="An immersive showcase of our precision false ceiling installation, custom bulkheads, and artistic gypsum designs across luxury commercial and residential spaces."
+                    posterImg={projDubaiCreek}
+                    onClick={() => setActiveVideo({ url: VIDEO_GYPSUM_CEILING, title: "Gypsum False Ceiling Showreel" })}
+                  />
+                </Reveal>
+                <Reveal delay={120} dir="up">
+                  <FeaturedVideoCard
+                    videoUrl={VIDEO_FITOUT_MEP}
+                    title="Complete Fit-Out & MEP Integration"
+                    subtitle="A detailed look at our turnkey interior fit-out services, premium paint finishes, and MEP (Mechanical, Electrical, Plumbing) engineering excellence."
+                    posterImg={projBeachfront}
+                    onClick={() => setActiveVideo({ url: VIDEO_FITOUT_MEP, title: "Complete Fit-Out & MEP Integration" })}
+                  />
+                </Reveal>
+              </div>
+            </div>
+
+            <div style={{ textAlign: "center", marginTop: 56 }}>
               <button className="btn-gold" style={{ padding: "14px 36px" }} onClick={() => navigate("/projects")}>Browse All 90+ Projects →</button>
             </div>
           </div>
@@ -1842,7 +2103,6 @@ export default function AlAghaGroup() {
                 ))}
               </div>
 
-              {/* ⑤ Contact column — QR code moved to left side, side-by-side with map */}
               <div>
                 <h4 style={{ fontFamily: "var(--f-display)", fontSize: 17, fontWeight: 700, marginBottom: 18, color: "#fff" }}>Contact</h4>
                 {[
@@ -1857,20 +2117,15 @@ export default function AlAghaGroup() {
                   </div>
                 ))}
 
-                {/* ⑤ QR code LEFT + Map RIGHT — side-by-side layout */}
                 <div style={{ marginTop: 18, display: "flex", gap: 14, alignItems: "flex-start" }}>
-                  {/* QR code — LEFT side */}
                   <div style={{ flexShrink: 0 }}>
                     <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)", marginBottom: 8 }}>SCAN QR CODE</div>
                     <div style={{ width: 80, height: 80, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(201,168,76,0.2)", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
                       <img src={qrCodeImg} alt="QR Code" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
                     </div>
                   </div>
-
-
                 </div>
 
-                {/* Full-width map below — larger view */}
                 <div style={{ marginTop: 12, borderRadius: 12, overflow: "hidden", border: "1px solid rgba(201,168,76,0.15)", height: 120 }}>
                   <iframe
                     title="Al Agha Group Office Map Large"
