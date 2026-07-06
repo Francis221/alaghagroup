@@ -3,11 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import emailjs from "@emailjs/browser";
 
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   IMAGE IMPORTS — Vite-bundled, production-safe
-═══════════════════════════════════════════════════════════════════════════ */
 
-/* ── Brand ── */
 import logo from "../alaghalogo.png";
 
 /* ── Project portfolio images ── */
@@ -110,16 +106,42 @@ import cert6 from "./certimg/AL AGHA TECHNICAL SERVICES - ISO 45001-2018.png";
 /* ── Footer / misc ── */
 import qrCodeImg from "./certimg/QRCODE.jpeg";
 
-/*video*/
+/* ─── PROJECT VIDEO SHOWCASE SOURCES ──────────────────────────────────────── */
 import v1 from "./video/v1.mp4";
+import v2 from "./video/SaveClip.App_AQM2ljy9dnv4rHa4ziL-fTp2ie73pCPWciznOqUb4VD0gq7ALB_gzENdc-1Evm7TmXhX_EVHe_HUY3Ch37PVNHpfVy9Ucyw59gEKNnc.mp4";
+import v3 from "./video/SaveClip.App_AQMSBO34EVPtGXUGT4ggLnU0KArrQP7Lcg5hK5xmdIx1IhR5UWf0gXNfchLrmSLsaMu-aYzvaPLe9LOPpMiLeTcn.mp4";
+import v4 from "./video/SaveClip.App_AQNWNlW712xc0lbwvlkqOrSZOCRlshPeOaJ-GdBafCFArxd5orBjim8dK8ulWVQyNqmSQMt454YF-jnxwHgnKdoLOTzhD39vqR6eR_Q.mp4";
 
-/* ─── PROJECT VIDEO SHOWCASE SOURCES ────────────────────────────────────────
-   Change these to swap the videos shown in the "Project Video Showcases"
-   section without touching any JSX below. If you add a new file (e.g.
-   v2.mp4), import it above and reassign the constant you want to change.
-═══════════════════════════════════════════════════════════════════════════ */
-const VIDEO_GYPSUM_CEILING = v1;     // "Gypsum False Ceiling Showreel" card
-const VIDEO_FITOUT_MEP = v1;         // "Complete Fit-Out & MEP Integration" card
+
+/* ─── HERO BACKGROUND VIDEO ──────────────────────────────────────────────── */
+import heroVideo from "./video/0706(1).mp4";
+
+const PROJECT_VIDEOS = [
+  {
+    url: v1,
+    title: "Gypsum False Ceiling Showreel",
+    subtitle: "An immersive showcase of our precision false ceiling installation, custom bulkheads, and artistic gypsum designs across luxury commercial and residential spaces.",
+    poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJWK-WZLosYT6yzhvBRlmNkrDNwGhrgMbICWOPzjWBoiME6kcjb1wz7sNO&s=10",
+  },
+  {
+    url: v2,
+    title: "Complete Fit-Out & MEP Integration",
+    subtitle: "A detailed look at our turnkey interior fit-out services, premium paint finishes, and MEP (Mechanical, Electrical, Plumbing) engineering excellence.",
+    poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFOSsBiT6sVCYZ_qvZT848l8sPV0EQEu_u_fgF8BIlLoPc-W_BgGzT_j4&s=10",
+  },
+  {
+    url: v3,
+    title: "Civil Works & Structural Progress",
+    subtitle: "Foundation to façade — a timelapse walkthrough of our civil works teams delivering structural milestones on schedule.",
+    poster: "https://cf.bstatic.com/xdata/images/hotel/max500/388733598.jpg?k=ca7b3ae0ceb82bd519181824f6781955388831ad835ecae80c9a233409ea5357&o=&hp=1",
+  },
+  {
+    url: v4,
+    title: "Site Safety & Quality Control",
+    subtitle: "Behind the scenes of our ISO-certified safety protocols and on-site quality inspections across active project sites.",
+    poster: projTownSquare,
+  },
+];
 
 /* ─── EMAILJS CONFIG ─────────────────────────────────────────────────────── */
 const EMAILJS_SERVICE_ID = "service_8ezhvn9";
@@ -395,24 +417,6 @@ const GLOBAL_CSS = `
   }
   .cert-modal-close:hover { background: rgba(201,168,76,0.2); color: var(--gold); border-color: var(--gold); }
 
-  /* ── Hero video ── */
-  .hero-video {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    pointer-events: none;
-  }
-
-  .hero-video-wrap {
-    position: absolute;
-    inset: 0;
-    background: #02071c;
-    overflow: hidden;
-  }
-
   .video-showcase-card:hover {
     border-color: rgba(201, 168, 76, 0.5) !important;
     box-shadow: 0 20px 40px rgba(201, 168, 76, 0.15), 0 15px 50px rgba(0, 0, 0, 0.5) !important;
@@ -427,12 +431,20 @@ const GLOBAL_CSS = `
     fill: var(--ink) !important;
   }
 
+  /* Hero video background - NO ANIMATION to prevent shaking */
+  .hero-video-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
   @media (max-width: 900px) {
     .grid-2 { grid-template-columns: 1fr !important; }
     .desktop-nav { display: none !important; }
     .mobile-menu-btn { display: block !important; }
-    /* Keep video full-height on mobile portrait */
-    .hero-video { object-position: center center; }
   }
   @media (max-width: 600px) {
     .grid-6 { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important; }
@@ -963,7 +975,7 @@ function FeaturedVideoCard({ videoUrl, title, subtitle, posterImg, onClick }) {
         style={{
           position: "absolute",
           inset: 0,
-          background: "linear-gradient(to top, rgba(2, 7, 48, 0.95) 0%, rgba(2, 7, 48, 0.4) 50%, rgba(2, 7, 48, 0.2) 100%)",
+          background: "linear-gradient(115deg, rgba(2,7,48,0.3) 0%, rgba(1,4,74,0.2) 45%, rgba(6,13,80,0.1) 100%)",
           zIndex: 2,
         }}
       />
@@ -1522,7 +1534,7 @@ const CAREERS = [
 ];
 
 const CHAIRMAN_MESSAGE = {
-  name: "Engr. Abdul Karim Ali Agha",
+  name: "Abdul Karim Ali Agha",
   role: "Chairman",
   message: "When you care about your team, show them love and treat them as your own family; they will never let you down and will always give their best. This is the secret of our success.",
   photo: chairmanPhoto,
@@ -1570,6 +1582,26 @@ const GROUP_COMPANIES = [
 ];
 
 /* ═══════════════════════════════════════════════════════════════════════════
+   HERO BUILDING 3D COMPONENT (Placeholder - Replace with your actual 3D component)
+═══════════════════════════════════════════════════════════════════════════ */
+function HeroBuilding3D() {
+  // This is a placeholder component. Replace with your actual 3D implementation.
+  return (
+    <div style={{
+      position: "absolute",
+      inset: 0,
+      zIndex: 0,
+      background: "rgba(2,7,48,0.3)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
+    }}>
+      {/* Your 3D building component here */}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
    MAIN COMPONENT
 ═══════════════════════════════════════════════════════════════════════════ */
 export default function AlAghaGroup() {
@@ -1582,6 +1614,9 @@ export default function AlAghaGroup() {
 
   const [activeCert, setActiveCert] = useState(null);
   const [activeVideo, setActiveVideo] = useState(null);
+
+  // Video background state
+  const [videoLoaded, setVideoLoaded] = useState(false);
 
   useEffect(() => {
     if (!location.state?.scrollTo) return;
@@ -1596,6 +1631,17 @@ export default function AlAghaGroup() {
     };
     attempt();
   }, [location.state]);
+
+  // Force video to reload when navigating back to home
+  useEffect(() => {
+    if (location.pathname === '/') {
+      setVideoLoaded(false);
+      const timer = setTimeout(() => {
+        setVideoLoaded(true);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [location.pathname]);
 
   const scrollTo = id => {
     setMenu(false);
@@ -1678,29 +1724,49 @@ export default function AlAghaGroup() {
         {/* ══ HERO ══ */}
         <section id="home" style={{ minHeight: "100vh", position: "relative", display: "flex", alignItems: "center", overflow: "hidden" }}>
 
-          {/* ── Video background ── */}
-          <div className="hero-video-wrap">
+          {/* ── Video Background ── */}
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            overflow: "hidden",
+            zIndex: 0
+          }}>
             <video
+              key={`video-${location.pathname}`}
               autoPlay
               muted
               loop
               playsInline
-              webkit-playsinline="true"
-              x5-playsinline="true"
-              x5-video-player-type="h5"
-              x5-video-player-fullscreen="false"
-              preload="auto"
-              className="hero-video"
-              src={v1}
+              onCanPlay={() => setVideoLoaded(true)}
+              className="hero-video-bg"
+              style={{
+                opacity: videoLoaded ? 1 : 0,
+                transition: "opacity 1s ease"
+              }}
+            >
+              <source src={heroVideo} type="video/mp4" />
+            </video>
 
-            />
+            {/* Fallback gradient if video doesn't load */}
+            {!videoLoaded && (
+              <div style={{
+                position: "absolute",
+                inset: 0,
+                background: "linear-gradient(135deg, #02071c 0%, #060d50 50%, #02071c 100%)"
+              }} />
+            )}
           </div>
 
-          {/* Dark overlay — keeps text legible over any video */}
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(115deg, rgba(2,7,48,0.95) 0%, rgba(1,4,74,0.85) 45%, rgba(6,13,80,0.6) 100%)" }} />
+          {/* Dark overlay with 0.2 opacity */}
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            background: "linear-gradient(115deg, rgba(2,7,48,0.2) 0%, rgba(1,4,74,0.2) 45%, rgba(6,13,80,0.2) 100%)",
+            zIndex: 1
+          }} />
 
           {/* Geometric overlay */}
-          <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+          <div style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 1 }}>
             <svg viewBox="0 0 1440 900" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} preserveAspectRatio="xMidYMid slice">
               <line x1="0" y1="0" x2="400" y2="900" stroke="rgba(201,168,76,0.06)" strokeWidth="1" />
               <line x1="80" y1="0" x2="480" y2="900" stroke="rgba(201,168,76,0.04)" strokeWidth="1" />
@@ -1710,10 +1776,10 @@ export default function AlAghaGroup() {
             </svg>
           </div>
 
-          <div style={{ position: "absolute", left: 0, top: "10%", bottom: "10%", width: 3, background: "linear-gradient(to bottom, transparent, var(--gold), transparent)" }} />
+          <div style={{ position: "absolute", left: 0, top: "10%", bottom: "10%", width: 3, background: "linear-gradient(to bottom, transparent, var(--gold), transparent)", zIndex: 1 }} />
 
           {/* Hero content */}
-          <div style={{ maxWidth: 1320, margin: "0 auto", padding: "130px 36px 90px", position: "relative", zIndex: 1, width: "100%" }}>
+          <div style={{ maxWidth: 1320, margin: "0 auto", padding: "130px 36px 90px", position: "relative", zIndex: 2, width: "100%" }}>
             <div style={{ maxWidth: 700 }}>
               <div style={{ marginBottom: 28, animation: "fadeUp 0.8s 0.1s both" }}>
                 <span style={{ background: "rgba(201,168,76,0.12)", border: "1px solid rgba(201,168,76,0.3)", backdropFilter: "blur(10px)", padding: "7px 18px", borderRadius: 40, fontSize: 10, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold)" }}>
@@ -1856,7 +1922,7 @@ export default function AlAghaGroup() {
               ))}
             </div>
 
-            {/* ── Video Showcases (2 in a row) ── */}
+            {/* ── Video Showcases (rendered from the PROJECT_VIDEOS const array) ── */}
             <div style={{ marginTop: 56 }}>
               <Reveal>
                 <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 32 }}>
@@ -1866,24 +1932,17 @@ export default function AlAghaGroup() {
                 </div>
               </Reveal>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 28 }}>
-                <Reveal delay={60} dir="up">
-                  <FeaturedVideoCard
-                    videoUrl={VIDEO_GYPSUM_CEILING}
-                    title="Gypsum False Ceiling Showreel"
-                    subtitle="An immersive showcase of our precision false ceiling installation, custom bulkheads, and artistic gypsum designs across luxury commercial and residential spaces."
-                    posterImg={projDubaiCreek}
-                    onClick={() => setActiveVideo({ url: VIDEO_GYPSUM_CEILING, title: "Gypsum False Ceiling Showreel" })}
-                  />
-                </Reveal>
-                <Reveal delay={120} dir="up">
-                  <FeaturedVideoCard
-                    videoUrl={VIDEO_FITOUT_MEP}
-                    title="Complete Fit-Out & MEP Integration"
-                    subtitle="A detailed look at our turnkey interior fit-out services, premium paint finishes, and MEP (Mechanical, Electrical, Plumbing) engineering excellence."
-                    posterImg={projBeachfront}
-                    onClick={() => setActiveVideo({ url: VIDEO_FITOUT_MEP, title: "Complete Fit-Out & MEP Integration" })}
-                  />
-                </Reveal>
+                {PROJECT_VIDEOS.map((v, i) => (
+                  <Reveal key={v.title} delay={i * 60} dir="up">
+                    <FeaturedVideoCard
+                      videoUrl={v.url}
+                      title={v.title}
+                      subtitle={v.subtitle}
+                      posterImg={v.poster}
+                      onClick={() => setActiveVideo({ url: v.url, title: v.title })}
+                    />
+                  </Reveal>
+                ))}
               </div>
             </div>
 
