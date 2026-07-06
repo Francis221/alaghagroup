@@ -1632,16 +1632,61 @@ export default function AlAghaGroup() {
     attempt();
   }, [location.state]);
 
-  // Force video to reload when navigating back to home
+  // FIXED: Force video to reload and play when navigating back to home
   useEffect(() => {
     if (location.pathname === '/') {
       setVideoLoaded(false);
-      const timer = setTimeout(() => {
-        setVideoLoaded(true);
-      }, 100);
-      return () => clearTimeout(timer);
+
+      // First, try to load and play the video
+      const loadAndPlayVideo = () => {
+        const video = document.querySelector('.hero-video-bg');
+        if (video) {
+          // Reset and load
+          video.load();
+
+          // Try to play after a small delay
+          setTimeout(() => {
+            video.play().catch(err => {
+              console.log('Autoplay prevented, waiting for interaction:', err);
+              // Mark as loaded even if autoplay fails
+              setVideoLoaded(true);
+            });
+          }, 200);
+
+          // Set loaded state after load
+          setTimeout(() => {
+            setVideoLoaded(true);
+          }, 500);
+        } else {
+          // If video not found, retry
+          setTimeout(loadAndPlayVideo, 300);
+        }
+      };
+
+      loadAndPlayVideo();
     }
   }, [location.pathname]);
+
+  // FIXED: Handle user interaction to play video
+  useEffect(() => {
+    const handleInteraction = () => {
+      const video = document.querySelector('.hero-video-bg');
+      if (video && video.paused) {
+        video.play().catch(err => console.log('Play failed:', err));
+      }
+      // Remove listeners after first interaction
+      document.removeEventListener('click', handleInteraction);
+      document.removeEventListener('touchstart', handleInteraction);
+    };
+
+    document.addEventListener('click', handleInteraction);
+    document.addEventListener('touchstart', handleInteraction);
+
+    return () => {
+      document.removeEventListener('click', handleInteraction);
+      document.removeEventListener('touchstart', handleInteraction);
+    };
+  }, []);
 
   const scrollTo = id => {
     setMenu(false);
@@ -1732,16 +1777,30 @@ export default function AlAghaGroup() {
             zIndex: 0
           }}>
             <video
-              key={`video-${location.pathname}`}
+              key={`hero-video-${location.pathname}`}
               autoPlay
               muted
               loop
               playsInline
-              onCanPlay={() => setVideoLoaded(true)}
+              preload="auto"
+              onCanPlay={() => {
+                console.log('Video can play');
+                setVideoLoaded(true);
+              }}
+              onPlay={() => console.log('Video is playing')}
+              onError={(e) => {
+                console.error('Video error:', e);
+                setVideoLoaded(false);
+              }}
               className="hero-video-bg"
               style={{
                 opacity: videoLoaded ? 1 : 0,
-                transition: "opacity 1s ease"
+                transition: "opacity 1s ease",
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                position: "absolute",
+                inset: 0,
               }}
             >
               <source src={heroVideo} type="video/mp4" />
