@@ -107,36 +107,32 @@ import cert6 from "./certimg/AL AGHA TECHNICAL SERVICES - ISO 45001-2018.png";
 import qrCodeImg from "./certimg/QRCODE.jpeg";
 
 /* ─── PROJECT VIDEO SHOWCASE SOURCES ──────────────────────────────────────── */
-import v1 from "./video/v1.mp4";
-import v2 from "./video/SaveClip.App_AQM2ljy9dnv4rHa4ziL-fTp2ie73pCPWciznOqUb4VD0gq7ALB_gzENdc-1Evm7TmXhX_EVHe_HUY3Ch37PVNHpfVy9Ucyw59gEKNnc.mp4";
-import v3 from "./video/SaveClip.App_AQMSBO34EVPtGXUGT4ggLnU0KArrQP7Lcg5hK5xmdIx1IhR5UWf0gXNfchLrmSLsaMu-aYzvaPLe9LOPpMiLeTcn.mp4";
-import v4 from "./video/SaveClip.App_AQNWNlW712xc0lbwvlkqOrSZOCRlshPeOaJ-GdBafCFArxd5orBjim8dK8ulWVQyNqmSQMt454YF-jnxwHgnKdoLOTzhD39vqR6eR_Q.mp4";
-
 
 /* ─── HERO BACKGROUND VIDEO ──────────────────────────────────────────────── */
-import heroVideo from "./video/0706(1).mp4";
+// FIXED: Use direct video URLs from Cloudinary (not player embed URLs)
+const heroVideo = "https://res.cloudinary.com/qh3zic6r/video/upload/v1783357054/SaveClip.App_AQNWNlW712xc0lbwvlkqOrSZOCRlshPeOaJ-GdBafCFArxd5orBjim8dK8ulWVQyNqmSQMt454YF-jnxwHgnKdoLOTzhD39vqR6eR_Q_ajy70b.mp4";
 
 const PROJECT_VIDEOS = [
   {
-    url: v1,
+    url: "https://res.cloudinary.com/qh3zic6r/video/upload/v1783357061/AQPdBg_r3OSVfwkk62s6qKACcep1N7Crt75RzOC72vo7O5-GXlepb5G5rYpWVPeSL-h9AzHqXGISNqDSRR02YxXET3f2gpCPaltauQSBFg_wxpt6n.mp4",
     title: "Gypsum False Ceiling Showreel",
     subtitle: "An immersive showcase of our precision false ceiling installation, custom bulkheads, and artistic gypsum designs across luxury commercial and residential spaces.",
     poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJWK-WZLosYT6yzhvBRlmNkrDNwGhrgMbICWOPzjWBoiME6kcjb1wz7sNO&s=10",
   },
   {
-    url: v2,
+    url: "https://res.cloudinary.com/qh3zic6r/video/upload/v1783357059/SaveClip.App_AQMSBO34EVPtGXUGT4ggLnU0KArrQP7Lcg5hK5xmdIx1IhR5UWf0gXNfchLrmSLsaMu-aYzvaPLe9LOPpMiLeTcn_w4ga5m.mp4",
     title: "Complete Fit-Out & MEP Integration",
     subtitle: "A detailed look at our turnkey interior fit-out services, premium paint finishes, and MEP (Mechanical, Electrical, Plumbing) engineering excellence.",
     poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFOSsBiT6sVCYZ_qvZT848l8sPV0EQEu_u_fgF8BIlLoPc-W_BgGzT_j4&s=10",
   },
   {
-    url: v3,
+    url: "https://res.cloudinary.com/qh3zic6r/video/upload/v1783357056/SaveClip.App_AQM2ljy9dnv4rHa4ziL-fTp2ie73pCPWciznOqUb4VD0gq7ALB_gzENdc-1Evm7TmXhX_EVHe_HUY3Ch37PVNHpfVy9Ucyw59gEKNnc_zmei4t.mp4",
     title: "Civil Works & Structural Progress",
     subtitle: "Foundation to façade — a timelapse walkthrough of our civil works teams delivering structural milestones on schedule.",
     poster: "https://cf.bstatic.com/xdata/images/hotel/max500/388733598.jpg?k=ca7b3ae0ceb82bd519181824f6781955388831ad835ecae80c9a233409ea5357&o=&hp=1",
   },
   {
-    url: v4,
+    url: "https://res.cloudinary.com/qh3zic6r/video/upload/v1783357054/SaveClip.App_AQNWNlW712xc0lbwvlkqOrSZOCRlshPeOaJ-GdBafCFArxd5orBjim8dK8ulWVQyNqmSQMt454YF-jnxwHgnKdoLOTzhD39vqR6eR_Q_ajy70b.mp4",
     title: "Site Safety & Quality Control",
     subtitle: "Behind the scenes of our ISO-certified safety protocols and on-site quality inspections across active project sites.",
     poster: projTownSquare,
