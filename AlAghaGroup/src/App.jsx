@@ -2,8 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import emailjs from "@emailjs/browser";
 
-
-
 import logo from "../alaghalogo.png";
 
 /* ── Project portfolio images ── */
@@ -14,7 +12,7 @@ import projBeachfront from "./projectimg/beachfront.jpg";
 import projCity from "./projectimg/city.jpg";
 
 /* ── Leadership / Management / Engineers photos ── */
-import chairmanPhoto from "./img/CHAIRMAN.jpeg";
+import chairmanPhoto from "./img/chairmanpics.jpg";
 import projectsDirectorPhoto from "./img/Projectdirector.jpeg";
 import technicalManagerPhoto from "./img/Technicalmanager.jpeg";
 import hrManagerPhoto from "./img/Hrmanager.jpeg";
@@ -106,12 +104,10 @@ import cert6 from "./certimg/AL AGHA TECHNICAL SERVICES - ISO 45001-2018.png";
 /* ── Footer / misc ── */
 import qrCodeImg from "./certimg/QRCODE.jpeg";
 
+/* ─── HERO BACKGROUND VIDEO URL ──────────────────────────────────────────── */
+const heroVideo = "/video/0709(1).mp4";
+
 /* ─── PROJECT VIDEO SHOWCASE SOURCES ──────────────────────────────────────── */
-
-/* ─── HERO BACKGROUND VIDEO ──────────────────────────────────────────────── */
-// FIXED: Use direct video URLs from Cloudinary (not player embed URLs)
-const heroVideo = "https://res.cloudinary.com/qh3zic6r/video/upload/v1783357054/SaveClip.App_AQNWNlW712xc0lbwvlkqOrSZOCRlshPeOaJ-GdBafCFArxd5orBjim8dK8ulWVQyNqmSQMt454YF-jnxwHgnKdoLOTzhD39vqR6eR_Q_ajy70b.mp4";
-
 const PROJECT_VIDEOS = [
   {
     url: "https://res.cloudinary.com/qh3zic6r/video/upload/v1783357061/AQPdBg_r3OSVfwkk62s6qKACcep1N7Crt75RzOC72vo7O5-GXlepb5G5rYpWVPeSL-h9AzHqXGISNqDSRR02YxXET3f2gpCPaltauQSBFg_wxpt6n.mp4",
@@ -120,7 +116,7 @@ const PROJECT_VIDEOS = [
     poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJWK-WZLosYT6yzhvBRlmNkrDNwGhrgMbICWOPzjWBoiME6kcjb1wz7sNO&s=10",
   },
   {
-    url: "https://res.cloudinary.com/qh3zic6r/video/upload/v1783357059/SaveClip.App_AQMSBO34EVPtGXUGT4ggLnU0KArrQP7Lcg5hK5xmdIx1IhR5UWf0gXNfchLrmSLsaMu-aYzvaPLe9LOPpMiLeTcn_w4ga5m.mp4",
+    url: "https://res.cloudinary.com/qh3zic6r/video/upload/v1783357059/SaveClip.App_AQMSBO34EVPtGXUGT4ggLnU0KArrQP7Lcg5hK5xmdIx1IhR5UWf0gXNfchLrmSLsaMu-aYzvaPLe9LOPmMiLeTcn_w4ga5m.mp4",
     title: "Complete Fit-Out & MEP Integration",
     subtitle: "A detailed look at our turnkey interior fit-out services, premium paint finishes, and MEP (Mechanical, Electrical, Plumbing) engineering excellence.",
     poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFOSsBiT6sVCYZ_qvZT848l8sPV0EQEu_u_fgF8BIlLoPc-W_BgGzT_j4&s=10",
@@ -132,7 +128,7 @@ const PROJECT_VIDEOS = [
     poster: "https://cf.bstatic.com/xdata/images/hotel/max500/388733598.jpg?k=ca7b3ae0ceb82bd519181824f6781955388831ad835ecae80c9a233409ea5357&o=&hp=1",
   },
   {
-    url: "https://res.cloudinary.com/qh3zic6r/video/upload/v1783357054/SaveClip.App_AQNWNlW712xc0lbwvlkqOrSZOCRlshPeOaJ-GdBafCFArxd5orBjim8dK8ulWVQyNqmSQMt454YF-jnxwHgnKdoLOTzhD39vqR6eR_Q_ajy70b.mp4",
+    url: "https://res.cloudinary.com/qh3zic6r/video/upload/v1783357054/SaveClip.App_AQNWNlW712xc0lbwvlkqOrSZOCRlshPeOaJ-GdBafCFArxd5orBjim8dK8ulWVQyNqmSQMt454YF-jnxwHgnKDoLOTzhD39vqR6eR_Q_ajy70b.mp4",
     title: "Site Safety & Quality Control",
     subtitle: "Behind the scenes of our ISO-certified safety protocols and on-site quality inspections across active project sites.",
     poster: projTownSquare,
@@ -231,11 +227,21 @@ const GLOBAL_CSS = `
   .reveal-el.is-hidden-fade  { opacity: 0; }
   .reveal-el.is-visible      { opacity: 1; transform: none; }
 
+  .reveal-el.is-exit-up    { opacity: 0; transform: translateY(-30px); }
+  .reveal-el.is-exit-down  { opacity: 0; transform: translateY(30px); }
+  .reveal-el.is-exit-left  { opacity: 0; transform: translateX(-30px); }
+  .reveal-el.is-exit-right { opacity: 0; transform: translateX(30px); }
+  .reveal-el.is-exit-zoom  { opacity: 0; transform: scale(0.9); }
+  .reveal-el.is-exit-fade  { opacity: 0; }
+
   @media (prefers-reduced-motion: reduce) {
     .reveal-el { transition: none !important; }
     .reveal-el.is-hidden-up, .reveal-el.is-hidden-down,
     .reveal-el.is-hidden-left, .reveal-el.is-hidden-right,
-    .reveal-el.is-hidden-zoom, .reveal-el.is-hidden-fade {
+    .reveal-el.is-hidden-zoom, .reveal-el.is-hidden-fade,
+    .reveal-el.is-exit-up, .reveal-el.is-exit-down,
+    .reveal-el.is-exit-left, .reveal-el.is-exit-right,
+    .reveal-el.is-exit-zoom, .reveal-el.is-exit-fade {
       opacity: 1; transform: none;
     }
   }
@@ -427,7 +433,6 @@ const GLOBAL_CSS = `
     fill: var(--ink) !important;
   }
 
-  /* Hero video background - NO ANIMATION to prevent shaking */
   .hero-video-bg {
     position: absolute;
     inset: 0;
@@ -435,6 +440,29 @@ const GLOBAL_CSS = `
     height: 100%;
     object-fit: cover;
     z-index: 0;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .video-player-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(201,168,76,0.2);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    background: #000;
+  }
+  .video-player-wrapper iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
   }
 
   @media (max-width: 900px) {
@@ -562,20 +590,14 @@ function useCountUp(target, active, duration = 2000) {
 ═══════════════════════════════════════════════════════════════════════════ */
 function Reveal({ children, delay = 0, dir = "up", exitDir, className = "", style = {} }) {
   const ref = useRef(null);
-  const [state, setState] = useState("hidden-down");
+  const [state, setState] = useState(`hidden-${dir}`);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    const hiddenBelow = `hidden-${dir}`;
-    const hiddenAbove = exitDir
-      ? `hidden-${exitDir}`
-      : dir === "up" ? "hidden-down"
-        : dir === "down" ? "hidden-up"
-          : dir === "left" ? "hidden-right"
-            : dir === "right" ? "hidden-left"
-              : `hidden-${dir}`;
+    const hiddenClass = `hidden-${dir}`;
+    const exitClass = exitDir ? `exit-${exitDir}` : dir === "up" ? "exit-down" : dir === "down" ? "exit-up" : dir === "left" ? "exit-right" : dir === "right" ? "exit-left" : "exit-fade";
 
     const obs = new IntersectionObserver(
       ([entry]) => {
@@ -584,9 +606,9 @@ function Reveal({ children, delay = 0, dir = "up", exitDir, className = "", styl
         } else {
           const rect = entry.boundingClientRect;
           if (rect.top < 0) {
-            setState(hiddenAbove);
+            setState(exitClass);
           } else {
-            setState(hiddenBelow);
+            setState(hiddenClass);
           }
         }
       },
@@ -891,7 +913,7 @@ function SocialBtn({ href, label, children }) {
 
 /* ═══════════════════════════════════════════════════════════════════════════
    FEATURED VIDEO CARD
-   ═══════════════════════════════════════════════════════════════════════════ */
+═══════════════════════════════════════════════════════════════════════════ */
 function FeaturedVideoCard({ videoUrl, title, subtitle, posterImg, onClick }) {
   const videoRef = useRef(null);
   const [isPlayingPreview, setIsPlayingPreview] = useState(false);
@@ -930,7 +952,6 @@ function FeaturedVideoCard({ videoUrl, title, subtitle, posterImg, onClick }) {
       }}
       className="video-showcase-card"
     >
-      {/* Video element */}
       <video
         ref={videoRef}
         src={videoUrl}
@@ -949,7 +970,6 @@ function FeaturedVideoCard({ videoUrl, title, subtitle, posterImg, onClick }) {
         }}
       />
 
-      {/* Poster Image */}
       <img
         src={posterImg}
         alt={title}
@@ -966,7 +986,6 @@ function FeaturedVideoCard({ videoUrl, title, subtitle, posterImg, onClick }) {
         }}
       />
 
-      {/* Dark overlay */}
       <div
         style={{
           position: "absolute",
@@ -976,7 +995,6 @@ function FeaturedVideoCard({ videoUrl, title, subtitle, posterImg, onClick }) {
         }}
       />
 
-      {/* Play Button Overlay */}
       <div
         style={{
           position: "absolute",
@@ -1003,7 +1021,6 @@ function FeaturedVideoCard({ videoUrl, title, subtitle, posterImg, onClick }) {
         </svg>
       </div>
 
-      {/* Text Content */}
       <div
         style={{
           position: "absolute",
@@ -1065,7 +1082,6 @@ function FeaturedVideoCard({ videoUrl, title, subtitle, posterImg, onClick }) {
     </div>
   );
 }
-
 
 /* ═══════════════════════════════════════════════════════════════════════════
    TEAM CARDS
@@ -1357,7 +1373,7 @@ function CertModal({ cert, onClose }) {
 
 /* ═══════════════════════════════════════════════════════════════════════════
    VIDEO MODAL
-   ═══════════════════════════════════════════════════════════════════════════ */
+═══════════════════════════════════════════════════════════════════════════ */
 function VideoModal({ video, onClose }) {
   useEffect(() => {
     const onKey = e => { if (e.key === "Escape") onClose(); };
@@ -1393,6 +1409,23 @@ function VideoModal({ video, onClose }) {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   YOUTUBE VIDEO PLAYER COMPONENT
+═══════════════════════════════════════════════════════════════════════════ */
+function YouTubeVideoPlayer({ videoId, title }) {
+  return (
+    <div className="video-player-wrapper">
+      <iframe
+        src={`https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0&modestbranding=1`}
+        title={title || "Al Agha Group Video"}
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      />
     </div>
   );
 }
@@ -1454,15 +1487,15 @@ const CERTIFICATIONS = [
   { name: "ISO 9001:2015", desc: "Quality Management", image: cert1 },
   { name: "ISO 14001:2015", desc: "Environmental Mgmt", image: cert2 },
   { name: "ISO 45001-2018", desc: "Occupational Safety", image: cert3 },
-  { name: "ISO 9001-2015", desc: "Quality Assurance", image: cert4 },
-  { name: "ISO 14001-2015", desc: "Business Excellence", image: cert5 },
+  { name: "ISO 9001:2015", desc: "Quality Assurance", image: cert4 },
+  { name: "ISO 14001:2015", desc: "Business Excellence", image: cert5 },
   { name: "ISO 45001-2018", desc: "Best Practices", image: cert6 },
 ];
 
 const SLIDER_IMAGES = [
-  { url: "https://cloud.famproperties.com/project/large/mulberry-at-park-heights-342681-124728.jpg", caption: "Mulberry at Park Heights — Dubai Hills" },
-  { url: "https://www.299.com/images/858872grand-bleu-tower-hero.jpg", caption: "Grand Bleu Tower — Dubai Marina" },
-  { url: "https://images.adsttc.com/media/images/6203/2036/44ba/f701/6571/b72a/newsletter/20211023-dubaj-pavilon-3048.jpg?1644372080", caption: "Hungary Pavilion — Expo 2020 Dubai" },
+  { url: "https://cloud.famproperties.com/project/large/mulberry-at-park-heights-342681-124728.jpg", caption: "Mulberry at Park Heights — Dubai Hills", year: "2024", cat: "Residential" },
+  { url: "https://www.299.com/images/858872grand-bleu-tower-hero.jpg", caption: "Grand Bleu Tower — Dubai Marina", year: "2024", cat: "Commercial" },
+  { url: "https://images.adsttc.com/media/images/6203/2036/44ba/f701/6571/b72a/newsletter/20211023-dubaj-pavilon-3048.jpg?1644372080", caption: "Hungary Pavilion — Expo 2020 Dubai", year: "2021", cat: "Exhibition" },
 ];
 
 const CLIENTS_DATA = {
@@ -1578,26 +1611,6 @@ const GROUP_COMPANIES = [
 ];
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   HERO BUILDING 3D COMPONENT (Placeholder - Replace with your actual 3D component)
-═══════════════════════════════════════════════════════════════════════════ */
-function HeroBuilding3D() {
-  // This is a placeholder component. Replace with your actual 3D implementation.
-  return (
-    <div style={{
-      position: "absolute",
-      inset: 0,
-      zIndex: 0,
-      background: "rgba(2,7,48,0.3)",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center"
-    }}>
-      {/* Your 3D building component here */}
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
    MAIN COMPONENT
 ═══════════════════════════════════════════════════════════════════════════ */
 export default function AlAghaGroup() {
@@ -1611,73 +1624,38 @@ export default function AlAghaGroup() {
   const [activeCert, setActiveCert] = useState(null);
   const [activeVideo, setActiveVideo] = useState(null);
 
-  // Video background state
   const [videoLoaded, setVideoLoaded] = useState(false);
 
-  useEffect(() => {
-    if (!location.state?.scrollTo) return;
-    const id = location.state.scrollTo;
-    const attempt = (tries = 0) => {
-      const el = document.getElementById(id);
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-      } else if (tries < 10) {
-        setTimeout(() => attempt(tries + 1), 80);
-      }
-    };
-    attempt();
-  }, [location.state]);
+  const YOUTUBE_VIDEO_ID = "-69VznBquek";
 
-  // FIXED: Force video to reload and play when navigating back to home
   useEffect(() => {
     if (location.pathname === '/') {
       setVideoLoaded(false);
-
-      // First, try to load and play the video
       const loadAndPlayVideo = () => {
         const video = document.querySelector('.hero-video-bg');
         if (video) {
-          // Reset and load
           video.load();
-
-          // Try to play after a small delay
-          setTimeout(() => {
-            video.play().catch(err => {
-              console.log('Autoplay prevented, waiting for interaction:', err);
-              // Mark as loaded even if autoplay fails
-              setVideoLoaded(true);
-            });
-          }, 200);
-
-          // Set loaded state after load
-          setTimeout(() => {
+          video.play().catch(err => {
+            console.log('Autoplay prevented, waiting for interaction:', err);
             setVideoLoaded(true);
-          }, 500);
-        } else {
-          // If video not found, retry
-          setTimeout(loadAndPlayVideo, 300);
+          });
         }
       };
-
-      loadAndPlayVideo();
+      setTimeout(loadAndPlayVideo, 100);
     }
   }, [location.pathname]);
 
-  // FIXED: Handle user interaction to play video
   useEffect(() => {
     const handleInteraction = () => {
       const video = document.querySelector('.hero-video-bg');
       if (video && video.paused) {
         video.play().catch(err => console.log('Play failed:', err));
       }
-      // Remove listeners after first interaction
       document.removeEventListener('click', handleInteraction);
       document.removeEventListener('touchstart', handleInteraction);
     };
-
     document.addEventListener('click', handleInteraction);
     document.addEventListener('touchstart', handleInteraction);
-
     return () => {
       document.removeEventListener('click', handleInteraction);
       document.removeEventListener('touchstart', handleInteraction);
@@ -1718,14 +1696,12 @@ export default function AlAghaGroup() {
   return (
     <>
       <style>{GLOBAL_CSS}</style>
-
       {activeCert && <CertModal cert={activeCert} onClose={() => setActiveCert(null)} />}
       {activeVideo && <VideoModal video={activeVideo} onClose={() => setActiveVideo(null)} />}
 
       <div style={{ color: "#fff", fontFamily: "var(--f-body)", background: "var(--bg-deep)", overflowX: "hidden" }}>
         <ReadingProgress />
 
-        {/* Ambient floating shapes */}
         <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, overflow: "hidden" }}>
           <div style={{ position: "absolute", width: 600, height: 600, top: "-200px", left: "-200px", background: "radial-gradient(circle, rgba(201,168,76,0.04) 0%, transparent 70%)", animation: "floatBg 18s ease-in-out infinite" }} />
           <div style={{ position: "absolute", width: 500, height: 500, bottom: "10%", right: "-100px", background: "radial-gradient(circle, rgba(12,24,112,0.6) 0%, transparent 70%)", animation: "floatBgReverse 22s ease-in-out infinite" }} />
@@ -1764,92 +1740,61 @@ export default function AlAghaGroup() {
 
         {/* ══ HERO ══ */}
         <section id="home" style={{ minHeight: "100vh", position: "relative", display: "flex", alignItems: "center", overflow: "hidden" }}>
-
-          {/* ── Video Background ── */}
-          <div style={{
-            position: "absolute",
-            inset: 0,
-            overflow: "hidden",
-            zIndex: 0
-          }}>
-            <video
-              key={`hero-video-${location.pathname}`}
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              onCanPlay={() => {
-                console.log('Video can play');
-                setVideoLoaded(true);
-              }}
+          <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 0 }}>
+            <video key={`hero-video-${location.pathname}`} autoPlay muted loop playsInline preload="auto"
+              onCanPlay={() => { console.log('Video can play'); setVideoLoaded(true); }}
               onPlay={() => console.log('Video is playing')}
-              onError={(e) => {
-                console.error('Video error:', e);
-                setVideoLoaded(false);
-              }}
+              onError={(e) => { console.error('Video error:', e); setVideoLoaded(false); }}
               className="hero-video-bg"
-              style={{
-                opacity: videoLoaded ? 1 : 0,
-                transition: "opacity 1s ease",
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                position: "absolute",
-                inset: 0,
-              }}
-            >
+              style={{ opacity: videoLoaded ? 1 : 0, transition: "opacity 1s ease", width: "100%", height: "100%", objectFit: "cover", position: "absolute", inset: 0 }}>
               <source src={heroVideo} type="video/mp4" />
+              Your browser does not support the video tag.
             </video>
-
-            {/* Fallback gradient if video doesn't load */}
             {!videoLoaded && (
-              <div style={{
-                position: "absolute",
-                inset: 0,
-                background: "linear-gradient(135deg, #02071c 0%, #060d50 50%, #02071c 100%)"
-              }} />
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #02071c 0%, #060d50 50%, #02071c 100%)" }} />
             )}
           </div>
 
-          {/* Dark overlay with 0.2 opacity */}
-          <div style={{
-            position: "absolute",
-            inset: 0,
-            background: "linear-gradient(115deg, rgba(2,7,48,0.2) 0%, rgba(1,4,74,0.2) 45%, rgba(6,13,80,0.2) 100%)",
-            zIndex: 1
-          }} />
+          {/* Layer 1: Main gradient overlay */}
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(115deg, rgba(2,7,48,0.5) 0%, rgba(1,4,74,0.4) 45%, rgba(6,13,80,0.35) 100%)", zIndex: 1 }} />
+          {/* Layer 2: Cinematic vignette */}
+          <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, transparent 40%, rgba(2,7,48,0.5) 100%)", zIndex: 1, pointerEvents: "none" }} />
+          {/* Layer 3: Bottom fade */}
+          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "60%", background: "linear-gradient(to top, rgba(2,7,48,0.55) 0%, transparent 100%)", zIndex: 1, pointerEvents: "none" }} />
+          {/* Layer 4: Film grain */}
+          <div style={{ position: "absolute", inset: 0, backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E\")", opacity: 0.35, zIndex: 1, pointerEvents: "none" }} />
 
           {/* Geometric overlay */}
           <div style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 1 }}>
             <svg viewBox="0 0 1440 900" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} preserveAspectRatio="xMidYMid slice">
-              <line x1="0" y1="0" x2="400" y2="900" stroke="rgba(201,168,76,0.06)" strokeWidth="1" />
-              <line x1="80" y1="0" x2="480" y2="900" stroke="rgba(201,168,76,0.04)" strokeWidth="1" />
-              <polygon points="1100,0 1440,0 1440,480 1100,240" fill="rgba(201,168,76,0.03)" />
-              <circle cx="1200" cy="200" r="300" fill="none" stroke="rgba(201,168,76,0.05)" strokeWidth="1" strokeDasharray="8 18" />
-              <circle cx="1200" cy="200" r="200" fill="none" stroke="rgba(201,168,76,0.04)" strokeWidth="1" />
+              <line x1="0" y1="0" x2="400" y2="900" stroke="rgba(201,168,76,0.04)" strokeWidth="1" />
+              <line x1="80" y1="0" x2="480" y2="900" stroke="rgba(201,168,76,0.03)" strokeWidth="1" />
+              <polygon points="1100,0 1440,0 1440,480 1100,240" fill="rgba(201,168,76,0.02)" />
+              <circle cx="1200" cy="200" r="300" fill="none" stroke="rgba(201,168,76,0.03)" strokeWidth="1" strokeDasharray="8 18" />
+              <circle cx="1200" cy="200" r="200" fill="none" stroke="rgba(201,168,76,0.02)" strokeWidth="1" />
             </svg>
           </div>
 
-          <div style={{ position: "absolute", left: 0, top: "10%", bottom: "10%", width: 3, background: "linear-gradient(to bottom, transparent, var(--gold), transparent)", zIndex: 1 }} />
+          {/* Left gold accent */}
+          <div style={{ position: "absolute", left: 0, top: "10%", bottom: "10%", width: 2, background: "linear-gradient(to bottom, transparent, var(--gold), transparent)", zIndex: 1, opacity: 0.6 }} />
 
           {/* Hero content */}
           <div style={{ maxWidth: 1320, margin: "0 auto", padding: "130px 36px 90px", position: "relative", zIndex: 2, width: "100%" }}>
             <div style={{ maxWidth: 700 }}>
               <div style={{ marginBottom: 28, animation: "fadeUp 0.8s 0.1s both" }}>
-                <span style={{ background: "rgba(201,168,76,0.12)", border: "1px solid rgba(201,168,76,0.3)", backdropFilter: "blur(10px)", padding: "7px 18px", borderRadius: 40, fontSize: 10, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold)" }}>
+                <span style={{ background: "rgba(201,168,76,0.15)", border: "1px solid rgba(201,168,76,0.3)", backdropFilter: "blur(20px)", padding: "8px 20px", borderRadius: 40, fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--gold)", boxShadow: "0 4px 15px rgba(201,168,76,0.1)" }}>
                   Est. 2008 · Dubai, UAE
                 </span>
               </div>
-              <h1 style={{ fontFamily: "var(--f-display)", fontWeight: 700, lineHeight: 1.04, letterSpacing: "-0.02em", fontSize: "clamp(3rem,7.5vw,5.5rem)", color: "#fff", marginBottom: 28, animation: "fadeUp 0.9s 0.2s both" }}>
+              <h1 style={{ fontFamily: "var(--f-display)", fontWeight: 700, lineHeight: 1.04, letterSpacing: "-0.02em", fontSize: "clamp(3rem,7.5vw,5.5rem)", color: "#fff", marginBottom: 28, animation: "fadeUp 0.9s 0.2s both", textShadow: "0 2px 20px rgba(0,0,0,0.3)" }}>
                 BUILDING THE<br />
                 <em style={{ color: "var(--gold)", fontStyle: "italic" }}>FUTURE TOGETHER.</em>
               </h1>
-              <p style={{ fontFamily: "var(--f-body)", fontSize: 17, color: "rgba(255,255,255,0.7)", lineHeight: 1.8, maxWidth: 520, marginBottom: 44, animation: "fadeUp 1s 0.35s both" }}>
+              <p style={{ fontFamily: "var(--f-body)", fontSize: 17, color: "rgba(255,255,255,0.8)", lineHeight: 1.8, maxWidth: 520, marginBottom: 44, animation: "fadeUp 1s 0.35s both", textShadow: "0 1px 10px rgba(0,0,0,0.3)" }}>
                 Al Agha Group delivers world-class false ceiling, gypsum works, interior fit-out, and MEP services across the UAE — with trust and quality at the core of every project.
               </p>
               <div style={{ display: "flex", gap: 14, flexWrap: "wrap", animation: "fadeUp 1s 0.45s both" }}>
-                <button className="btn-gold" style={{ padding: "14px 32px" }} onClick={() => navigate("/projects")}>View Our Projects</button>
+                <button className="btn-gold" style={{ padding: "16px 36px", fontSize: "13px" }} onClick={() => navigate("/projects")}>View Our Projects</button>
                 <button className="btn-outline-white" onClick={() => scrollTo("About")}>Our Story</button>
               </div>
             </div>
@@ -1977,7 +1922,6 @@ export default function AlAghaGroup() {
               ))}
             </div>
 
-            {/* ── Video Showcases (rendered from the PROJECT_VIDEOS const array) ── */}
             <div style={{ marginTop: 56 }}>
               <Reveal>
                 <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 32 }}>
@@ -1989,13 +1933,7 @@ export default function AlAghaGroup() {
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 28 }}>
                 {PROJECT_VIDEOS.map((v, i) => (
                   <Reveal key={v.title} delay={i * 60} dir="up">
-                    <FeaturedVideoCard
-                      videoUrl={v.url}
-                      title={v.title}
-                      subtitle={v.subtitle}
-                      posterImg={v.poster}
-                      onClick={() => setActiveVideo({ url: v.url, title: v.title })}
-                    />
+                    <FeaturedVideoCard videoUrl={v.url} title={v.title} subtitle={v.subtitle} posterImg={v.poster} onClick={() => setActiveVideo({ url: v.url, title: v.title })} />
                   </Reveal>
                 ))}
               </div>
@@ -2082,7 +2020,6 @@ export default function AlAghaGroup() {
             <Reveal>
               <SectionHeader eyebrow="The People Behind Our Work" title='Meet the <em style="color:var(--gold);font-style:italic">Team</em>' subtitle="Dedicated professionals committed to excellence across every discipline." />
             </Reveal>
-
             <div style={{ marginBottom: 80 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 18, marginBottom: 40 }}>
                 <div style={{ width: 28, height: 2, background: "var(--gold)" }} />
@@ -2090,14 +2027,9 @@ export default function AlAghaGroup() {
                 <div style={{ flex: 1, height: 1, background: "rgba(201,168,76,0.1)" }} />
               </div>
               <div style={{ display: "flex", gap: 24, flexWrap: "wrap", justifyContent: "center" }}>
-                {LEADERSHIP.map((m, i) => (
-                  <Reveal key={m.name} delay={i * 100} dir="zoom">
-                    <LeadershipCard member={m} />
-                  </Reveal>
-                ))}
+                {LEADERSHIP.map((m, i) => (<Reveal key={m.name} delay={i * 100} dir="zoom"><LeadershipCard member={m} /></Reveal>))}
               </div>
             </div>
-
             <div style={{ marginBottom: 80 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 18, marginBottom: 40 }}>
                 <div style={{ width: 28, height: 2, background: "var(--gold)" }} />
@@ -2105,14 +2037,9 @@ export default function AlAghaGroup() {
                 <div style={{ flex: 1, height: 1, background: "rgba(201,168,76,0.1)" }} />
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(190px,1fr))", gap: 18 }}>
-                {MANAGEMENT.map((m, i) => (
-                  <Reveal key={m.name} delay={(i % 4) * 55} dir="up">
-                    <ManagementCard member={m} />
-                  </Reveal>
-                ))}
+                {MANAGEMENT.map((m, i) => (<Reveal key={m.name} delay={(i % 4) * 55} dir="up"><ManagementCard member={m} /></Reveal>))}
               </div>
             </div>
-
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 18, marginBottom: 40 }}>
                 <div style={{ width: 28, height: 2, background: "var(--gold)" }} />
@@ -2120,22 +2047,16 @@ export default function AlAghaGroup() {
                 <div style={{ flex: 1, height: 1, background: "rgba(201,168,76,0.1)" }} />
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(290px,1fr))", gap: 12 }}>
-                {ENGINEERS.map((m, i) => (
-                  <Reveal key={m.name} delay={(i % 6) * 35} dir="up">
-                    <EngineerRow member={m} />
-                  </Reveal>
-                ))}
+                {ENGINEERS.map((m, i) => (<Reveal key={m.name} delay={(i % 6) * 35} dir="up"><EngineerRow member={m} /></Reveal>))}
               </div>
             </div>
           </div>
         </Section>
 
         {/* ══ CHAIRMAN'S MESSAGE ══ */}
-        <Section geoVariant="c" style={{ padding: "110px 36px" }}>
+        <Section geoVariant="c" style={{ padding: "110px 36px 60px" }}>
           <div style={{ maxWidth: 1320, margin: "0 auto" }}>
-            <Reveal>
-              <SectionHeader eyebrow="Chairman's Message" title='A Word From Our <em style="color:var(--gold);font-style:italic">Chairman</em>' />
-            </Reveal>
+            <Reveal><SectionHeader eyebrow="Chairman's Message" title='A Word From Our <em style="color:var(--gold);font-style:italic">Chairman</em>' /></Reveal>
             <div style={{ maxWidth: 800, margin: "0 auto" }}>
               <Reveal>
                 <div style={{ border: "1px solid rgba(201,168,76,0.2)", padding: "52px", position: "relative", borderRadius: 20, background: "rgba(255,255,255,0.03)", backdropFilter: "blur(10px)" }}>
@@ -2155,6 +2076,22 @@ export default function AlAghaGroup() {
                 </div>
               </Reveal>
             </div>
+          </div>
+        </Section>
+
+        {/* ══ YOUTUBE VIDEO PLAYER ══ */}
+        <Section geoVariant="a" style={{ padding: "40px 36px 110px" }}>
+          <div style={{ maxWidth: 1120, margin: "0 auto" }}>
+            <Reveal>
+              <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 32 }}>
+                <div style={{ width: 28, height: 1, background: "var(--gold)" }} />
+                <span style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.6)" }}>Featured Video</span>
+                <div style={{ flex: 1, height: 1, background: "rgba(201,168,76,0.1)" }} />
+              </div>
+            </Reveal>
+            <Reveal dir="up" delay={100}>
+              <YouTubeVideoPlayer videoId={YOUTUBE_VIDEO_ID} title="Al Agha Group - Building the Future Together" />
+            </Reveal>
           </div>
         </Section>
 
@@ -2202,21 +2139,18 @@ export default function AlAghaGroup() {
                   <SocialBtn href="https://linkedin.com/company/alaghagroup" label="LinkedIn"><LIIcon /></SocialBtn>
                 </div>
               </div>
-
               <div>
                 <h4 style={{ fontFamily: "var(--f-display)", fontSize: 17, fontWeight: 700, marginBottom: 18, color: "#fff" }}>Quick Links</h4>
                 {NAV.map(l => (
                   <button key={l} onClick={() => scrollTo(l)} style={{ display: "block", background: "none", border: "none", color: "rgba(255,255,255,0.35)", fontFamily: "var(--f-body)", fontSize: 13, padding: "6px 0", cursor: "pointer", transition: "color 0.2s", textAlign: "left" }} onMouseEnter={e => e.target.style.color = "var(--gold)"} onMouseLeave={e => e.target.style.color = "rgba(255,255,255,0.35)"}>{l}</button>
                 ))}
               </div>
-
               <div>
                 <h4 style={{ fontFamily: "var(--f-display)", fontSize: 17, fontWeight: 700, marginBottom: 18, color: "#fff" }}>Our Services</h4>
                 {ALL_SERVICES.map(s => (
                   <div key={s.title} style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.3)", padding: "5px 0", lineHeight: 1.5 }}>{s.title}</div>
                 ))}
               </div>
-
               <div>
                 <h4 style={{ fontFamily: "var(--f-display)", fontSize: 17, fontWeight: 700, marginBottom: 18, color: "#fff" }}>Contact</h4>
                 {[
@@ -2230,7 +2164,6 @@ export default function AlAghaGroup() {
                     <span style={{ flexShrink: 0 }}>{icon}</span><span>{txt}</span>
                   </div>
                 ))}
-
                 <div style={{ marginTop: 18, display: "flex", gap: 14, alignItems: "flex-start" }}>
                   <div style={{ flexShrink: 0 }}>
                     <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)", marginBottom: 8 }}>SCAN QR CODE</div>
@@ -2239,18 +2172,14 @@ export default function AlAghaGroup() {
                     </div>
                   </div>
                 </div>
-
                 <div style={{ marginTop: 12, borderRadius: 12, overflow: "hidden", border: "1px solid rgba(201,168,76,0.15)", height: 120 }}>
-                  <iframe
-                    title="Al Agha Group Office Map Large"
+                  <iframe title="Al Agha Group Office Map Large"
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115536.95256710752!2d55.19120299696603!3d25.18535093670777!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5c89fbf4c7bf%3A0xeb51121eac30f9a!2sAbraj%20Al%20Mamzar%2C%20Block%20A!5e0!3m2!1sen!2sph!4v1781382895149!5m2!1sen!2sph"
                     width="100%" height="100%" style={{ border: "none", display: "block", filter: "invert(90%) hue-rotate(180deg)" }}
-                    allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
-                  />
+                    allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
                 </div>
               </div>
             </div>
-
             <div style={{ borderTop: "1px solid rgba(201,168,76,0.1)", paddingTop: 24, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
               <span style={{ fontFamily: "var(--f-body)", fontSize: 11, color: "rgba(255,255,255,0.2)" }}>© 2024 Al Agha Group of Companies · All rights reserved</span>
               <span style={{ fontFamily: "var(--f-body)", fontSize: 11, color: "rgba(255,255,255,0.2)" }}>Privacy Policy · Terms of Service</span>
