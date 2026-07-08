@@ -105,7 +105,7 @@ import cert6 from "./certimg/AL AGHA TECHNICAL SERVICES - ISO 45001-2018.png";
 import qrCodeImg from "./certimg/QRCODE.jpeg";
 
 /* ─── HERO BACKGROUND VIDEO URL ──────────────────────────────────────────── */
-const heroVideo = "/video/0709(1).mp4";
+const heroVideo = "/video/0709(2).mp4";
 
 /* ─── PROJECT VIDEO SHOWCASE SOURCES ──────────────────────────────────────── */
 const PROJECT_VIDEOS = [
