@@ -140,6 +140,106 @@ const EMAILJS_SERVICE_ID = "service_8ezhvn9";
 const EMAILJS_TEMPLATE_ID = "template_e7zjtkk";
 const EMAILJS_PUBLIC_KEY = "KccrSYU3an3UhnK3F";
 
+/* ─── SVG ICONS ──────────────────────────────────────────────────────────── */
+const Icons = {
+  Facebook: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+    </svg>
+  ),
+  Instagram: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="2" width="20" height="20" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
+    </svg>
+  ),
+  WhatsApp: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21" />
+    </svg>
+  ),
+  LinkedIn: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z" />
+      <rect x="2" y="9" width="4" height="12" />
+      <circle cx="4" cy="4" r="2" />
+    </svg>
+  ),
+  Phone: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+    </svg>
+  ),
+  Email: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+      <polyline points="22,6 12,13 2,6" />
+    </svg>
+  ),
+  Location: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+  ),
+  Globe: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <line x1="2" y1="12" x2="22" y2="12" />
+      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+    </svg>
+  ),
+  Fax: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="8" width="20" height="14" rx="2" />
+      <path d="M8 2v4" /><path d="M16 2v4" />
+      <rect x="6" y="12" width="4" height="4" />
+      <rect x="14" y="12" width="4" height="4" />
+    </svg>
+  ),
+  Menu: () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="3" y1="12" x2="21" y2="12" />
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <line x1="3" y1="18" x2="21" y2="18" />
+    </svg>
+  ),
+  Close: () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
+    </svg>
+  ),
+  Search: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="11" cy="11" r="8" />
+      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+    </svg>
+  ),
+  Star: () => (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+      <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
+    </svg>
+  ),
+  Play: () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+      <polygon points="5,3 19,12 5,21" />
+    </svg>
+  ),
+  Check: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="20,6 9,17 4,12" />
+    </svg>
+  ),
+  ArrowRight: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="5" y1="12" x2="19" y2="12" />
+      <polyline points="12,5 19,12 12,19" />
+    </svg>
+  ),
+};
+
 /* ─── GLOBAL STYLES ──────────────────────────────────────────────────────── */
 const GLOBAL_CSS = `
   :root {
@@ -350,7 +450,7 @@ const GLOBAL_CSS = `
     display: flex; align-items: center; justify-content: center;
   }
   .client-img-card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,0.35); }
-  .client-img-card img { width: 100%; height: 100%; object-fit: contain; padding: 12px; display: block; }
+  .client-img-card img { width: 100%; height: 100%; object-fit: contain; padding: 8px; display: block; }
   .client-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(1,4,74,0.7) 0%, transparent 50%); opacity: 0; transition: opacity 0.3s; }
   .client-img-card:hover .client-overlay { opacity: 1; }
   .client-name {
@@ -465,13 +565,58 @@ const GLOBAL_CSS = `
     height: 100%;
   }
 
-  @media (max-width: 900px) {
-    .grid-2 { grid-template-columns: 1fr !important; }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 48px;
+  }
+
+  /* ── Services 5 in a row ── */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+  }
+
+  @media (max-width: 1200px) {
+    .services-grid { grid-template-columns: repeat(3, 1fr) !important; }
+  }
+
+  @media (max-width: 1024px) {
+    .footer-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 32px; }
+    .services-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  }
+
+  @media (max-width: 768px) {
+    .footer-grid { grid-template-columns: 1fr 1fr !important; gap: 28px; }
     .desktop-nav { display: none !important; }
     .mobile-menu-btn { display: block !important; }
+    .footer-contact-row { flex-direction: column !important; align-items: flex-start !important; }
+    .services-grid { grid-template-columns: 1fr !important; }
   }
-  @media (max-width: 600px) {
-    .grid-6 { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important; }
+
+  @media (max-width: 480px) {
+    .footer-grid { grid-template-columns: 1fr !important; gap: 24px; }
+  }
+
+  /* ── Responsive Grid Helpers ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .grid-6 { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
+
+  @media (max-width: 1024px) {
+    .grid-2 { grid-template-columns: 1fr !important; }
+    .grid-3 { grid-template-columns: 1fr 1fr !important; }
+    .grid-4 { grid-template-columns: 1fr 1fr !important; }
+  }
+  @media (max-width: 768px) {
+    .grid-3 { grid-template-columns: 1fr !important; }
+    .grid-4 { grid-template-columns: 1fr !important; }
+    .grid-6 { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)) !important; }
+  }
+  @media (max-width: 480px) {
+    .grid-6 { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)) !important; }
   }
 `;
 
@@ -873,7 +1018,7 @@ function ClientImgCard({ name, src, badge }) {
     <div className="client-img-card">
       {hasImg ? (
         <>
-          <img src={src} alt={name} onError={() => setErr(true)} />
+          <img src={src} alt={name} onError={() => setErr(true)} style={{ padding: 8 }} />
           <div className="client-overlay" />
           <div className="client-name">{name}</div>
           {badge && (
@@ -893,13 +1038,8 @@ function ClientImgCard({ name, src, badge }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   SOCIAL ICONS
+   SOCIAL BUTTON (uses SVG icons)
 ═══════════════════════════════════════════════════════════════════════════ */
-const FBIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>;
-const IGIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="2" /><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" /></svg>;
-const WAIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>;
-const LIIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><rect x="2" y="9" width="4" height="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><circle cx="4" cy="4" r="2" stroke="currentColor" strokeWidth="2" /></svg>;
-
 function SocialBtn({ href, label, children }) {
   const [hov, setHov] = useState(false);
   return (
@@ -1016,9 +1156,7 @@ function FeaturedVideoCard({ videoUrl, title, subtitle, posterImg, onClick }) {
         }}
         className="play-btn-circle"
       >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--gold)" style={{ marginLeft: 3 }}>
-          <path d="M8 5v14l11-7z" />
-        </svg>
+        <Icons.Play />
       </div>
 
       <div
@@ -1361,7 +1499,7 @@ function CertModal({ cert, onClose }) {
           )}
         </div>
         <div style={{ marginTop: 20, display: "flex", alignItems: "center", gap: 10 }}>
-          <span style={{ color: "var(--gold)", fontSize: 18 }}>✓</span>
+          <Icons.Check />
           <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.45)", lineHeight: 1.5 }}>
             Al Agha Group holds valid {cert.name} certification, demonstrating our commitment to {cert.desc.toLowerCase()}.
           </div>
@@ -1403,7 +1541,7 @@ function VideoModal({ video, onClose }) {
           />
         </div>
         <div style={{ marginTop: 18, display: "flex", alignItems: "center", gap: 10 }}>
-          <span style={{ color: "var(--gold)", fontSize: 18 }}>▶</span>
+          <Icons.Play />
           <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.45)", lineHeight: 1.5 }}>
             Watch the full video walkthrough showcasing our dedicated decoration, interior design, and contracting engineering.
           </div>
@@ -1709,30 +1847,30 @@ export default function AlAghaGroup() {
 
         {/* ══ NAV ══ */}
         <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000, background: scrolled ? "rgba(2,7,48,0.97)" : "transparent", backdropFilter: scrolled ? "blur(20px)" : "none", boxShadow: scrolled ? "0 1px 0 rgba(201,168,76,0.1)" : "none", transition: "all 0.4s ease" }}>
-          <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 36px", height: 72, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <button onClick={() => scrollTo("Home")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 12 }}>
-              <img src={logo} alt="Al Agha Group Logo" style={{ width: 44, height: 44, objectFit: "contain", borderRadius: 8, flexShrink: 0 }}
+          <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 20px", height: 72, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <button onClick={() => scrollTo("Home")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
+              <img src={logo} alt="Al Agha Group Logo" style={{ width: 40, height: 40, objectFit: "contain", borderRadius: 8, flexShrink: 0 }}
                 onError={e => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }} />
-              <div style={{ display: "none", width: 44, height: 44, borderRadius: 10, flexShrink: 0, background: "linear-gradient(135deg, var(--gold-dk), var(--gold))", alignItems: "center", justifyContent: "center", fontFamily: "var(--f-display)", fontWeight: 800, fontSize: 18, color: "var(--ink)" }}>AG</div>
+              <div style={{ display: "none", width: 40, height: 40, borderRadius: 10, flexShrink: 0, background: "linear-gradient(135deg, var(--gold-dk), var(--gold))", alignItems: "center", justifyContent: "center", fontFamily: "var(--f-display)", fontWeight: 800, fontSize: 16, color: "var(--ink)" }}>AG</div>
               <div style={{ textAlign: "left" }}>
-                <div style={{ fontFamily: "var(--f-display)", fontWeight: 700, fontSize: 19, color: "#fff", letterSpacing: "-0.01em", lineHeight: 1.15 }}>Al Agha Group</div>
-                <div style={{ fontFamily: "var(--f-body)", fontSize: 8, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(201,168,76,0.8)" }}>of Companies</div>
+                <div style={{ fontFamily: "var(--f-display)", fontWeight: 700, fontSize: "clamp(16px, 2vw, 19px)", color: "#fff", letterSpacing: "-0.01em", lineHeight: 1.15 }}>Al Agha Group</div>
+                <div style={{ fontFamily: "var(--f-body)", fontSize: "clamp(6px, 0.8vw, 8px)", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(201,168,76,0.8)" }}>of Companies</div>
               </div>
             </button>
-            <div style={{ display: "flex", gap: 32, alignItems: "center" }} className="desktop-nav">
+            <div style={{ display: "flex", gap: "clamp(16px, 2.5vw, 32px)", alignItems: "center" }} className="desktop-nav">
               {NAV.map(l => (
-                <button key={l} onClick={() => scrollTo(l)} className={`nav-btn${active === l ? " nav-active" : ""}`} style={{ color: active === l ? "var(--gold)" : "rgba(255,255,255,0.8)" }}>{l}</button>
+                <button key={l} onClick={() => scrollTo(l)} className={`nav-btn${active === l ? " nav-active" : ""}`} style={{ color: active === l ? "var(--gold)" : "rgba(255,255,255,0.8)", fontSize: "clamp(11px, 1.1vw, 13px)" }}>{l}</button>
               ))}
-              <button className="btn-gold" style={{ padding: "10px 22px" }} onClick={() => scrollTo("Career")}>Join Us</button>
+              <button className="btn-gold" style={{ padding: "10px 22px", fontSize: "clamp(10px, 0.9vw, 12px)" }} onClick={() => scrollTo("Career")}>Join Us</button>
             </div>
             <button onClick={() => setMenu(o => !o)} style={{ background: "none", border: "none", color: "#fff", fontSize: 22, cursor: "pointer", display: "none" }} className="mobile-menu-btn">
-              {menu ? "✕" : "☰"}
+              {menu ? <Icons.Close /> : <Icons.Menu />}
             </button>
           </div>
           {menu && (
             <div style={{ background: "rgba(2,7,48,0.98)", borderTop: "1px solid rgba(201,168,76,0.1)" }}>
               {NAV.map(l => (
-                <button key={l} onClick={() => scrollTo(l)} style={{ display: "block", width: "100%", background: "none", border: "none", borderBottom: "1px solid rgba(201,168,76,0.08)", color: active === l ? "var(--gold)" : "rgba(255,255,255,0.75)", fontFamily: "var(--f-body)", fontSize: 14, fontWeight: 500, padding: "15px 32px", textAlign: "left", cursor: "pointer" }}>{l}</button>
+                <button key={l} onClick={() => scrollTo(l)} style={{ display: "block", width: "100%", background: "none", border: "none", borderBottom: "1px solid rgba(201,168,76,0.08)", color: active === l ? "var(--gold)" : "rgba(255,255,255,0.75)", fontFamily: "var(--f-body)", fontSize: 14, fontWeight: 500, padding: "15px 20px", textAlign: "left", cursor: "pointer" }}>{l}</button>
               ))}
             </div>
           )}
@@ -1779,31 +1917,31 @@ export default function AlAghaGroup() {
           <div style={{ position: "absolute", left: 0, top: "10%", bottom: "10%", width: 2, background: "linear-gradient(to bottom, transparent, var(--gold), transparent)", zIndex: 1, opacity: 0.6 }} />
 
           {/* Hero content */}
-          <div style={{ maxWidth: 1320, margin: "0 auto", padding: "130px 36px 90px", position: "relative", zIndex: 2, width: "100%" }}>
+          <div style={{ maxWidth: 1320, margin: "0 auto", padding: "130px 20px 90px", position: "relative", zIndex: 2, width: "100%" }}>
             <div style={{ maxWidth: 700 }}>
               <div style={{ marginBottom: 28, animation: "fadeUp 0.8s 0.1s both" }}>
-                <span style={{ background: "rgba(201,168,76,0.15)", border: "1px solid rgba(201,168,76,0.3)", backdropFilter: "blur(20px)", padding: "8px 20px", borderRadius: 40, fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--gold)", boxShadow: "0 4px 15px rgba(201,168,76,0.1)" }}>
+                <span style={{ background: "rgba(201,168,76,0.15)", border: "1px solid rgba(201,168,76,0.3)", backdropFilter: "blur(20px)", padding: "8px 20px", borderRadius: 40, fontSize: "clamp(9px, 1vw, 10px)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--gold)", boxShadow: "0 4px 15px rgba(201,168,76,0.1)" }}>
                   Est. 2008 · Dubai, UAE
                 </span>
               </div>
-              <h1 style={{ fontFamily: "var(--f-display)", fontWeight: 700, lineHeight: 1.04, letterSpacing: "-0.02em", fontSize: "clamp(3rem,7.5vw,5.5rem)", color: "#fff", marginBottom: 28, animation: "fadeUp 0.9s 0.2s both", textShadow: "0 2px 20px rgba(0,0,0,0.3)" }}>
+              <h1 style={{ fontFamily: "var(--f-display)", fontWeight: 700, lineHeight: 1.04, letterSpacing: "-0.02em", fontSize: "clamp(2.5rem, 7.5vw, 5.5rem)", color: "#fff", marginBottom: 28, animation: "fadeUp 0.9s 0.2s both", textShadow: "0 2px 20px rgba(0,0,0,0.3)" }}>
                 BUILDING THE<br />
                 <em style={{ color: "var(--gold)", fontStyle: "italic" }}>FUTURE TOGETHER.</em>
               </h1>
-              <p style={{ fontFamily: "var(--f-body)", fontSize: 17, color: "rgba(255,255,255,0.8)", lineHeight: 1.8, maxWidth: 520, marginBottom: 44, animation: "fadeUp 1s 0.35s both", textShadow: "0 1px 10px rgba(0,0,0,0.3)" }}>
+              <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(15px, 1.3vw, 17px)", color: "rgba(255,255,255,0.8)", lineHeight: 1.8, maxWidth: 520, marginBottom: 44, animation: "fadeUp 1s 0.35s both", textShadow: "0 1px 10px rgba(0,0,0,0.3)" }}>
                 Al Agha Group delivers world-class false ceiling, gypsum works, interior fit-out, and MEP services across the UAE — with trust and quality at the core of every project.
               </p>
               <div style={{ display: "flex", gap: 14, flexWrap: "wrap", animation: "fadeUp 1s 0.45s both" }}>
-                <button className="btn-gold" style={{ padding: "16px 36px", fontSize: "13px" }} onClick={() => navigate("/projects")}>View Our Projects</button>
-                <button className="btn-outline-white" onClick={() => scrollTo("About")}>Our Story</button>
+                <button className="btn-gold" style={{ padding: "clamp(12px, 1.2vw, 16px) clamp(20px, 2.5vw, 36px)", fontSize: "clamp(11px, 1vw, 13px)" }} onClick={() => navigate("/projects")}>View Our Projects</button>
+                <button className="btn-outline-white" style={{ padding: "clamp(12px, 1.2vw, 16px) clamp(20px, 2.5vw, 36px)", fontSize: "clamp(11px, 1vw, 13px)" }} onClick={() => scrollTo("About")}>Our Story</button>
               </div>
             </div>
           </div>
         </section>
 
         {/* ══ STATS BAND ══ */}
-        <Section geoVariant="b" style={{ padding: "70px 36px" }}>
-          <div style={{ maxWidth: 1320, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))", gap: 24, alignItems: "center" }}>
+        <Section geoVariant="b" style={{ padding: "clamp(40px, 5vw, 70px) 20px" }}>
+          <div style={{ maxWidth: 1320, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(150px,1fr))", gap: "clamp(16px, 2vw, 24px)", alignItems: "center" }}>
             {STATS.map((s, i) => (
               <Reveal key={s.label} delay={i * 80} dir="zoom">
                 <AnimatedStat val={s.val} label={s.label} />
@@ -1813,35 +1951,35 @@ export default function AlAghaGroup() {
         </Section>
 
         {/* ══ 4D BUILDING ══ */}
-        <Section geoVariant="a" style={{ padding: "120px 36px" }}>
+        <Section geoVariant="a" style={{ padding: "clamp(60px, 8vw, 120px) 20px" }}>
           <Building4D />
         </Section>
 
         {/* ══ GROUP COMPANIES ══ */}
-        <Section id="group" geoVariant="c" style={{ padding: "100px 36px" }}>
+        <Section id="group" geoVariant="c" style={{ padding: "clamp(60px, 8vw, 100px) 20px" }}>
           <div style={{ maxWidth: 1320, margin: "0 auto" }}>
             <Reveal>
               <SectionHeader title='The <em style="color:var(--gold);font-style:italic">Al Agha Group</em>' subtitle="A unified group delivering excellence across decoration, technical services, and building contracting." />
             </Reveal>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))", gap: 28 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: "clamp(20px, 2vw, 28px)" }}>
               {GROUP_COMPANIES.map((c, i) => <GroupCard key={c.abbr} company={c} index={i} />)}
             </div>
           </div>
         </Section>
 
         {/* ══ ABOUT ══ */}
-        <Section id="about" geoVariant="b" style={{ padding: "110px 36px" }}>
-          <div style={{ maxWidth: 1320, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }} className="grid-2">
+        <Section id="about" geoVariant="b" style={{ padding: "clamp(60px, 8vw, 110px) 20px" }}>
+          <div style={{ maxWidth: 1320, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "clamp(40px, 5vw, 80px)", alignItems: "center" }} className="grid-2">
             <Reveal dir="left">
               <span className="eyebrow">Who We Are</span>
-              <h2 className="section-title" style={{ fontSize: "clamp(2.2rem,4vw,3.6rem)", margin: "16px 0 20px", color: "#fff" }}>
-                A legacy built on<br /><em style={{ color: "var(--gold)", fontStyle: "italic" }}>trust &amp; quality</em>
+              <h2 className="section-title" style={{ fontSize: "clamp(2rem, 4vw, 3.6rem)", margin: "16px 0 20px", color: "#fff" }}>
+                A legacy of <em style={{ color: "var(--gold)", fontStyle: "italic" }}>trust &amp; quality</em>
               </h2>
               <span className="divider-gold" style={{ marginBottom: 28 }} />
-              <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.9, marginBottom: 18, fontSize: 15 }}>
+              <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.9, marginBottom: 18, fontSize: "clamp(14px, 1.1vw, 15px)" }}>
                 Established in 2008 as a small gypsum false ceiling workshop, we have grown through the priceless efforts of our team to form the Al Agha Group of Companies — offering false ceiling, partition works, interior design, full fit-out, and MEP services.
               </p>
-              <p style={{ color: "rgba(255,255,255,0.45)", lineHeight: 1.9, marginBottom: 40, fontSize: 14 }}>
+              <p style={{ color: "rgba(255,255,255,0.45)", lineHeight: 1.9, marginBottom: 40, fontSize: "clamp(13px, 1vw, 14px)" }}>
                 Our aim was to prove we can finalise any work without mistake or delay. Client satisfaction is our top priority; accuracy and dedication in execution is what distinguishes us from others.
               </p>
               <div style={{ marginBottom: 36 }}>
@@ -1851,7 +1989,7 @@ export default function AlAghaGroup() {
                 <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                   {CERTIFICATIONS.map((cert, i) => (
                     <button key={i} className="cert-badge-btn" onClick={() => setActiveCert(cert)} title={`View ${cert.name} certificate`}>
-                      <span style={{ color: "var(--gold)", fontSize: 12 }}>✓</span>
+                      <Icons.Check />
                       <div>
                         <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 600, color: "var(--gold)", letterSpacing: "0.04em" }}>{cert.name}</div>
                         <div style={{ fontFamily: "var(--f-body)", fontSize: 9, color: "rgba(255,255,255,0.35)" }}>{cert.desc}</div>
@@ -1862,13 +2000,13 @@ export default function AlAghaGroup() {
               </div>
             </Reveal>
             <Reveal dir="right" delay={120}>
-              <ImageSlider images={SLIDER_IMAGES} height={500} />
+              <ImageSlider images={SLIDER_IMAGES} height={Math.min(500, window.innerHeight * 0.6)} />
             </Reveal>
           </div>
         </Section>
 
-        {/* ══ SERVICES ══ */}
-        <Section id="services" geoVariant="a" style={{ padding: "110px 36px" }}>
+        {/* ══ SERVICES ══ - 5 in a row */}
+        <Section id="services" geoVariant="a" style={{ padding: "clamp(60px, 8vw, 110px) 20px" }}>
           <div style={{ maxWidth: 1320, margin: "0 auto" }}>
             <Reveal>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 52, flexWrap: "wrap", gap: 20 }}>
@@ -1878,16 +2016,16 @@ export default function AlAghaGroup() {
                     Our <em style={{ color: "var(--gold)", fontStyle: "italic" }}>Services</em>
                   </h2>
                 </div>
-                <button className="btn-outline-gold" onClick={() => navigate("/services")}>View All Services →</button>
+                <button className="btn-outline-gold" style={{ padding: "clamp(10px, 1vw, 14px) clamp(18px, 2vw, 36px)", fontSize: "clamp(10px, 0.9vw, 12px)" }} onClick={() => navigate("/services")}>View All Services →</button>
               </div>
             </Reveal>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(340px,1fr))", gap: 20 }}>
+            <div className="services-grid">
               {ALL_SERVICES.map((s, i) => (
-                <Reveal key={s.title} delay={(i % 3) * 55} dir="up">
-                  <div className="svc-card">
-                    <div style={{ fontSize: 36, marginBottom: 18 }}>{s.icon}</div>
-                    <h3 style={{ fontFamily: "var(--f-display)", fontSize: 22, fontWeight: 700, color: "#fff", marginBottom: 10, lineHeight: 1.25 }}>{s.title}</h3>
-                    <p style={{ fontFamily: "var(--f-body)", fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.75 }}>{s.desc}</p>
+                <Reveal key={s.title} delay={(i % 5) * 55} dir="up">
+                  <div className="svc-card" style={{ padding: "clamp(24px, 2.5vw, 36px) clamp(20px, 2vw, 30px)" }}>
+                    <div style={{ fontSize: "clamp(28px, 3vw, 36px)", marginBottom: 18 }}>{s.icon}</div>
+                    <h3 style={{ fontFamily: "var(--f-display)", fontSize: "clamp(18px, 1.6vw, 22px)", fontWeight: 700, color: "#fff", marginBottom: 10, lineHeight: 1.25 }}>{s.title}</h3>
+                    <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(12px, 1vw, 13px)", color: "rgba(255,255,255,0.5)", lineHeight: 1.75 }}>{s.desc}</p>
                   </div>
                 </Reveal>
               ))}
@@ -1896,7 +2034,7 @@ export default function AlAghaGroup() {
         </Section>
 
         {/* ══ PROJECTS ══ */}
-        <Section id="projects" geoVariant="c" style={{ padding: "110px 36px" }}>
+        <Section id="projects" geoVariant="c" style={{ padding: "clamp(60px, 8vw, 110px) 20px" }}>
           <div style={{ maxWidth: 1320, margin: "0 auto" }}>
             <Reveal>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 52, flexWrap: "wrap", gap: 20 }}>
@@ -1908,14 +2046,14 @@ export default function AlAghaGroup() {
                 </div>
               </div>
             </Reveal>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(360px,1fr))", gap: 20 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 20 }}>
               {ALL_PROJECTS.map((p, i) => (
                 <Reveal key={p.title} delay={(i % 3) * 50} dir="zoom">
-                  <div className="proj-card" style={{ height: 300 }}>
+                  <div className="proj-card" style={{ height: "clamp(240px, 25vw, 300px)" }}>
                     <img src={p.img} alt={p.title} style={{ height: "100%" }} />
                     <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(2,7,48,0.92) 0%, transparent 55%)", borderRadius: 16 }} />
                     <div style={{ position: "absolute", bottom: 0, left: 0, padding: "0 22px 20px" }}>
-                      <div style={{ fontFamily: "var(--f-display)", fontSize: 20, fontWeight: 700, color: "#fff", marginBottom: 4 }}>{p.title}</div>
+                      <div style={{ fontFamily: "var(--f-display)", fontSize: "clamp(16px, 1.4vw, 20px)", fontWeight: 700, color: "#fff", marginBottom: 4 }}>{p.title}</div>
                     </div>
                   </div>
                 </Reveal>
@@ -1930,7 +2068,7 @@ export default function AlAghaGroup() {
                   <div style={{ flex: 1, height: 1, background: "rgba(201,168,76,0.1)" }} />
                 </div>
               </Reveal>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 28 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 28 }}>
                 {PROJECT_VIDEOS.map((v, i) => (
                   <Reveal key={v.title} delay={i * 60} dir="up">
                     <FeaturedVideoCard videoUrl={v.url} title={v.title} subtitle={v.subtitle} posterImg={v.poster} onClick={() => setActiveVideo({ url: v.url, title: v.title })} />
@@ -1940,13 +2078,13 @@ export default function AlAghaGroup() {
             </div>
 
             <div style={{ textAlign: "center", marginTop: 56 }}>
-              <button className="btn-gold" style={{ padding: "14px 36px" }} onClick={() => navigate("/projects")}>Browse All 90+ Projects →</button>
+              <button className="btn-gold" style={{ padding: "clamp(12px, 1vw, 14px) clamp(24px, 2.5vw, 36px)", fontSize: "clamp(10px, 0.9vw, 12px)" }} onClick={() => navigate("/projects")}>Browse All 90+ Projects →</button>
             </div>
           </div>
         </Section>
 
         {/* ══ CLIENTS ══ */}
-        <Section id="clients" geoVariant="a" style={{ padding: "110px 36px 80px" }}>
+        <Section id="clients" geoVariant="a" style={{ padding: "clamp(60px, 8vw, 110px) 20px 80px" }}>
           <div style={{ maxWidth: 1320, margin: "0 auto" }}>
             <Reveal>
               <SectionHeader eyebrow="Trusted By" title='Our <em style="color:var(--gold);font-style:italic">Clients, Consultants &amp; Contractors</em>' />
@@ -1955,13 +2093,13 @@ export default function AlAghaGroup() {
               <div style={{ display: "flex", justifyContent: "center", gap: 10, flexWrap: "wrap", marginBottom: 48 }}>
                 {Object.entries(clientTabData).map(([key, { label }]) => (
                   <button key={key} onClick={() => setClientTab(key)}
-                    style={{ fontFamily: "var(--f-body)", fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", padding: "10px 24px", borderRadius: 8, border: `1px solid ${clientTab === key ? "var(--gold)" : "rgba(201,168,76,0.2)"}`, background: clientTab === key ? "var(--gold)" : "rgba(255,255,255,0.04)", color: clientTab === key ? "var(--ink)" : "rgba(255,255,255,0.6)", cursor: "pointer", transition: "all 0.25s", backdropFilter: "blur(6px)" }}>
+                    style={{ fontFamily: "var(--f-body)", fontSize: "clamp(10px, 0.9vw, 12px)", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", padding: "clamp(8px, 0.8vw, 10px) clamp(16px, 1.5vw, 24px)", borderRadius: 8, border: `1px solid ${clientTab === key ? "var(--gold)" : "rgba(201,168,76,0.2)"}`, background: clientTab === key ? "var(--gold)" : "rgba(255,255,255,0.04)", color: clientTab === key ? "var(--ink)" : "rgba(255,255,255,0.6)", cursor: "pointer", transition: "all 0.25s", backdropFilter: "blur(6px)" }}>
                     {label}
                   </button>
                 ))}
               </div>
             </Reveal>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: 16 }} className="grid-6">
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: "clamp(12px, 1.2vw, 16px)" }} className="grid-6">
               {clientTabData[clientTab].data.map((item, i) => (
                 <Reveal key={`${clientTab}-${i}`} delay={(i % 6) * 40} dir="zoom">
                   <ClientImgCard name={item.name} src={item.src} badge={clientTabData[clientTab].badge} />
@@ -1972,12 +2110,12 @@ export default function AlAghaGroup() {
         </Section>
 
         {/* ══ CAREER ══ */}
-        <Section id="career" geoVariant="b" style={{ padding: "110px 36px" }}>
+        <Section id="career" geoVariant="b" style={{ padding: "clamp(60px, 8vw, 110px) 20px" }}>
           <div style={{ maxWidth: 1320, margin: "0 auto" }}>
             <Reveal>
               <SectionHeader eyebrow="Join Our Team" title='Build your <em style="color:var(--gold);font-style:italic">Career</em>' subtitle="Join a team where your skills drive landmark developments across the UAE." />
             </Reveal>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 52, alignItems: "start" }} className="grid-2">
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "clamp(30px, 4vw, 52px)", alignItems: "start" }} className="grid-2">
               <div>
                 <Reveal dir="left">
                   <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 28 }}>
@@ -1988,11 +2126,11 @@ export default function AlAghaGroup() {
                 <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                   {CAREERS.map((c, i) => (
                     <Reveal key={c.role} delay={i * 65} dir="left">
-                      <div className="career-row">
+                      <div className="career-row" style={{ padding: "clamp(16px, 1.5vw, 20px) clamp(16px, 1.5vw, 22px)", flexDirection: window.innerWidth < 600 ? "column" : "row", alignItems: window.innerWidth < 600 ? "flex-start" : "center", gap: window.innerWidth < 600 ? 8 : 0 }}>
                         <div>
-                          <div style={{ fontFamily: "var(--f-display)", fontSize: 19, fontWeight: 700, color: "#fff", marginBottom: 6 }}>{c.role}</div>
-                          <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
-                            <span style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.45)" }}>📍 {c.loc}</span>
+                          <div style={{ fontFamily: "var(--f-display)", fontSize: "clamp(17px, 1.4vw, 19px)", fontWeight: 700, color: "#fff", marginBottom: 6 }}>{c.role}</div>
+                          <div style={{ display: "flex", gap: "clamp(8px, 1vw, 12px)", alignItems: "center", flexWrap: "wrap" }}>
+                            <span style={{ fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.9vw, 12px)", color: "rgba(255,255,255,0.45)" }}>📍 {c.loc}</span>
                             <span style={{ fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--gold)" }}>{c.type}</span>
                             <span style={{ fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 600, color: "rgba(255,255,255,0.4)", background: "rgba(255,255,255,0.07)", padding: "2px 8px", borderRadius: 4 }}>{c.dept}</span>
                           </div>
@@ -2003,10 +2141,10 @@ export default function AlAghaGroup() {
                 </div>
               </div>
               <Reveal delay={100} dir="right">
-                <div style={{ border: "1px solid var(--border)", padding: "40px", borderRadius: 20, background: "#fff", boxShadow: "0 4px 40px rgba(0,0,0,0.3)" }}>
+                <div style={{ border: "1px solid var(--border)", padding: "clamp(24px, 3vw, 40px)", borderRadius: 20, background: "#fff", boxShadow: "0 4px 40px rgba(0,0,0,0.3)" }}>
                   <span className="eyebrow" style={{ marginBottom: 8, display: "block" }}>Submit your application</span>
-                  <h3 style={{ fontFamily: "var(--f-display)", fontSize: 28, fontWeight: 700, color: "var(--ink)", marginBottom: 6 }}>Apply Now</h3>
-                  <p style={{ fontFamily: "var(--f-body)", fontSize: 13, color: "#888", marginBottom: 28, lineHeight: 1.6 }}>Our HR team will respond within 5 business days.</p>
+                  <h3 style={{ fontFamily: "var(--f-display)", fontSize: "clamp(24px, 2.5vw, 28px)", fontWeight: 700, color: "var(--ink)", marginBottom: 6 }}>Apply Now</h3>
+                  <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(12px, 1vw, 13px)", color: "#888", marginBottom: 28, lineHeight: 1.6 }}>Our HR team will respond within 5 business days.</p>
                   <CareerForm careers={CAREERS} />
                 </div>
               </Reveal>
@@ -2015,7 +2153,7 @@ export default function AlAghaGroup() {
         </Section>
 
         {/* ══ TEAM ══ */}
-        <Section id="team" geoVariant="a" style={{ padding: "110px 36px" }}>
+        <Section id="team" geoVariant="a" style={{ padding: "clamp(60px, 8vw, 110px) 20px" }}>
           <div style={{ maxWidth: 1320, margin: "0 auto" }}>
             <Reveal>
               <SectionHeader eyebrow="The People Behind Our Work" title='Meet the <em style="color:var(--gold);font-style:italic">Team</em>' subtitle="Dedicated professionals committed to excellence across every discipline." />
@@ -2026,7 +2164,7 @@ export default function AlAghaGroup() {
                 <span style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)" }}>Leadership</span>
                 <div style={{ flex: 1, height: 1, background: "rgba(201,168,76,0.1)" }} />
               </div>
-              <div style={{ display: "flex", gap: 24, flexWrap: "wrap", justifyContent: "center" }}>
+              <div style={{ display: "flex", gap: "clamp(16px, 2vw, 24px)", flexWrap: "wrap", justifyContent: "center" }}>
                 {LEADERSHIP.map((m, i) => (<Reveal key={m.name} delay={i * 100} dir="zoom"><LeadershipCard member={m} /></Reveal>))}
               </div>
             </div>
@@ -2036,7 +2174,7 @@ export default function AlAghaGroup() {
                 <span style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)" }}>Management</span>
                 <div style={{ flex: 1, height: 1, background: "rgba(201,168,76,0.1)" }} />
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(190px,1fr))", gap: 18 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(160px,1fr))", gap: "clamp(14px, 1.2vw, 18px)" }}>
                 {MANAGEMENT.map((m, i) => (<Reveal key={m.name} delay={(i % 4) * 55} dir="up"><ManagementCard member={m} /></Reveal>))}
               </div>
             </div>
@@ -2046,7 +2184,7 @@ export default function AlAghaGroup() {
                 <span style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)" }}>Engineering &amp; Operations</span>
                 <div style={{ flex: 1, height: 1, background: "rgba(201,168,76,0.1)" }} />
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(290px,1fr))", gap: 12 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(250px,1fr))", gap: "clamp(10px, 0.9vw, 12px)" }}>
                 {ENGINEERS.map((m, i) => (<Reveal key={m.name} delay={(i % 6) * 35} dir="up"><EngineerRow member={m} /></Reveal>))}
               </div>
             </div>
@@ -2054,22 +2192,22 @@ export default function AlAghaGroup() {
         </Section>
 
         {/* ══ CHAIRMAN'S MESSAGE ══ */}
-        <Section geoVariant="c" style={{ padding: "110px 36px 60px" }}>
+        <Section geoVariant="c" style={{ padding: "clamp(60px, 8vw, 110px) 20px 60px" }}>
           <div style={{ maxWidth: 1320, margin: "0 auto" }}>
             <Reveal><SectionHeader eyebrow="Chairman's Message" title='A Word From Our <em style="color:var(--gold);font-style:italic">Chairman</em>' /></Reveal>
             <div style={{ maxWidth: 800, margin: "0 auto" }}>
               <Reveal>
-                <div style={{ border: "1px solid rgba(201,168,76,0.2)", padding: "52px", position: "relative", borderRadius: 20, background: "rgba(255,255,255,0.03)", backdropFilter: "blur(10px)" }}>
+                <div style={{ border: "1px solid rgba(201,168,76,0.2)", padding: "clamp(32px, 4vw, 52px)", position: "relative", borderRadius: 20, background: "rgba(255,255,255,0.03)", backdropFilter: "blur(10px)" }}>
                   <div style={{ fontFamily: "var(--f-display)", fontSize: 110, lineHeight: 0.8, color: "rgba(201,168,76,0.08)", position: "absolute", top: 20, left: 28, fontWeight: 700, pointerEvents: "none", userSelect: "none" }}>"</div>
-                  <p style={{ fontFamily: "var(--f-display)", fontSize: "clamp(1.15rem,2vw,1.6rem)", fontWeight: 500, fontStyle: "italic", color: "rgba(255,255,255,0.88)", lineHeight: 1.65, textAlign: "center", position: "relative", zIndex: 1, maxWidth: 640, margin: "0 auto" }}>
+                  <p style={{ fontFamily: "var(--f-display)", fontSize: "clamp(1rem, 1.5vw, 1.6rem)", fontWeight: 500, fontStyle: "italic", color: "rgba(255,255,255,0.88)", lineHeight: 1.65, textAlign: "center", position: "relative", zIndex: 1, maxWidth: 640, margin: "0 auto" }}>
                     "{CHAIRMAN_MESSAGE.message}"
                   </p>
-                  <div style={{ marginTop: 36, paddingTop: 28, borderTop: "1px solid rgba(201,168,76,0.12)", display: "flex", alignItems: "center", justifyContent: "center", gap: 18 }}>
+                  <div style={{ marginTop: 36, paddingTop: 28, borderTop: "1px solid rgba(201,168,76,0.12)", display: "flex", alignItems: "center", justifyContent: "center", gap: 18, flexWrap: "wrap" }}>
                     <div style={{ width: 60, height: 60, borderRadius: "50%", overflow: "hidden", border: "2px solid rgba(201,168,76,0.4)", flexShrink: 0 }}>
                       <Avatar name={CHAIRMAN_MESSAGE.name} photo={CHAIRMAN_MESSAGE.photo} size={60} />
                     </div>
                     <div>
-                      <div style={{ fontFamily: "var(--f-display)", fontSize: 19, color: "#fff", fontWeight: 700 }}>{CHAIRMAN_MESSAGE.name}</div>
+                      <div style={{ fontFamily: "var(--f-display)", fontSize: "clamp(17px, 1.4vw, 19px)", color: "#fff", fontWeight: 700 }}>{CHAIRMAN_MESSAGE.name}</div>
                       <div style={{ fontFamily: "var(--f-body)", fontSize: 10, color: "var(--gold)", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginTop: 4 }}>{CHAIRMAN_MESSAGE.role} · Al Agha Group</div>
                     </div>
                   </div>
@@ -2080,7 +2218,7 @@ export default function AlAghaGroup() {
         </Section>
 
         {/* ══ YOUTUBE VIDEO PLAYER ══ */}
-        <Section geoVariant="a" style={{ padding: "40px 36px 110px" }}>
+        <Section geoVariant="a" style={{ padding: "clamp(20px, 3vw, 40px) 20px clamp(60px, 8vw, 110px) 20px" }}>
           <div style={{ maxWidth: 1120, margin: "0 auto" }}>
             <Reveal>
               <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 32 }}>
@@ -2096,93 +2234,102 @@ export default function AlAghaGroup() {
         </Section>
 
         {/* ══ CTA ══ */}
-        <Section geoVariant="b" style={{ padding: "90px 36px" }}>
+        <Section geoVariant="b" style={{ padding: "clamp(60px, 7vw, 90px) 20px" }}>
           <div style={{ maxWidth: 1320, margin: "0 auto", textAlign: "center" }}>
             <Reveal dir="zoom">
               <span className="eyebrow" style={{ marginBottom: 14, display: "block" }}>Ready to Build?</span>
-              <h2 style={{ fontFamily: "var(--f-display)", fontWeight: 700, fontSize: "clamp(2rem,4vw,3.2rem)", color: "#fff", marginBottom: 18 }}>
+              <h2 style={{ fontFamily: "var(--f-display)", fontWeight: 700, fontSize: "clamp(1.8rem, 4vw, 3.2rem)", color: "#fff", marginBottom: 18 }}>
                 Let's bring your vision to <em style={{ color: "var(--gold)", fontStyle: "italic" }}>life</em>
               </h2>
-              <p style={{ fontFamily: "var(--f-body)", fontSize: 16, color: "rgba(255,255,255,0.5)", maxWidth: 520, margin: "0 auto 44px", lineHeight: 1.75 }}>
+              <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(14px, 1.2vw, 16px)", color: "rgba(255,255,255,0.5)", maxWidth: 520, margin: "0 auto 44px", lineHeight: 1.75 }}>
                 From false ceiling concepts to complete interior fit-out, Al Agha Group delivers results with integrity, craftsmanship, and a commitment to finishing on time.
               </p>
               <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
-                <a href="tel:+97142675229" className="btn-gold" style={{ padding: "14px 36px" }}>Call +971 4 267 5229</a>
-                <button className="btn-outline-gold" style={{ padding: "14px 36px" }} onClick={() => scrollTo("Career")}>Join Our Team</button>
+                <a href="tel:+97142675229" className="btn-gold" style={{ padding: "clamp(12px, 1vw, 14px) clamp(24px, 2.5vw, 36px)", fontSize: "clamp(10px, 0.9vw, 12px)" }}>Call +971 4 267 5229</a>
+                <button className="btn-outline-gold" style={{ padding: "clamp(12px, 1vw, 14px) clamp(24px, 2.5vw, 36px)", fontSize: "clamp(10px, 0.9vw, 12px)" }} onClick={() => scrollTo("Career")}>Join Our Team</button>
               </div>
             </Reveal>
           </div>
         </Section>
 
-        {/* ══ FOOTER ══ */}
-        <footer style={{ background: "rgba(0,2,20,0.95)", borderTop: "1px solid rgba(201,168,76,0.1)", padding: "72px 36px 36px", position: "relative" }}>
+        {/* ══ FOOTER ══ - Matching Project Page Footer */}
+        <footer style={{ background: "rgba(0,2,20,0.96)", borderTop: "1px solid rgba(201,168,76,0.12)", padding: "clamp(40px, 5vw, 72px) 20px clamp(24px, 2.5vw, 36px)", position: "relative" }}>
           <GeoBg variant="c" />
           <div style={{ maxWidth: 1320, margin: "0 auto", position: "relative", zIndex: 1 }}>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(230px,1fr))", gap: 48, marginBottom: 56 }}>
+            <div className="footer-grid">
+              {/* Column 1 - Brand */}
               <div>
-                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-                  <img src={logo} alt="Al Agha Group Logo" style={{ width: 50, height: 50, objectFit: "contain", borderRadius: 8, flexShrink: 0 }}
-                    onError={e => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }} />
-                  <div style={{ display: "none", width: 42, height: 42, borderRadius: 10, flexShrink: 0, background: "linear-gradient(135deg, var(--gold-dk), var(--gold))", alignItems: "center", justifyContent: "center", fontFamily: "var(--f-display)", fontWeight: 800, fontSize: 16, color: "var(--ink)" }}>AG</div>
+                <div style={{ display: "flex", alignItems: "center", gap: 11, marginBottom: 16 }}>
+                  <div style={{ width: 40, height: 40, borderRadius: 8, overflow: "hidden", background: "#070d5a" }}>
+                    <img src={logo} alt="Al Agha Group" style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => e.target.style.display = "none"} />
+                  </div>
                   <div>
-                    <div style={{ fontFamily: "var(--f-display)", fontSize: 17, fontWeight: 700, color: "#fff" }}>Al Agha Group</div>
-                    <div style={{ fontFamily: "var(--f-body)", fontSize: 8, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(201,168,76,0.7)" }}>of Companies</div>
+                    <div style={{ fontFamily: "var(--f-display)", fontSize: "clamp(16px, 1.3vw, 17px)", fontWeight: 700, color: "#fff" }}>Al Agha Group</div>
+                    <div style={{ fontFamily: "var(--f-body)", fontSize: "clamp(7px, 0.6vw, 9px)", fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--gold)" }}>of Companies</div>
                   </div>
                 </div>
-                <p style={{ fontFamily: "var(--f-body)", fontSize: 13, color: "rgba(255,255,255,0.35)", lineHeight: 1.85, maxWidth: 260, marginBottom: 22 }}>
+                <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(12px, 0.9vw, 13px)", color: "rgba(255,255,255,0.35)", lineHeight: 1.8, maxWidth: 260, marginBottom: 22 }}>
                   False ceiling, gypsum works, interior fit-out, and MEP services across the UAE since 2008.
                 </p>
-                <div style={{ display: "flex", gap: 9 }}>
-                  <SocialBtn href="https://www.facebook.com/profile.php?id=61551030990492" label="Facebook"><FBIcon /></SocialBtn>
-                  <SocialBtn href="https://www.instagram.com/reel/DAVwH2TpoJP/" label="Instagram"><IGIcon /></SocialBtn>
-                  <SocialBtn href="https://wa.me/97142675229" label="WhatsApp"><WAIcon /></SocialBtn>
-                  <SocialBtn href="https://linkedin.com/company/alaghagroup" label="LinkedIn"><LIIcon /></SocialBtn>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                  <SocialBtn href="https://www.facebook.com/profile.php?id=61551030990492" label="Facebook"><Icons.Facebook /></SocialBtn>
+                  <SocialBtn href="https://www.instagram.com/reel/DAVwH2TpoJP/" label="Instagram"><Icons.Instagram /></SocialBtn>
+                  <SocialBtn href="https://wa.me/97142675229" label="WhatsApp"><Icons.WhatsApp /></SocialBtn>
+                  <SocialBtn href="https://linkedin.com/company/alaghagroup" label="LinkedIn"><Icons.LinkedIn /></SocialBtn>
+                </div>
+                <div style={{ display: "flex", gap: 12, alignItems: "center", background: "rgba(201,168,76,0.06)", border: "1px solid rgba(201,168,76,0.15)", borderRadius: 12, padding: "12px 14px", marginTop: 26 }}>
+                  <div style={{ width: 72, height: 72, borderRadius: 8, overflow: "hidden", flexShrink: 0, background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", padding: 4 }}>
+                    <img src={qrCodeImg} alt="QR Code" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                  </div>
+                  <div>
+                    <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 4 }}>Scan to connect</div>
+                    <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(201,168,76,0.5)", lineHeight: 1.5 }}>Point your camera to visit Al Agha Group online</div>
+                  </div>
                 </div>
               </div>
+
+              {/* Column 2 - Quick Links */}
               <div>
-                <h4 style={{ fontFamily: "var(--f-display)", fontSize: 17, fontWeight: 700, marginBottom: 18, color: "#fff" }}>Quick Links</h4>
+                <h4 style={{ fontFamily: "var(--f-display)", fontSize: "clamp(16px, 1.3vw, 18px)", fontWeight: 700, marginBottom: 18, color: "#fff" }}>Quick Links</h4>
                 {NAV.map(l => (
-                  <button key={l} onClick={() => scrollTo(l)} style={{ display: "block", background: "none", border: "none", color: "rgba(255,255,255,0.35)", fontFamily: "var(--f-body)", fontSize: 13, padding: "6px 0", cursor: "pointer", transition: "color 0.2s", textAlign: "left" }} onMouseEnter={e => e.target.style.color = "var(--gold)"} onMouseLeave={e => e.target.style.color = "rgba(255,255,255,0.35)"}>{l}</button>
+                  <button key={l} onClick={() => scrollTo(l)} style={{ display: "block", background: "none", border: "none", color: "rgba(255,255,255,0.35)", fontFamily: "var(--f-body)", fontSize: "clamp(12px, 0.9vw, 13px)", padding: "7px 0", cursor: "pointer", textAlign: "left", transition: "color 0.2s" }} onMouseEnter={e => e.currentTarget.style.color = "var(--gold)"} onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.35)"}>{l}</button>
                 ))}
               </div>
+
+              {/* Column 3 - Services */}
               <div>
-                <h4 style={{ fontFamily: "var(--f-display)", fontSize: 17, fontWeight: 700, marginBottom: 18, color: "#fff" }}>Our Services</h4>
-                {ALL_SERVICES.map(s => (
-                  <div key={s.title} style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.3)", padding: "5px 0", lineHeight: 1.5 }}>{s.title}</div>
+                <h4 style={{ fontFamily: "var(--f-display)", fontSize: "clamp(16px, 1.3vw, 18px)", fontWeight: 700, marginBottom: 18, color: "#fff" }}>Services</h4>
+                {["False Ceiling & Gypsum Decor", "Interior Design & Fit-Out", "Mechanical, Electrical, Plumbing (MEP)", "General Civil Works", "Paint & Wall Finishes", "Architectural Design & Planning"].map(s => (
+                  <div key={s} style={{ fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", color: "rgba(255,255,255,0.3)", padding: "6px 0", lineHeight: 1.5 }}>{s}</div>
                 ))}
               </div>
+
+              {/* Column 4 - Contact */}
               <div>
-                <h4 style={{ fontFamily: "var(--f-display)", fontSize: 17, fontWeight: 700, marginBottom: 18, color: "#fff" }}>Contact</h4>
-                {[
-                  ["📍", "Office No. 201 & 202, Block A, Abraj Al Mamzar, Al Mamzar Area, Dubai, U.A.E. P.O.Box: 99525"],
-                  ["📞", "+971 4 267 5229"],
-                  ["📠", "+971 4 267 6629"],
-                  ["✉️", "info@alaghagroup.com"],
-                  ["🌐", "www.alaghagroup.com"],
-                ].map(([icon, txt]) => (
-                  <div key={txt} style={{ display: "flex", gap: 10, padding: "5px 0", fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.35)" }}>
-                    <span style={{ flexShrink: 0 }}>{icon}</span><span>{txt}</span>
-                  </div>
-                ))}
-                <div style={{ marginTop: 18, display: "flex", gap: 14, alignItems: "flex-start" }}>
-                  <div style={{ flexShrink: 0 }}>
-                    <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)", marginBottom: 8 }}>SCAN QR CODE</div>
-                    <div style={{ width: 80, height: 80, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(201,168,76,0.2)", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-                      <img src={qrCodeImg} alt="QR Code" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
-                    </div>
-                  </div>
+                <h4 style={{ fontFamily: "var(--f-display)", fontSize: "clamp(16px, 1.3vw, 18px)", fontWeight: 700, marginBottom: 18, color: "#fff" }}>Contact</h4>
+                <div style={{ display: "flex", gap: 10, padding: "6px 0", fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", color: "rgba(255,255,255,0.35)", lineHeight: 1.55 }}>
+                  <Icons.Location /><span>Office 201 & 202, Block A, Abraj Al Mamzar, Dubai, U.A.E.</span>
                 </div>
-                <div style={{ marginTop: 12, borderRadius: 12, overflow: "hidden", border: "1px solid rgba(201,168,76,0.15)", height: 120 }}>
-                  <iframe title="Al Agha Group Office Map Large"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115536.95256710752!2d55.19120299696603!3d25.18535093670777!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5c89fbf4c7bf%3A0xeb51121eac30f9a!2sAbraj%20Al%20Mamzar%2C%20Block%20A!5e0!3m2!1sen!2sph!4v1781382895149!5m2!1sen!2sph"
+                <div style={{ display: "flex", gap: 10, padding: "6px 0", fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", color: "rgba(255,255,255,0.35)", lineHeight: 1.55 }}>
+                  <Icons.Phone /><span>+971 4 267 5229</span>
+                </div>
+                <div style={{ display: "flex", gap: 10, padding: "6px 0", fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", color: "rgba(255,255,255,0.35)", lineHeight: 1.55 }}>
+                  <Icons.Email /><span>info@alaghagroup.com</span>
+                </div>
+                <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid rgba(201,168,76,0.15)", height: 180, marginTop: 18 }}>
+                  <iframe
+                    title="Al Agha Group Office"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3607.2764583093857!2d55.35445537600424!3d25.28574307758295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5cfe11994ee1%3A0x8bdd77fec9a0e9c3!2sAbraj%20Al%20Mamzar%20-%20Al%20Mamzar%20-%20Dubai!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae"
                     width="100%" height="100%" style={{ border: "none", display: "block", filter: "invert(90%) hue-rotate(180deg)" }}
-                    allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+                    allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
+                  />
                 </div>
               </div>
             </div>
-            <div style={{ borderTop: "1px solid rgba(201,168,76,0.1)", paddingTop: 24, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
-              <span style={{ fontFamily: "var(--f-body)", fontSize: 11, color: "rgba(255,255,255,0.2)" }}>© 2024 Al Agha Group of Companies · All rights reserved</span>
-              <span style={{ fontFamily: "var(--f-body)", fontSize: 11, color: "rgba(255,255,255,0.2)" }}>Privacy Policy · Terms of Service</span>
+
+            <div style={{ borderTop: "1px solid rgba(201,168,76,0.12)", paddingTop: "clamp(18px, 1.8vw, 22px)", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
+              <span style={{ fontFamily: "var(--f-body)", fontSize: "clamp(10px, 0.8vw, 12px)", color: "rgba(255,255,255,0.2)" }}>© 2025 Al Agha Group of Companies · All rights reserved</span>
+              <span style={{ fontFamily: "var(--f-body)", fontSize: "clamp(10px, 0.8vw, 12px)", color: "rgba(255,255,255,0.2)" }}>Privacy Policy · Terms of Service</span>
             </div>
           </div>
         </footer>

@@ -648,11 +648,11 @@ const PROJECTS = [
     { id: 118, name: "Park Island — Dubai Creek Harbour", category: "Civil Works", img: "https://cloud.famproperties.com/project/large/island-park-245255-160558.jpg" },
     { id: 119, name: "Three Community Centers — Mirdif, Al Khail Gate & Remraam", category: "Civil Works", img: "https://www.hattakayaktours.com/wp-content/uploads/2024/07/Al-Khail-Gate-Community-Centre.jpg" },
     { id: 120, name: "Topaz 2 — Dubai Silicon Oasis", category: "False Ceiling & Partition", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzcqzwM7JNwXg0H3G1b_ihgw_3coCxjlYwcA&s" },
-    { id: 121, name: "Jumeirah Zabeel Saray Hotel Refurbushment on Plot No. PJCRC04 & C05, Palm Jumeirah, Dubai", category: "False Ceiling & Partition", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzcqzwM7JNwXg0H3G1b_ihgw_3coCxjlYwcA&s" },
-    { id: 122, name: "R3 MBL Signature Tower on Plot No. 3930935 & 3936085, at Cluster R, JLT, Dubai, U.A.E.", category: "False Ceiling & Partition", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzcqzwM7JNwXg0H3G1b_ihgw_3coCxjlYwcA&s" },
-    { id: 123, name: "INNOVATION HUB, PT 295/8 TECOM PHASE 3", category: "False Ceiling & Partition", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzcqzwM7JNwXg0H3G1b_ihgw_3coCxjlYwcA&s" },
-    { id: 124, name: "THE ACRES PHASE 1, CLUSTER A, B, C, D, I AND J, DUBAI LAND, DUBAI, UAE", category: "False Ceiling & Partition", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzcqzwM7JNwXg0H3G1b_ihgw_3coCxjlYwcA&s" },
-    { id: 125, name: "CENTRAL BUSINESS DISTRICT Plot no. 7770 AT MWEILEH TEJARI SHARJAH-UAE", category: "False Ceiling & Partition", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzcqzwM7JNwXg0H3G1b_ihgw_3coCxjlYwcA&s" },
+    { id: 121, name: "Jumeirah Zabeel Saray Hotel Refurbushment on Plot No. PJCRC04 & C05, Palm Jumeirah, Dubai", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/qh3zic6r/image/upload/v1783691662/aa8e7e5b-31c1-4b9b-9b27-68a587d2898c_ufr3q1.jpg" },
+    { id: 122, name: "R3 MBL Signature Tower on Plot No. 3930935 & 3936085, at Cluster R, JLT, Dubai, U.A.E.", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/qh3zic6r/image/upload/v1783691662/dade3b21-6b1d-4fd4-8740-85c9083c58cf_cknp56.jpg" },
+    { id: 123, name: "INNOVATION HUB, PT 295/8 TECOM PHASE 3", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/qh3zic6r/image/upload/v1783691662/e8518bb1-4b72-41ec-b52d-692fa2318129_uxhooj.jpg" },
+    { id: 124, name: "THE ACRES PHASE 1, CLUSTER A, B, C, D, I AND J, DUBAI LAND, DUBAI, UAE", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/qh3zic6r/image/upload/v1783691662/a278c122-fa90-48a5-8c65-35fe9e4e8e32_lqmd4k.jpg" },
+    { id: 125, name: "CENTRAL BUSINESS DISTRICT Plot no. 7770 AT MWEILEH TEJARI SHARJAH-UAE", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/qh3zic6r/image/upload/v1783691662/ca0a4189-048e-4004-a5b7-8aa43689fee8_mkeail.jpg" },
 
 
 ];
