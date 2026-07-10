@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import logo from "../alaghalogo.png";
 
 // Automatically glob-import all project images in the directory
@@ -14,6 +14,103 @@ const imageMap = {
     ...projectImages,
     "./AAAAAA.jpg": imgAAAAAA,
     "./img/QRCODE.jpeg": qrcodeImg,
+};
+
+/* ─── HERO VIDEO URL ─────────────────────────────────────────────────────── */
+const heroVideo = "https://res.cloudinary.com/qh3zic6r/video/upload/0709_1_opprrq.mp4";
+
+/* ─── SVG ICONS ──────────────────────────────────────────────────────────── */
+const Icons = {
+    Facebook: () => (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+        </svg>
+    ),
+    Instagram: () => (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" />
+            <circle cx="12" cy="12" r="4" />
+            <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
+        </svg>
+    ),
+    WhatsApp: () => (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21" />
+        </svg>
+    ),
+    LinkedIn: () => (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z" />
+            <rect x="2" y="9" width="4" height="12" />
+            <circle cx="4" cy="4" r="2" />
+        </svg>
+    ),
+    Phone: () => (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+        </svg>
+    ),
+    Email: () => (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+            <polyline points="22,6 12,13 2,6" />
+        </svg>
+    ),
+    Location: () => (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+            <circle cx="12" cy="10" r="3" />
+        </svg>
+    ),
+    Globe: () => (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="2" y1="12" x2="22" y2="12" />
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+        </svg>
+    ),
+    Fax: () => (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="2" y="8" width="20" height="14" rx="2" />
+            <path d="M8 2v4" /><path d="M16 2v4" />
+            <rect x="6" y="12" width="4" height="4" />
+            <rect x="14" y="12" width="4" height="4" />
+        </svg>
+    ),
+    Menu: () => (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+    ),
+    Close: () => (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+    ),
+    Search: () => (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+    ),
+    Star: () => (
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+            <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
+        </svg>
+    ),
+    Play: () => (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+            <polygon points="5,3 19,12 5,21" />
+        </svg>
+    ),
+    Check: () => (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="20,6 9,17 4,12" />
+        </svg>
+    ),
 };
 
 /* ─── SHARED CSS ─────────────────────────────────────────────────────────── */
@@ -132,11 +229,26 @@ const PAGE_CSS = `
     to   { width: 100%; opacity: 1; }
   }
 
+  .hero-video-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
   /* Project card image wrapper */
   .proj-img-wrap {
     position: relative;
     overflow: hidden;
-    height: 260px;
+    height: 200px;
     background: #01044A;
   }
 
@@ -265,9 +377,9 @@ const PAGE_CSS = `
     left: 0;
     right: 0;
     z-index: 5;
-    padding: 12px 16px;
+    padding: 8px 14px;
     font-family: var(--f-body);
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -291,7 +403,7 @@ const PAGE_CSS = `
 
   /* Card */
   .proj-card {
-    border-radius: 16px;
+    border-radius: 12px;
     overflow: hidden;
     cursor: pointer;
     transition:
@@ -314,7 +426,7 @@ const PAGE_CSS = `
 
   /* Name strip */
   .proj-name-strip {
-    padding: 18px 20px 22px;
+    padding: 14px 16px 18px;
     background: rgba(255,255,255,0.025);
     position: relative;
     overflow: hidden;
@@ -346,11 +458,11 @@ const PAGE_CSS = `
     background: rgba(201,168,76,0.9);
     color: var(--ink);
     font-family: var(--f-body);
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    padding: 8px 18px;
+    padding: 6px 14px;
     border-radius: 30px;
     opacity: 0;
     pointer-events: none;
@@ -403,7 +515,7 @@ const PAGE_CSS = `
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    padding: 12px 28px;
+    padding: 10px 22px;
     border-radius: 8px;
     border: none;
     cursor: pointer;
@@ -416,14 +528,30 @@ const PAGE_CSS = `
     box-shadow: 0 10px 36px rgba(201,168,76,0.42);
   }
 
+  .btn-outline-white {
+    display: inline-flex;
+    align-items: center; gap: 8px;
+    background: transparent; color: rgba(255,255,255,0.8);
+    font-family: var(--f-body); font-size: 12px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 10px 22px; border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.25);
+    cursor: pointer; transition: all 0.25s ease;
+  }
+  .btn-outline-white:hover {
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(255,255,255,0.5);
+    transform: translateY(-2px);
+  }
+
   /* Filter pills */
   .cat-pill {
     background: rgba(255,255,255,0.03);
     border: 1px solid rgba(201,168,76,0.2);
     font-family: var(--f-body);
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 500;
-    padding: 7px 15px;
+    padding: 5px 12px;
     border-radius: 30px;
     cursor: pointer;
     transition: all 0.22s ease;
@@ -431,7 +559,7 @@ const PAGE_CSS = `
     color: rgba(255,255,255,0.7);
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
   }
   .cat-pill:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-1px); }
   .cat-pill.active {
@@ -480,17 +608,41 @@ const PAGE_CSS = `
     animation: statShimmer 3s linear infinite;
   }
 
+  /* Footer Grid */
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+  }
+
   /* Responsive */
+  @media (max-width: 1024px) {
+    .footer-grid { grid-template-columns: 1fr 1fr !important; gap: 32px; }
+    .project-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  }
+
   @media (max-width: 900px) {
     .desktop-nav { display: none !important; }
     .mobile-toggle { display: flex !important; }
     .hero-grid { grid-template-columns: 1fr !important; }
     .filter-row { flex-direction: column !important; align-items: flex-start !important; }
-    .project-grid { grid-template-columns: 1fr !important; }
-    .footer-grid { grid-template-columns: 1fr 1fr !important; }
+    .footer-grid { grid-template-columns: 1fr 1fr !important; gap: 28px; }
   }
+
+  @media (max-width: 768px) {
+    .project-grid { grid-template-columns: 1fr !important; }
+    .proj-img-wrap { height: 180px !important; }
+  }
+
   @media (max-width: 600px) {
-    .footer-grid { grid-template-columns: 1fr !important; }
+    .footer-grid { grid-template-columns: 1fr !important; gap: 24px; }
+    .proj-img-wrap { height: 160px !important; }
+  }
+
+  @media (max-width: 480px) {
+    .proj-img-wrap { height: 140px !important; }
+    .proj-name-strip { padding: 10px 12px 14px !important; }
+    .proj-name-strip h3 { font-size: 14px !important; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -500,6 +652,7 @@ const PAGE_CSS = `
     .proj-img-wrap::before, .proj-img-wrap::after { animation: none !important; }
     .stat-val { animation: none !important; -webkit-text-fill-color: var(--gold); }
     .hero-orb { animation: none !important; }
+    .hero-video-bg { transition: none !important; }
   }
 `;
 
@@ -522,40 +675,38 @@ const FALLBACKS = [
 ];
 
 /* ─── PROJECTS ───────────────────────────────────────────────────────────── */
-// All image paths are now relative to the component file (./projectimg/...)
-// The two exceptions are ./AAAAAA.jpg and ./img/QRCODE.jpeg.
 const PROJECTS = [
     { id: 1, name: "Beach House & Villas Fujairah", category: "False Ceiling & Partition", img: "./projectimg/beach.jpg", featured: true },
-    { id: 2, name: "EMAAR Beachfront — Sunrise Bay, Dubai Harbour", category: "False Ceiling & Partition", img: "./projectimg/beachfront.jpg", featured: true },
+    { id: 2, name: "EMAAR Beachfront — Sunrise Bay", category: "False Ceiling & Partition", img: "./projectimg/beachfront.jpg", featured: true },
     { id: 3, name: "City Engineering Office — Al Fatan Tower", category: "Interior Design & Fit-Out", img: "./projectimg/city.jpg", featured: true },
-    { id: 4, name: "Park Ridge — Hadaeq Sheikh Mohammed Bin Rashid", category: "False Ceiling & Partition", img: "./projectimg/Park-Ridge-2.jpg", featured: true },
+    { id: 4, name: "Park Ridge — Hadaeq Sheikh Mohammed", category: "False Ceiling & Partition", img: "./projectimg/Park-Ridge-2.jpg", featured: true },
     { id: 5, name: "Warehouse — Al Sajaa Industrial Area", category: "Civil Works", img: "./projectimg/15465160233.png" },
     { id: 6, name: "Hyati Residence 2 — Block A, B, C", category: "False Ceiling & Partition", img: "./projectimg/SITE -001.jpg" },
-    { id: 7, name: "2B+G+11 Commercial & Residential — Oud Metha", category: "Civil Works", img: "./projectimg/Project Perspective.jpg" },
+    { id: 7, name: "2B+G+11 Commercial & Residential", category: "Civil Works", img: "./projectimg/Project Perspective.jpg" },
     { id: 8, name: "G+3 Apartment Buildings — Al Hamriya", category: "Civil Works", img: "./projectimg/AL HAMRIYA & UM HURAIR 0138-0435.jpg" },
-    { id: 9, name: "Labour Accommodation — Al Muhaisnah 2nd", category: "Civil Works", img: "./projectimg/20181003_264-0338-Labor-camp-Muhaisnah-second-1024x576.jpg", featured: true },
+    { id: 9, name: "Labour Accommodation — Al Muhaisnah", category: "Civil Works", img: "./projectimg/20181003_264-0338-Labor-camp-Muhaisnah-second-1024x576.jpg", featured: true },
     { id: 10, name: "Coral Deira Hotel", category: "Interior Design & Fit-Out", img: "./projectimg/coral-dubai-deira-hotel.jpg" },
     { id: 11, name: "The Point Tower — Dubai Marina", category: "False Ceiling & Partition", img: "./projectimg/the-point-14096_xl.jpg" },
     { id: 12, name: "Jumeirah Beach Residence Tower", category: "False Ceiling & Partition", img: "./projectimg/141217_366_JUMEIRAH-BEACH-RESIDENCE_AERIAL_zj-1536x1192.jpg" },
     { id: 13, name: "Marina Wharf 1", category: "False Ceiling & Partition", img: "./projectimg/marina-wharf-1618_xl.jpg" },
     { id: 14, name: "Torch Tower", category: "False Ceiling & Partition", img: "./projectimg/R.jpg" },
-    { id: 15, name: "72 Villas — Hydra Village, Shahama", category: "Civil Works", img: "./projectimg/Capture4.png" },
+    { id: 15, name: "72 Villas — Hydra Village", category: "Civil Works", img: "./projectimg/Capture4.png" },
     { id: 16, name: "IV Quattro EMAAR — Business Bay", category: "Interior Design & Fit-Out", img: "./projectimg/Capture5.png" },
     { id: 17, name: "D101 G+8+HC — Dubai Silicon Oasis", category: "False Ceiling & Partition", img: "./projectimg/DUBAIS_1.jpg" },
     { id: 18, name: "Empire Heights", category: "False Ceiling & Partition", img: "./projectimg/1520077655140.jpg" },
     { id: 19, name: "Al Bareeq Tower", category: "False Ceiling & Partition", img: "./projectimg/01_Perspective__Al Bareeq Tower.jpg" },
-    { id: 20, name: "Holiday Inn Hotel & Suites — Dubai Science Park", category: "Interior Design & Fit-Out", img: "./projectimg/Holiday Inn Hotel and Suites Dubai Science Park - Photo 03.jpg", featured: true },
+    { id: 20, name: "Holiday Inn Hotel & Suites", category: "Interior Design & Fit-Out", img: "./projectimg/Holiday Inn Hotel and Suites Dubai Science Park - Photo 03.jpg", featured: true },
     { id: 21, name: "Marina Wharf 2 — 2B+G+27 Tower", category: "False Ceiling & Partition", img: "./projectimg/10208.jpg" },
     { id: 22, name: "Bobyan Tower", category: "False Ceiling & Partition", img: "./projectimg/bobyan-tower-1554_xl.jpg" },
     { id: 23, name: "Media Rotana Hotel", category: "Interior Design & Fit-Out", img: "./projectimg/424818958.jpg" },
     { id: 24, name: "2B+G+P+25 Tower — Al Nahda One", category: "False Ceiling & Partition", img: "./projectimg/Capture 1.png" },
     { id: 25, name: "Al Watani Residential Development", category: "Civil Works", img: "./projectimg/Al-Watani-Residential-Development-Project.jpg" },
     { id: 26, name: "City Seasons Hotel Burjman", category: "Interior Design & Fit-Out", img: "./projectimg/71683934.jpg" },
-    { id: 27, name: "Emirates Flight Training Organization — DWC", category: "MEP Works", img: "./projectimg/R (3).jpg", featured: true },
+    { id: 27, name: "Emirates Flight Training — DWC", category: "MEP Works", img: "./projectimg/R (3).jpg", featured: true },
     { id: 28, name: "Shatha Tower Renovation — Media City", category: "Interior Design & Fit-Out", img: "./projectimg/Shatha-Tower-1.jpg" },
     { id: 29, name: "122 Villas — Mirdif", category: "Civil Works", img: "./projectimg/WhatsApp Image 2017-09-24 at 1.01.27 PM.jpg" },
     { id: 30, name: "Remraam Residential Building", category: "False Ceiling & Partition", img: "./projectimg/remraam-295214-121454.jpg" },
-    { id: 31, name: "Office Building G+6 — TECOM Site A (UoWD)", category: "Civil Works", img: "./projectimg/3shotRecovered-Recovered.jpg" },
+    { id: 31, name: "Office Building G+6 — TECOM Site A", category: "Civil Works", img: "./projectimg/3shotRecovered-Recovered.jpg" },
     { id: 32, name: "Bay Central — Dubai Marina", category: "False Ceiling & Partition", img: "./projectimg/Untitled Design - 1 copy.jpg" },
     { id: 33, name: "I Rise Tower", category: "False Ceiling & Partition", img: "./projectimg/irise-tower-210391-101916.jpg" },
     { id: 34, name: "23 Marina", category: "False Ceiling & Partition", img: "./projectimg/Capture3.png" },
@@ -565,41 +716,41 @@ const PROJECTS = [
     { id: 38, name: "G+P+10 Residential — Al Furjan", category: "False Ceiling & Partition", img: "./projectimg/pic1 (1).jpg" },
     { id: 39, name: "Zabeel Ladies Club", category: "Interior Design & Fit-Out", img: "./projectimg/download (3).png" },
     { id: 40, name: "TH8 Hotel — Palm Jumeirah", category: "Interior Design & Fit-Out", img: "./projectimg/hotel-exterior.jpg", featured: true },
-    { id: 41, name: "Eaton Place — Jumeirah Village Circle", category: "False Ceiling & Partition", img: "./projectimg/eaton-place-10254.jpg" },
+    { id: 41, name: "Eaton Place — Jumeirah Village", category: "False Ceiling & Partition", img: "./projectimg/eaton-place-10254.jpg" },
     { id: 42, name: "The Kingdom of Sheba", category: "Interior Design & Fit-Out", img: "./projectimg/sheba_03_1920x1024.jpg" },
-    { id: 43, name: "Symphony Tower (Radisson Blu Waterfront)", category: "Interior Design & Fit-Out", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShyVUAL87651gDLZYdVLSTzwtGU4pl6jMKmcUdDohypA&s=10", featured: true },
+    { id: 43, name: "Symphony Tower (Radisson Blu)", category: "Interior Design & Fit-Out", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShyVUAL87651gDLZYdVLSTzwtGU4pl6jMKmcUdDohypA&s=10", featured: true },
     { id: 44, name: "Duja Tower — Trade Center First", category: "False Ceiling & Partition", img: "./projectimg/download (3) (1).png" },
-    { id: 45, name: "Vantage — Jumeirah Village Community", category: "False Ceiling & Partition", img: "./projectimg/download (4).png" },
+    { id: 45, name: "Vantage — Jumeirah Village", category: "False Ceiling & Partition", img: "./projectimg/download (4).png" },
     { id: 46, name: "Mirdif Hills — North Avenue", category: "False Ceiling & Partition", img: "./projectimg/download (1) (2).png" },
     { id: 47, name: "MBR Dubai Hills — Mulberry at Park Heights", category: "False Ceiling & Partition", img: "./projectimg/download (2) (1).png" },
     { id: 48, name: "Town Square — Rawda 1, 2, 3 & 4", category: "False Ceiling & Partition", img: "./projectimg/download (3) (2).png" },
     { id: 49, name: "The Address Residences Dubai Opera", category: "Interior Design & Fit-Out", img: "./projectimg/the-address-residences-dubai-opera-9455_xl.jpg", featured: true },
     { id: 50, name: "Town Square — UNA Apartments", category: "False Ceiling & Partition", img: "./projectimg/1649835984RD883.jpg" },
     { id: 51, name: "Hyati Residence 2 — JVC Townhouses", category: "False Ceiling & Partition", img: "./projectimg/download (2) (2).png" },
-    { id: 52, name: "Port de la Mer Phase 2 — Jumeirah First", category: "False Ceiling & Partition", img: "./projectimg/download (5).png" },
+    { id: 52, name: "Port de la Mer Phase 2", category: "False Ceiling & Partition", img: "./projectimg/download (5).png" },
     { id: 53, name: "Kalba Waterfront — Khor Kalba", category: "Civil Works", img: "./projectimg/download (6).png", featured: true },
     { id: 54, name: "Terhab Hotel & Tower", category: "Interior Design & Fit-Out", img: "./projectimg/download (1) (4).png" },
     { id: 55, name: "Gulf Tower — Um Hurair 2nd", category: "False Ceiling & Partition", img: "./projectimg/gulf-tower.jpg" },
     { id: 56, name: "Dubai Creek Harbour — Summer 1D1", category: "False Ceiling & Partition", img: "./projectimg/R (1).jpg" },
-    { id: 57, name: "BADR Project Phase 1 — Muhaisnah First", category: "Civil Works", img: "./projectimg/download (2) (3).png" },
+    { id: 57, name: "BADR Project Phase 1", category: "Civil Works", img: "./projectimg/download (2) (3).png" },
     { id: 58, name: "Areej 1–4 — Muwaileh, Sharjah", category: "False Ceiling & Partition", img: "./projectimg/download (3) (4).png" },
     { id: 59, name: "Grand Bleu Tower — Emaar Beachfront", category: "False Ceiling & Partition", img: "./projectimg/1620744002_grandbleu1_result.jpg", featured: true },
-    { id: 60, name: "Dubai Prosecution Building — Um Hurair", category: "MEP Works", img: "./projectimg/download (2) (4).png", featured: true },
+    { id: 60, name: "Dubai Prosecution Building", category: "MEP Works", img: "./projectimg/download (2) (4).png", featured: true },
     { id: 61, name: "Platinum 2 — Dubai Silicon Oasis", category: "False Ceiling & Partition", img: "./projectimg/PLATINUM 2.jpg" },
     { id: 62, name: "Platinum 1 — Dubai Silicon Oasis", category: "False Ceiling & Partition", img: "./projectimg/PLATINUM 1.jpg" },
     { id: 63, name: "Mira Oasis Townhouses — Reem Phase 2", category: "Civil Works", img: "./projectimg/3731.jpg" },
     { id: 64, name: "Sea Gate — Mina Rashid", category: "False Ceiling & Partition", img: "./projectimg/WhatsApp Image 2025-09-08 at 08.56.35_bdefc655.jpg", featured: true },
     { id: 65, name: "Kempinski Residences — Dubai Healthcare City", category: "Interior Design & Fit-Out", img: "./projectimg/download (8).png", featured: true },
-    { id: 66, name: "Innovation Hub Phase 2 — Silicon Oasis", category: "MEP Works", img: "./projectimg/innovation-hub-4327_xl.jpg" },
-    { id: 67, name: "District One Private Mansion — Meydan", category: "Interior Design & Fit-Out", img: "./projectimg/download (2) (5).png" },
+    { id: 66, name: "Innovation Hub Phase 2", category: "MEP Works", img: "./projectimg/innovation-hub-4327_xl.jpg" },
+    { id: 67, name: "District One Private Mansion", category: "Interior Design & Fit-Out", img: "./projectimg/download (2) (5).png" },
     { id: 68, name: "Shams Townhouses — Town Square", category: "Civil Works", img: "./projectimg/download (1) (6).png" },
     { id: 69, name: "AVA — Palm Jumeirah", category: "False Ceiling & Partition", img: "./projectimg/download (3) (5).png", featured: true },
-    { id: 70, name: "Hyati H3 — Al Barsha South Fourth", category: "False Ceiling & Partition", img: "./projectimg/download (9).png" },
+    { id: 70, name: "Hyati H3 — Al Barsha South", category: "False Ceiling & Partition", img: "./projectimg/download (9).png" },
     { id: 71, name: "Anwa Aria Tower — Dubai Maritime City", category: "False Ceiling & Partition", img: "./projectimg/download (5) (1).png", featured: true },
     { id: 72, name: "Chic Tower — Business Bay", category: "False Ceiling & Partition", img: "./projectimg/download (7) (1).png" },
     { id: 73, name: "Elegance Tower", category: "False Ceiling & Partition", img: "./projectimg/download (8) (1).png" },
-    { id: 74, name: "Greenside Residence — Dubai Hills Estate", category: "False Ceiling & Partition", img: "./projectimg/download (9) (1).png" },
-    { id: 75, name: "Prime Heart & Lung Hospital — Al Jadaf", category: "MEP Works", img: "./projectimg/download (10).png", featured: true },
+    { id: 74, name: "Greenside Residence — Dubai Hills", category: "False Ceiling & Partition", img: "./projectimg/download (9) (1).png" },
+    { id: 75, name: "Prime Heart & Lung Hospital", category: "MEP Works", img: "./projectimg/download (10).png", featured: true },
     { id: 76, name: "Address The Bay — Emaar Beachfront", category: "False Ceiling & Partition", img: "./projectimg/download (11).png", featured: true },
     { id: 77, name: "Mixed Use — Al Medif, Khorfakkan", category: "Civil Works", img: "./projectimg/download (13).png" },
     { id: 78, name: "Nad Al Shiba School — Phase 1", category: "Civil Works", img: "./projectimg/download (14).png" },
@@ -607,33 +758,26 @@ const PROJECTS = [
     { id: 80, name: "Sky Spiral Tower (Biltmore Sufouh)", category: "False Ceiling & Partition", img: "./projectimg/Sky-Spiral-Tower-Day-View-614x1024.png", featured: true },
     { id: 81, name: "Parkside Hills — Dubai Hills Estate", category: "False Ceiling & Partition", img: "./projectimg/PARKSIDE_HILLS_IMAGE2-scaled.jpg", featured: true },
     { id: 82, name: "Marsa Al Arab L5 SPA", category: "Interior Design & Fit-Out", img: "./projectimg/Marsa-Al-Arab-Exterior.jpg", featured: true },
-    // id 83 was never defined in the original source — no project data exists for it
     { id: 84, name: "Makan Housing Project — Hatta", category: "Civil Works", img: "./projectimg/afssg.png" },
     { id: 85, name: "DP World Head Office — Expo City", category: "MEP Works", img: "./AAAAAA.jpg", featured: true },
-    { id: 86, name: "Victoria International School — Kalba Branch", category: "Civil Works", img: "./projectimg/59b0c1_3abb320e18504179a17880e6813489d0~mv2 (1).jpg" },
+    { id: 86, name: "Victoria International School — Kalba", category: "Civil Works", img: "./projectimg/59b0c1_3abb320e18504179a17880e6813489d0~mv2 (1).jpg" },
     { id: 87, name: "Proposed Residential Project — Plots 86–89", category: "Civil Works", img: "./projectimg/2834-ALG-86-ARC-M3-PRESPECTIVE3-3384450 (1).jpg" },
     { id: 88, name: "Techno Hub 4 — Dubai Silicon Oasis", category: "MEP Works", img: "./projectimg/large_D5_Image_8_20230714_013430_342968d0e3 (1).png", featured: true },
-    { id: 89, name: "G+P+10 Residential Tower — Wadi Al Safa 5", category: "False Ceiling & Partition", img: "./projectimg/Screenshot 2025-10-03 084111 (1).png" },
+    { id: 89, name: "G+P+10 Residential Tower — Wadi Al Safa", category: "False Ceiling & Partition", img: "./projectimg/Screenshot 2025-10-03 084111 (1).png" },
     { id: 90, name: "Dubai Creek Harbour Bridge District", category: "Civil Works", img: "./projectimg/Screenshot 2025-10-03 102435.png", featured: true },
     { id: 91, name: "MAG JLT — Mixed Use Tower", category: "False Ceiling & Partition", img: "./projectimg/MAG JLT R3 VIEW B.jpg" },
     { id: 92, name: "South Living — Residential Building", category: "False Ceiling & Partition", img: "./projectimg/South_Living.jpg" },
     { id: 93, name: "Costa Coffee — Deira City Centre", category: "Interior Design & Fit-Out", img: "./projectimg/Screenshot 2026-03-06 105307.png", featured: true },
-    { id: 94, name: "Muhaisnah Community Housing — Al Muhaisnah 4th Area", category: "Civil Works", img: "./projectimg/SITE -001.jpg", featured: true },
-    // id 95 removed — duplicate of id 7 (same Oud Metha Plot 319 project, same image)
-
-    /* ── Newly added projects from the company register. No photography on file yet,
-       so these render with the gold placeholder tile (see <ProjectImage/>) until images are supplied. ── */
-    { id: 96, name: "Dubai Police Headquarters Complex — Al Awir", category: "Civil Works", img: "https://www.sheridanuae.com/wp-content/uploads/2020/12/D409-Al-Aweer-Police-HQ..jpg" },
+    { id: 94, name: "Muhaisnah Community Housing", category: "Civil Works", img: "./projectimg/SITE -001.jpg", featured: true },
+    { id: 96, name: "Dubai Police Headquarters Complex", category: "Civil Works", img: "https://www.sheridanuae.com/wp-content/uploads/2020/12/D409-Al-Aweer-Police-HQ..jpg" },
     { id: 97, name: "Hungary Pavilion — EXPO 2020 Dubai", category: "Interior Design & Fit-Out", img: "https://images.adsttc.com/media/images/6203/2036/44ba/f701/6571/b72a/newsletter/20211023-dubaj-pavilon-3048.jpg?1644372080" },
-    { id: 98, name: "Family House & Service Block — Rul Dibba, Fujairah", category: "Civil Works", img: "https://alu-glaze.com/wp-content/uploads/2025/08/85877@4x-1.jpg" },
-    { id: 99, name: "Intercontinental Resort & Hotel — Mina Al Arab, RAK", category: "Interior Design & Fit-Out", img: "https://www.rakproperties.ae/wp-content/uploads/2024/06/ACEO-Intercon-Post-Web-Image.jpg" },
+    { id: 98, name: "Family House & Service Block — Rul Dibba", category: "Civil Works", img: "https://alu-glaze.com/wp-content/uploads/2025/08/85877@4x-1.jpg" },
+    { id: 99, name: "Intercontinental Resort & Hotel — Mina Al Arab", category: "Interior Design & Fit-Out", img: "https://www.rakproperties.ae/wp-content/uploads/2024/06/ACEO-Intercon-Post-Web-Image.jpg" },
     { id: 100, name: "Amazon Delivery Station — Al Quoz", category: "MEP Works", img: "https://eccfitout.com/wp-content/uploads/2025/12/DDB7-Amazon-03.jpg" },
-    { id: 101, name: "Villa, Majlis & Club House — Al Khawaneej Second", category: "Civil Works", img: "" },
     { id: 102, name: "Mixed-Use Building — Al Muteena", category: "Civil Works", img: "https://range.ae/_next/image?url=%2Fapi%2Fmedia%2Ffile%2Fal-muteena-27255_xl.jpg&w=3840&q=75" },
-    { id: 103, name: "Areej 5, 6 & 7 — Muwaileh, Sharjah", category: "False Ceiling & Partition", img: "https://cdn.fazwaz.com/nw/OjhjzYlOdDkJaNWGsOyUdRbIK88/375x300/project/6993/areej-apartments-by-arada.png" },
+    { id: 103, name: "Areej 5, 6 & 7 — Muwaileh", category: "False Ceiling & Partition", img: "https://cdn.fazwaz.com/nw/OjhjzYlOdDkJaNWGsOyUdRbIK88/375x300/project/6993/areej-apartments-by-arada.png" },
     { id: 104, name: "Residential Building — Al Satwa", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/protenders/image/upload/c_limit,d_missing,dpr_3.0,f_auto,fl_progressive:semi,q_auto:eco,w_500/fd96defbc9e43d0445feacf872f98ea2.jpg" },
     { id: 105, name: "Etihad Mosque — Al Barsha 2nd", category: "Civil Works", img: "https://iacad.gov.ae/images/e556005c/3c01x2381wFFFFFF/png.aspx" },
-    { id: 106, name: "Five Villas — Jumeirah Park", category: "Civil Works", img: "" },
     { id: 107, name: "Mosque — Al Quoz 3rd", category: "Civil Works", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUK3uVVBt0_qZJ_rEvH3srbWwlFjykV4u_qg&s" },
     { id: 108, name: "Residential & Commercial Building — Al Mamzar", category: "False Ceiling & Partition", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzFVsUC19t49HzVgSG8Dxpx0R7K9s_FHnWIA&s" },
     { id: 109, name: "Commercial Center — Al Warqa'a", category: "Civil Works", img: "https://corporate.unioncoop.ae/wp-content/uploads/2018/03/Al-Warqa%E2%80%99a-Commercial-Center.png" },
@@ -643,18 +787,15 @@ const PROJECTS = [
     { id: 113, name: "10 Villas — Mirdif", category: "Civil Works", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1Tl-nd35weIGB0DkU1_k7gkrYQJHmTma5g&s" },
     { id: 114, name: "Mosque of Reflection — City Walk", category: "Interior Design & Fit-Out", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkIFuwE0DLTG1lAFrV4-TsrESBFj2TYjk5sg&s" },
     { id: 115, name: "French Bakery — Multiple Branches", category: "Interior Design & Fit-Out", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_XuQGwAX_uWTPvJF0LF2hgVgkFaL_G77mTw&s" },
-    { id: 116, name: "UAEU Pavilion — Dubai EXPO 2020", category: "Interior Design & Fit-Out", img: "" },
-    { id: 117, name: "The Peninsula Sales Office — Business Bay", category: "Interior Design & Fit-Out", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYbYSjaO3qWgN5QDXqOm8ryNX9P33a-NziCg&s" },
+    { id: 117, name: "The Peninsula Sales Office", category: "Interior Design & Fit-Out", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYbYSjaO3qWgN5QDXqOm8ryNX9P33a-NziCg&s" },
     { id: 118, name: "Park Island — Dubai Creek Harbour", category: "Civil Works", img: "https://cloud.famproperties.com/project/large/island-park-245255-160558.jpg" },
-    { id: 119, name: "Three Community Centers — Mirdif, Al Khail Gate & Remraam", category: "Civil Works", img: "https://www.hattakayaktours.com/wp-content/uploads/2024/07/Al-Khail-Gate-Community-Centre.jpg" },
+    { id: 119, name: "Three Community Centers", category: "Civil Works", img: "https://www.hattakayaktours.com/wp-content/uploads/2024/07/Al-Khail-Gate-Community-Centre.jpg" },
     { id: 120, name: "Topaz 2 — Dubai Silicon Oasis", category: "False Ceiling & Partition", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzcqzwM7JNwXg0H3G1b_ihgw_3coCxjlYwcA&s" },
-    { id: 121, name: "Jumeirah Zabeel Saray Hotel Refurbushment on Plot No. PJCRC04 & C05, Palm Jumeirah, Dubai", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/qh3zic6r/image/upload/v1783691662/aa8e7e5b-31c1-4b9b-9b27-68a587d2898c_ufr3q1.jpg" },
-    { id: 122, name: "R3 MBL Signature Tower on Plot No. 3930935 & 3936085, at Cluster R, JLT, Dubai, U.A.E.", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/qh3zic6r/image/upload/v1783691662/dade3b21-6b1d-4fd4-8740-85c9083c58cf_cknp56.jpg" },
-    { id: 123, name: "INNOVATION HUB, PT 295/8 TECOM PHASE 3", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/qh3zic6r/image/upload/v1783691662/e8518bb1-4b72-41ec-b52d-692fa2318129_uxhooj.jpg" },
-    { id: 124, name: "THE ACRES PHASE 1, CLUSTER A, B, C, D, I AND J, DUBAI LAND, DUBAI, UAE", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/qh3zic6r/image/upload/v1783691662/a278c122-fa90-48a5-8c65-35fe9e4e8e32_lqmd4k.jpg" },
-    { id: 125, name: "CENTRAL BUSINESS DISTRICT Plot no. 7770 AT MWEILEH TEJARI SHARJAH-UAE", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/qh3zic6r/image/upload/v1783691662/ca0a4189-048e-4004-a5b7-8aa43689fee8_mkeail.jpg" },
-
-
+    { id: 121, name: "Jumeirah Zabeel Saray Hotel Refurbishment", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/qh3zic6r/image/upload/v1783691662/aa8e7e5b-31c1-4b9b-9b27-68a587d2898c_ufr3q1.jpg" },
+    { id: 122, name: "R3 MBL Signature Tower — JLT", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/qh3zic6r/image/upload/v1783691662/dade3b21-6b1d-4fd4-8740-85c9083c58cf_cknp56.jpg" },
+    { id: 123, name: "INNOVATION HUB — TECOM Phase 3", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/qh3zic6r/image/upload/v1783691662/e8518bb1-4b72-41ec-b52d-692fa2318129_uxhooj.jpg" },
+    { id: 124, name: "THE ACRES Phase 1 — Dubai Land", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/qh3zic6r/image/upload/v1783691662/a278c122-fa90-48a5-8c65-35fe9e4e8e32_lqmd4k.jpg" },
+    { id: 125, name: "CENTRAL BUSINESS DISTRICT — Mweileh Tejari", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/qh3zic6r/image/upload/v1783691662/ca0a4189-048e-4004-a5b7-8aa43689fee8_mkeail.jpg" },
 ];
 
 const STATS = [
@@ -787,7 +928,6 @@ function Particles() {
 function ProjectImage({ src, alt, className, id, style }) {
     const [errored, setErrored] = useState(false);
     const fallback = FALLBACKS[id % FALLBACKS.length];
-    // Resolve the image from the map; if not found, use the src string (for external URLs)
     const imported = imageMap[src] || src;
     return (
         <img
@@ -841,8 +981,7 @@ function ProjectModal({ project, onClose }) {
                     animation: "modalIn 0.35s cubic-bezier(0.22,1,0.36,1)",
                 }}
             >
-                {/* Hero image */}
-                <div style={{ height: 340, position: "relative", overflow: "hidden" }}>
+                <div style={{ height: 280, position: "relative", overflow: "hidden" }}>
                     <ProjectImage
                         src={project.img}
                         alt={project.name}
@@ -851,7 +990,6 @@ function ProjectModal({ project, onClose }) {
                     />
                     <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(2,7,48,0.97) 0%, rgba(2,7,48,0.1) 55%, transparent 100%)" }} />
 
-                    {/* Close button */}
                     <button
                         onClick={onClose}
                         aria-label="Close"
@@ -869,14 +1007,13 @@ function ProjectModal({ project, onClose }) {
                         onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.1)"; e.currentTarget.style.transform = "none"; }}
                     >✕</button>
 
-                    {/* Category + featured badges */}
-                    <div style={{ position: "absolute", bottom: 0, left: 0, padding: "0 32px 30px" }}>
-                        <div style={{ display: "flex", gap: 8, marginBottom: 14, flexWrap: "wrap" }}>
+                    <div style={{ position: "absolute", bottom: 0, left: 0, padding: "0 28px 24px" }}>
+                        <div style={{ display: "flex", gap: 8, marginBottom: 10, flexWrap: "wrap" }}>
                             <span style={{
                                 display: "inline-block",
                                 background: meta.bg, color: meta.color,
-                                fontSize: 10, fontWeight: 700, letterSpacing: "0.13em",
-                                textTransform: "uppercase", padding: "5px 13px",
+                                fontSize: 9, fontWeight: 700, letterSpacing: "0.13em",
+                                textTransform: "uppercase", padding: "4px 12px",
                                 borderRadius: 20, fontFamily: "var(--f-body)",
                             }}>
                                 {project.category}
@@ -885,39 +1022,38 @@ function ProjectModal({ project, onClose }) {
                                 <span style={{
                                     display: "inline-block",
                                     background: "var(--gold)", color: "var(--ink)",
-                                    fontSize: 10, fontWeight: 700, letterSpacing: "0.13em",
-                                    textTransform: "uppercase", padding: "5px 13px",
+                                    fontSize: 9, fontWeight: 700, letterSpacing: "0.13em",
+                                    textTransform: "uppercase", padding: "4px 12px",
                                     borderRadius: 20, fontFamily: "var(--f-body)",
                                 }}>★ Featured</span>
                             )}
                         </div>
                         <h2 style={{
                             fontFamily: "var(--f-display)",
-                            fontSize: "clamp(1.4rem,3vw,2.1rem)",
+                            fontSize: "clamp(1.2rem,2.5vw,1.8rem)",
                             fontWeight: 700, color: "#fff",
                             lineHeight: 1.22, maxWidth: 580, margin: 0,
                         }}>{project.name}</h2>
                     </div>
                 </div>
 
-                {/* Quality badge only — no detail fields */}
-                <div style={{ padding: "28px 36px 36px" }}>
+                <div style={{ padding: "24px 28px 28px" }}>
                     <div style={{
                         background: "rgba(255,255,255,0.03)",
                         borderRadius: 14,
-                        padding: "18px 24px",
-                        display: "flex", alignItems: "center", gap: 16,
+                        padding: "16px 20px",
+                        display: "flex", alignItems: "center", gap: 14,
                         border: "1px solid rgba(201,168,76,0.15)",
                     }}>
                         <div style={{
-                            width: 42, height: 42, borderRadius: "50%",
+                            width: 36, height: 36, borderRadius: "50%",
                             background: "linear-gradient(135deg, var(--gold), var(--gold-dk))",
                             display: "flex", alignItems: "center", justifyContent: "center",
-                            color: "var(--ink)", fontWeight: 700, fontSize: 16, flexShrink: 0,
+                            color: "var(--ink)", fontWeight: 700, fontSize: 14, flexShrink: 0,
                         }}>Q</div>
                         <div>
-                            <div style={{ fontFamily: "var(--f-body)", fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 3 }}>Quality Assured</div>
-                            <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.45)" }}>ISO 9001:2015 · ISO 14001:2015 · OHSAS 18001:2007</div>
+                            <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 2 }}>Quality Assured</div>
+                            <div style={{ fontFamily: "var(--f-body)", fontSize: 11, color: "rgba(255,255,255,0.45)" }}>ISO 9001:2015 · ISO 14001:2015 · OHSAS 18001:2007</div>
                         </div>
                     </div>
                 </div>
@@ -938,7 +1074,7 @@ function ProjectCard({ project, onOpen, index }) {
         const cy = rect.top + rect.height / 2;
         const dx = (e.clientX - cx) / (rect.width / 2);
         const dy = (e.clientY - cy) / (rect.height / 2);
-        card.style.transform = `translateY(-8px) rotateX(${-dy * 4.5}deg) rotateY(${dx * 4.5}deg)`;
+        card.style.transform = `translateY(-6px) rotateX(${-dy * 3.5}deg) rotateY(${dx * 3.5}deg)`;
     };
 
     const handleMouseLeave = () => {
@@ -963,9 +1099,8 @@ function ProjectCard({ project, onOpen, index }) {
                 onMouseMove={handleMouseMove}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                style={{ perspective: 900 }}
+                style={{ perspective: 700 }}
             >
-                {/* Image area */}
                 <div className="proj-img-wrap">
                     <ProjectImage
                         src={project.img}
@@ -975,21 +1110,15 @@ function ProjectCard({ project, onOpen, index }) {
                     />
                     <div className="proj-img-overlay" />
                     <div className="proj-img-frame" />
-
-                    {/* "View Project" hint that appears on hover */}
                     <div className="proj-view-hint">View Project</div>
-
-                    {/* Category label slides up from bottom */}
                     <div className="proj-cat-label">{project.category}</div>
-
-                    {/* Featured badge */}
                     {project.featured && (
-                        <div style={{ position: "absolute", top: 12, left: 12, zIndex: 5 }}>
+                        <div style={{ position: "absolute", top: 10, left: 10, zIndex: 5 }}>
                             <span className="feat-badge" style={{
                                 display: "inline-block",
                                 background: "var(--gold)", color: "var(--ink)",
-                                fontSize: 9, fontWeight: 700, letterSpacing: "0.14em",
-                                textTransform: "uppercase", padding: "3px 10px",
+                                fontSize: 8, fontWeight: 700, letterSpacing: "0.14em",
+                                textTransform: "uppercase", padding: "2px 8px",
                                 borderRadius: 20, fontFamily: "var(--f-body)",
                                 boxShadow: "0 2px 14px rgba(201,168,76,0.45)",
                             }}>★ Featured</span>
@@ -997,14 +1126,13 @@ function ProjectCard({ project, onOpen, index }) {
                     )}
                 </div>
 
-                {/* Name strip — name only */}
                 <div className="proj-name-strip">
                     <h3 style={{
                         fontFamily: "var(--f-display)",
-                        fontSize: 17,
+                        fontSize: "clamp(14px, 1.1vw, 16px)",
                         fontWeight: 700,
                         color: "#fff",
-                        lineHeight: 1.35,
+                        lineHeight: 1.3,
                         margin: 0,
                         display: "-webkit-box",
                         WebkitLineClamp: 2,
@@ -1023,8 +1151,8 @@ function ProjectCard({ project, onOpen, index }) {
 function SearchBar({ value, onChange }) {
     const [focused, setFocused] = useState(false);
     return (
-        <div style={{ position: "relative", maxWidth: 380, width: "100%" }}>
-            <span style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", fontSize: 14, opacity: 0.5, pointerEvents: "none", color: "var(--gold)" }}>🔍</span>
+        <div style={{ position: "relative", maxWidth: 320, width: "100%" }}>
+            <span style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", fontSize: 14, opacity: 0.5, pointerEvents: "none", color: "var(--gold)" }}>🔍</span>
             <input
                 value={value}
                 onChange={e => onChange(e.target.value)}
@@ -1035,7 +1163,7 @@ function SearchBar({ value, onChange }) {
                     width: "100%",
                     background: focused ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.04)",
                     border: `1.5px solid ${focused ? "var(--gold)" : "rgba(201,168,76,0.25)"}`,
-                    color: "#fff", padding: "9px 12px 9px 38px",
+                    color: "#fff", padding: "8px 12px 8px 38px",
                     fontFamily: "var(--f-body)", fontSize: 13,
                     outline: "none", borderRadius: 10,
                     transition: "all 0.22s", boxSizing: "border-box",
@@ -1051,12 +1179,7 @@ function SearchBar({ value, onChange }) {
     );
 }
 
-/* ─── SOCIAL ICONS ───────────────────────────────────────────────────────── */
-const FBIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" /></svg>;
-const IGIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1.2" fill="#C9A84C" stroke="none" /></svg>;
-const WAIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21" /></svg>;
-const LIIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" /></svg>;
-
+/* ─── SOCIAL BUTTON ──────────────────────────────────────────────────────── */
 function SocialBtn({ href, label, children }) {
     const [hov, setHov] = useState(false);
     return (
@@ -1072,6 +1195,7 @@ function SocialBtn({ href, label, children }) {
                 transition: "all 0.22s",
                 transform: hov ? "translateY(-3px)" : "none",
                 flexShrink: 0,
+                color: hov ? "var(--ink)" : "var(--gold)",
             }}
         >
             {children}
@@ -1098,19 +1222,48 @@ export default function ViewProjects() {
     const [showFeatured, setShowFeatured] = useState(false);
     const [sortBy, setSortBy] = useState("default");
     const [menuOpen, setMenuOpen] = useState(false);
+    const [videoLoaded, setVideoLoaded] = useState(false);
     const scrollY = useScrollY();
     const scrolled = scrollY > 56;
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => { window.scrollTo(0, 0); }, []);
 
-    // ── UNIFIED NAV BEHAVIOR ──────────────────────────────────────────────
-    // Every nav label corresponds to a section that lives on the Home page
-    // (id="home", id="services", id="projects", id="career", id="clients",
-    // id="team", id="about"). From this Projects page, clicking ANY nav
-    // link — including "Projects" itself — navigates back to Home and then
-    // scrolls smoothly to that section. This keeps nav behavior identical
-    // whether the person is on Home or on this dedicated Projects page.
+    useEffect(() => {
+        if (location.pathname === '/projects') {
+            setVideoLoaded(false);
+            const loadAndPlayVideo = () => {
+                const video = document.querySelector('.hero-video-bg');
+                if (video) {
+                    video.load();
+                    video.play().catch(err => {
+                        console.log('Autoplay prevented, waiting for interaction:', err);
+                        setVideoLoaded(true);
+                    });
+                }
+            };
+            setTimeout(loadAndPlayVideo, 100);
+        }
+    }, [location.pathname]);
+
+    useEffect(() => {
+        const handleInteraction = () => {
+            const video = document.querySelector('.hero-video-bg');
+            if (video && video.paused) {
+                video.play().catch(err => console.log('Play failed:', err));
+            }
+            document.removeEventListener('click', handleInteraction);
+            document.removeEventListener('touchstart', handleInteraction);
+        };
+        document.addEventListener('click', handleInteraction);
+        document.addEventListener('touchstart', handleInteraction);
+        return () => {
+            document.removeEventListener('click', handleInteraction);
+            document.removeEventListener('touchstart', handleInteraction);
+        };
+    }, []);
+
     const goTo = (id) => {
         setMenuOpen(false);
         if (id === "Home") { navigate("/"); return; }
@@ -1154,22 +1307,22 @@ export default function ViewProjects() {
                 boxShadow: scrolled ? "0 1px 0 rgba(201,168,76,0.1)" : "none",
                 transition: "all 0.4s ease",
             }}>
-                <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 36px", height: 74, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 20px", height: "clamp(64px, 6vh, 74px)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                     <button onClick={() => goTo("Home")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 12 }}>
-                        <div style={{ width: 44, height: 44, borderRadius: 10, overflow: "hidden", flexShrink: 0, background: "#01044A", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <div style={{ width: "clamp(36px, 3.5vw, 44px)", height: "clamp(36px, 3.5vw, 44px)", borderRadius: 10, overflow: "hidden", flexShrink: 0, background: "#01044A", display: "flex", alignItems: "center", justifyContent: "center" }}>
                             <img src={logo} alt="Al Agha Group" style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => e.target.style.display = "none"} />
                         </div>
                         <div style={{ textAlign: "left" }}>
-                            <div style={{ fontFamily: "var(--f-display)", fontWeight: 700, fontSize: 19, color: "#fff", lineHeight: 1.15 }}>Al Agha Group</div>
-                            <div style={{ fontFamily: "var(--f-body)", fontSize: 8, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--gold)" }}>of Companies</div>
+                            <div style={{ fontFamily: "var(--f-display)", fontWeight: 700, fontSize: "clamp(16px, 1.5vw, 19px)", color: "#fff", lineHeight: 1.15 }}>Al Agha Group</div>
+                            <div style={{ fontFamily: "var(--f-body)", fontSize: "clamp(6px, 0.6vw, 8px)", fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--gold)" }}>of Companies</div>
                         </div>
                     </button>
 
-                    <div style={{ display: "flex", gap: 32, alignItems: "center" }} className="desktop-nav">
+                    <div style={{ display: "flex", gap: "clamp(16px, 2.5vw, 32px)", alignItems: "center" }} className="desktop-nav">
                         {NAV.map(l => (
-                            <button key={l} onClick={() => goTo(l)} className={`nav-btn ${l === "Projects" ? "nav-active" : ""}`} style={{ color: "rgba(255,255,255,0.8)" }}>{l}</button>
+                            <button key={l} onClick={() => goTo(l)} className={`nav-btn ${l === "Projects" ? "nav-active" : ""}`} style={{ color: "rgba(255,255,255,0.8)", fontSize: "clamp(11px, 1vw, 13px)" }}>{l}</button>
                         ))}
-                        <button className="btn-gold" style={{ padding: "10px 22px" }} onClick={() => goTo("Career")}>Join Us</button>
+                        <button className="btn-gold" style={{ padding: "8px 18px", fontSize: "clamp(10px, 0.8vw, 12px)" }} onClick={() => goTo("Career")}>Join Us</button>
                     </div>
 
                     <button onClick={() => setMenuOpen(o => !o)} style={{ background: "none", border: "none", color: "#fff", fontSize: 22, cursor: "pointer", display: "none", alignItems: "center" }} className="mobile-toggle">
@@ -1180,85 +1333,88 @@ export default function ViewProjects() {
                 {menuOpen && (
                     <div style={{ background: "rgba(2,7,48,0.98)", borderTop: "1px solid rgba(201,168,76,0.1)" }}>
                         {NAV.map(l => (
-                            <button key={l} onClick={() => goTo(l)} style={{ display: "block", width: "100%", background: "none", border: "none", borderBottom: "1px solid rgba(201,168,76,0.08)", color: l === "Projects" ? "var(--gold)" : "rgba(255,255,255,0.75)", fontFamily: "var(--f-body)", fontSize: 14, fontWeight: 500, padding: "15px 32px", textAlign: "left", cursor: "pointer" }}>{l}</button>
+                            <button key={l} onClick={() => goTo(l)} style={{ display: "block", width: "100%", background: "none", border: "none", borderBottom: "1px solid rgba(201,168,76,0.08)", color: l === "Projects" ? "var(--gold)" : "rgba(255,255,255,0.75)", fontFamily: "var(--f-body)", fontSize: 14, fontWeight: 500, padding: "15px 20px", textAlign: "left", cursor: "pointer" }}>{l}</button>
                         ))}
                     </div>
                 )}
             </nav>
 
-            {/* ── HERO ── */}
-            <header style={{ background: "linear-gradient(160deg, var(--bg-deep) 55%, var(--bg-mid))", padding: "100px 36px 80px", position: "relative", overflow: "hidden" }}>
-                {/* Ambient orbs */}
-                <div className="hero-orb" style={{ width: 600, height: 600, top: "-15%", left: "-10%", animationDelay: "0s" }} />
-                <div className="hero-orb" style={{ width: 450, height: 450, bottom: "-20%", right: "5%", animationDelay: "3s" }} />
+            {/* ── HERO WITH VIDEO ── */}
+            <header style={{ minHeight: "50vh", position: "relative", display: "flex", alignItems: "center", overflow: "hidden" }}>
+                <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 0 }}>
+                    <video key={`hero-video-${location.pathname}`} autoPlay muted loop playsInline preload="auto"
+                        onCanPlay={() => { console.log('Video can play'); setVideoLoaded(true); }}
+                        onPlay={() => console.log('Video is playing')}
+                        onError={(e) => { console.error('Video error:', e); setVideoLoaded(false); }}
+                        className="hero-video-bg"
+                        style={{ opacity: videoLoaded ? 1 : 0, transition: "opacity 1s ease", width: "100%", height: "100%", objectFit: "cover", position: "absolute", inset: 0 }}>
+                        <source src={heroVideo} type="video/mp4" />
+                        Your browser does not support the video tag.
+                    </video>
+                    {!videoLoaded && (
+                        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #02071c 0%, #060d50 50%, #02071c 100%)" }} />
+                    )}
+                </div>
 
-                {/* Floating particles */}
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(115deg, rgba(2,7,48,0.6) 0%, rgba(1,4,74,0.5) 45%, rgba(6,13,80,0.4) 100%)", zIndex: 1 }} />
+                <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, transparent 40%, rgba(2,7,48,0.5) 100%)", zIndex: 1, pointerEvents: "none" }} />
+                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "60%", background: "linear-gradient(to top, rgba(2,7,48,0.6) 0%, transparent 100%)", zIndex: 1, pointerEvents: "none" }} />
+
+                {/* Ambient orbs */}
+                <div className="hero-orb" style={{ width: 400, height: 400, top: "-15%", left: "-10%", animationDelay: "0s", zIndex: 1 }} />
+                <div className="hero-orb" style={{ width: 350, height: 350, bottom: "-20%", right: "5%", animationDelay: "3s", zIndex: 1 }} />
+
                 <Particles />
 
-                {/* Left accent bar */}
-                <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 3, background: "linear-gradient(to bottom, transparent, var(--gold) 30%, var(--gold) 70%, transparent)" }} />
+                <div style={{ position: "absolute", left: 0, top: "10%", bottom: "10%", width: 2, background: "linear-gradient(to bottom, transparent, var(--gold), transparent)", zIndex: 1, opacity: 0.6 }} />
 
-                <div style={{ maxWidth: 1320, margin: "0 auto", position: "relative", zIndex: 1 }}>
-                    <div className="hero-grid" style={{ display: "grid", gridTemplateColumns: "1fr auto", alignItems: "flex-end", gap: "48px 64px" }}>
-                        <div>
-                            <Reveal dir="left">
-                                <span style={{ display: "block", fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.22em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 20 }}>Project Portfolio</span>
-                                <h1 style={{ fontFamily: "var(--f-display)", fontWeight: 700, fontSize: "clamp(2.8rem,7vw,5rem)", color: "#fff", lineHeight: 1.06, letterSpacing: "-0.02em", marginBottom: 24 }}>
-                                    Our Work,<br /><em style={{ color: "var(--gold)", fontStyle: "italic" }}>Built to Last.</em>
-                                </h1>
-                                <p style={{ fontFamily: "var(--f-body)", fontSize: 16, color: "rgba(255,255,255,0.58)", lineHeight: 1.82, maxWidth: 520 }}>
-                                    Over 200 completed projects across the UAE — from landmark towers and luxury hotels to government buildings, EXPO pavilions, and community developments.
-                                </p>
-                            </Reveal>
+                <div style={{ maxWidth: 1320, margin: "0 auto", padding: "clamp(80px, 10vh, 130px) 20px clamp(40px, 5vh, 60px)", position: "relative", zIndex: 2, width: "100%" }}>
+                    <div style={{ maxWidth: 650 }}>
+                        <div style={{ marginBottom: 24, animation: "fadeUp 0.8s 0.1s both" }}>
+                            <span style={{ background: "rgba(201,168,76,0.15)", border: "1px solid rgba(201,168,76,0.3)", backdropFilter: "blur(20px)", padding: "6px 16px", borderRadius: 40, fontSize: "clamp(8px, 0.8vw, 10px)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--gold)", boxShadow: "0 4px 15px rgba(201,168,76,0.1)" }}>
+                                Project Portfolio
+                            </span>
                         </div>
-
-                        <Reveal dir="right" delay={110}>
-                            <div style={{
-                                display: "grid", gridTemplateColumns: "1fr 1fr",
-                                gap: "28px 52px",
-                                border: "1px solid rgba(201,168,76,0.18)",
-                                borderRadius: 18, padding: "30px 36px",
-                                background: "rgba(255,255,255,0.025)",
-                                backdropFilter: "blur(14px)",
-                                flexShrink: 0, minWidth: 260,
-                            }}>
-                                {STATS.map(({ val, label }) => (
-                                    <div key={label} style={{ textAlign: "center" }}>
-                                        <div className="stat-val" style={{ fontFamily: "var(--f-display)", fontSize: "clamp(1.8rem,3.5vw,2.8rem)", fontWeight: 700, lineHeight: 1 }}>{val}</div>
-                                        <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(201,168,76,0.5)", marginTop: 6 }}>{label}</div>
-                                    </div>
-                                ))}
-                            </div>
-                        </Reveal>
+                        <h1 style={{ fontFamily: "var(--f-display)", fontWeight: 700, lineHeight: 1.04, letterSpacing: "-0.02em", fontSize: "clamp(2rem, 5vw, 3.8rem)", color: "#fff", marginBottom: 20, animation: "fadeUp 0.9s 0.2s both", textShadow: "0 2px 20px rgba(0,0,0,0.3)" }}>
+                            Our Work,<br />
+                            <em style={{ color: "var(--gold)", fontStyle: "italic" }}>Built to Last.</em>
+                        </h1>
+                        <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(14px, 1.1vw, 16px)", color: "rgba(255,255,255,0.8)", lineHeight: 1.8, maxWidth: 480, marginBottom: 32, animation: "fadeUp 1s 0.35s both", textShadow: "0 1px 10px rgba(0,0,0,0.3)" }}>
+                            Over 200 completed projects across the UAE — from landmark towers and luxury hotels to government buildings, EXPO pavilions, and community developments.
+                        </p>
+                        <div style={{ display: "flex", gap: 14, flexWrap: "wrap", animation: "fadeUp 1s 0.45s both" }}>
+                            <button className="btn-gold" style={{ padding: "clamp(10px, 1vw, 14px) clamp(18px, 2vw, 28px)", fontSize: "clamp(10px, 0.8vw, 12px)" }}>Browse Projects</button>
+                            <button className="btn-outline-white" style={{ padding: "clamp(10px, 1vw, 14px) clamp(18px, 2vw, 28px)", fontSize: "clamp(10px, 0.8vw, 12px)" }} onClick={() => goTo("About")}>Our Story</button>
+                        </div>
                     </div>
                 </div>
             </header>
 
             {/* ── FILTER BAR ── */}
-            <div style={{ background: "rgba(2,7,48,0.96)", backdropFilter: "blur(22px)", borderBottom: "1px solid rgba(201,168,76,0.15)", position: "sticky", top: 74, zIndex: 99 }}>
-                <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 36px" }}>
-                    <div className="filter-row" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap", padding: "16px 0" }}>
-                        <div className="pill-bar" style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+            <div style={{ background: "rgba(2,7,48,0.96)", backdropFilter: "blur(22px)", borderBottom: "1px solid rgba(201,168,76,0.15)", position: "sticky", top: "clamp(64px, 6vh, 74px)", zIndex: 99 }}>
+                <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 20px" }}>
+                    <div className="filter-row" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap", padding: "12px 0" }}>
+                        <div className="pill-bar" style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
                             {CATEGORIES.map(cat => (
                                 <button key={cat} onClick={() => setActiveCategory(cat)} className={`cat-pill ${activeCategory === cat ? "active" : ""}`}>
                                     {cat === "All" ? "All" : cat.split(" ")[0]}
-                                    <span style={{ fontSize: 11, opacity: 0.6 }}>({catCounts[cat]})</span>
+                                    <span style={{ fontSize: 10, opacity: 0.6 }}>({catCounts[cat]})</span>
                                 </button>
                             ))}
                         </div>
-                        <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
+                        <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
                             <SearchBar value={search} onChange={setSearch} />
                             <select
                                 value={sortBy}
                                 onChange={e => setSortBy(e.target.value)}
-                                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(201,168,76,0.25)", color: "#fff", fontFamily: "var(--f-body)", fontSize: 13, padding: "9px 12px", borderRadius: 10, cursor: "pointer", outline: "none" }}
+                                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(201,168,76,0.25)", color: "#fff", fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", padding: "7px 10px", borderRadius: 10, cursor: "pointer", outline: "none" }}
                             >
                                 <option value="default">Featured first</option>
                                 <option value="name">A – Z</option>
                             </select>
-                            <label style={{ display: "flex", alignItems: "center", gap: 7, cursor: "pointer", fontFamily: "var(--f-body)", fontSize: 13, color: "rgba(255,255,255,0.7)", whiteSpace: "nowrap" }}>
-                                <input type="checkbox" checked={showFeatured} onChange={e => setShowFeatured(e.target.checked)} style={{ accentColor: "var(--gold)", width: 15, height: 15 }} />
-                                Featured only
+                            <label style={{ display: "flex", alignItems: "center", gap: 5, cursor: "pointer", fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", color: "rgba(255,255,255,0.7)", whiteSpace: "nowrap" }}>
+                                <input type="checkbox" checked={showFeatured} onChange={e => setShowFeatured(e.target.checked)} style={{ accentColor: "var(--gold)", width: 14, height: 14 }} />
+                                Featured
                             </label>
                         </div>
                     </div>
@@ -1266,8 +1422,8 @@ export default function ViewProjects() {
             </div>
 
             {/* ── RESULT COUNT ── */}
-            <div style={{ maxWidth: 1320, margin: "0 auto", padding: "24px 36px 0" }}>
-                <p style={{ fontFamily: "var(--f-body)", fontSize: 13, color: "rgba(255,255,255,0.4)" }}>
+            <div style={{ maxWidth: 1320, margin: "0 auto", padding: "16px 20px 0" }}>
+                <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(12px, 0.9vw, 13px)", color: "rgba(255,255,255,0.4)" }}>
                     Showing <strong style={{ color: "#fff" }}>{filtered.length}</strong> of {PROJECTS.length} projects
                     {search && <> matching "<span style={{ color: "var(--gold)" }}>{search}</span>"</>}
                     {activeCategory !== "All" && <> in <span style={{ color: "var(--gold)" }}>{activeCategory}</span></>}
@@ -1275,21 +1431,21 @@ export default function ViewProjects() {
             </div>
 
             {/* ── PROJECT GRID ── */}
-            <main style={{ maxWidth: 1320, margin: "0 auto", padding: "28px 36px 100px" }}>
+            <main style={{ maxWidth: 1320, margin: "0 auto", padding: "20px 20px 60px" }}>
                 {filtered.length === 0 ? (
-                    <div style={{ textAlign: "center", padding: "80px 24px" }}>
-                        <div style={{ fontSize: 42, marginBottom: 16 }}>🔍</div>
-                        <div style={{ fontFamily: "var(--f-display)", fontSize: 26, color: "#fff", fontWeight: 700, marginBottom: 8 }}>No projects found</div>
-                        <div style={{ fontFamily: "var(--f-body)", fontSize: 14, color: "rgba(255,255,255,0.4)" }}>Try adjusting your search or filters.</div>
+                    <div style={{ textAlign: "center", padding: "60px 24px" }}>
+                        <div style={{ fontSize: 36, marginBottom: 12 }}>🔍</div>
+                        <div style={{ fontFamily: "var(--f-display)", fontSize: 22, color: "#fff", fontWeight: 700, marginBottom: 6 }}>No projects found</div>
+                        <div style={{ fontFamily: "var(--f-body)", fontSize: 13, color: "rgba(255,255,255,0.4)" }}>Try adjusting your search or filters.</div>
                         <button
                             onClick={() => { setSearch(""); setActiveCategory("All"); setShowFeatured(false); }}
-                            style={{ marginTop: 20, background: "var(--gold)", color: "var(--ink)", border: "none", fontFamily: "var(--f-body)", fontSize: 12, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", padding: "10px 22px", borderRadius: 8, cursor: "pointer" }}
+                            style={{ marginTop: 16, background: "var(--gold)", color: "var(--ink)", border: "none", fontFamily: "var(--f-body)", fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", padding: "8px 18px", borderRadius: 8, cursor: "pointer" }}
                         >Clear All Filters</button>
                     </div>
                 ) : (
                     <div
                         className="project-grid"
-                        style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 24 }}
+                        style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "clamp(16px, 1.5vw, 24px)" }}
                     >
                         {filtered.map((project, i) => (
                             <ProjectCard key={project.id} project={project} onOpen={setSelectedProject} index={i} />
@@ -1299,63 +1455,63 @@ export default function ViewProjects() {
             </main>
 
             {/* ── FOOTER ── */}
-            <footer style={{ background: "rgba(0,2,20,0.96)", padding: "72px 36px 36px", borderTop: "1px solid rgba(201,168,76,0.12)" }}>
+            <footer style={{ background: "rgba(0,2,20,0.96)", padding: "clamp(40px, 5vw, 72px) 20px clamp(24px, 2.5vw, 36px)", borderTop: "1px solid rgba(201,168,76,0.12)" }}>
                 <div style={{ maxWidth: 1320, margin: "0 auto" }}>
-                    <div className="footer-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 48, marginBottom: 52 }}>
+                    <div className="footer-grid">
                         <div>
                             <div style={{ display: "flex", alignItems: "center", gap: 11, marginBottom: 16 }}>
                                 <div style={{ width: 40, height: 40, borderRadius: 8, overflow: "hidden", background: "#070d5a" }}>
                                     <img src={logo} alt="Al Agha Group" style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => e.target.style.display = "none"} />
                                 </div>
                                 <div>
-                                    <div style={{ fontFamily: "var(--f-display)", fontSize: 17, fontWeight: 700, color: "#fff" }}>Al Agha Group</div>
-                                    <div style={{ fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--gold)" }}>of Companies</div>
+                                    <div style={{ fontFamily: "var(--f-display)", fontSize: "clamp(16px, 1.3vw, 17px)", fontWeight: 700, color: "#fff" }}>Al Agha Group</div>
+                                    <div style={{ fontFamily: "var(--f-body)", fontSize: "clamp(7px, 0.6vw, 9px)", fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--gold)" }}>of Companies</div>
                                 </div>
                             </div>
-                            <p style={{ fontFamily: "var(--f-body)", fontSize: 13, color: "rgba(255,255,255,0.35)", lineHeight: 1.8, maxWidth: 260, marginBottom: 22 }}>
+                            <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(12px, 0.9vw, 13px)", color: "rgba(255,255,255,0.35)", lineHeight: 1.8, maxWidth: 260, marginBottom: 22 }}>
                                 False ceiling, gypsum works, interior fit-out, and MEP services across the UAE since 2008.
                             </p>
-                            <div style={{ display: "flex", gap: 8, marginBottom: 26 }}>
-                                <SocialBtn href="https://www.facebook.com/profile.php?id=61551030990492" label="Facebook"><FBIcon /></SocialBtn>
-                                <SocialBtn href="https://www.instagram.com/reel/DAVwH2TpoJP/" label="Instagram"><IGIcon /></SocialBtn>
-                                <SocialBtn href="https://wa.me/97142675229" label="WhatsApp"><WAIcon /></SocialBtn>
-                                <SocialBtn href="https://linkedin.com/company/alaghagroup" label="LinkedIn"><LIIcon /></SocialBtn>
+                            <div style={{ display: "flex", gap: 8, marginBottom: 26, flexWrap: "wrap" }}>
+                                <SocialBtn href="https://www.facebook.com/profile.php?id=61551030990492" label="Facebook"><Icons.Facebook /></SocialBtn>
+                                <SocialBtn href="https://www.instagram.com/reel/DAVwH2TpoJP/" label="Instagram"><Icons.Instagram /></SocialBtn>
+                                <SocialBtn href="https://wa.me/97142675229" label="WhatsApp"><Icons.WhatsApp /></SocialBtn>
+                                <SocialBtn href="https://linkedin.com/company/alaghagroup" label="LinkedIn"><Icons.LinkedIn /></SocialBtn>
                             </div>
                             <div style={{ display: "flex", gap: 12, alignItems: "center", background: "rgba(201,168,76,0.06)", border: "1px solid rgba(201,168,76,0.15)", borderRadius: 12, padding: "12px 14px" }}>
                                 <QRCode />
                                 <div>
                                     <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 4 }}>Scan to connect</div>
-                                    <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(201,168,76,0.5)", lineHeight: 1.5 }}>Point your camera to visit Al Agha Group online</div>
+                                    <div style={{ fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 12px)", color: "rgba(201,168,76,0.5)", lineHeight: 1.5 }}>Point your camera to visit Al Agha Group online</div>
                                 </div>
                             </div>
                         </div>
 
                         <div>
-                            <h4 style={{ fontFamily: "var(--f-display)", fontSize: 18, fontWeight: 700, marginBottom: 18, color: "#fff" }}>Quick Links</h4>
+                            <h4 style={{ fontFamily: "var(--f-display)", fontSize: "clamp(16px, 1.3vw, 18px)", fontWeight: 700, marginBottom: 18, color: "#fff" }}>Quick Links</h4>
                             {NAV.map(l => (
-                                <button key={l} onClick={() => goTo(l)} style={{ display: "block", background: "none", border: "none", color: "rgba(255,255,255,0.35)", fontFamily: "var(--f-body)", fontSize: 13, padding: "7px 0", cursor: "pointer", textAlign: "left", transition: "color 0.2s" }} onMouseEnter={e => e.currentTarget.style.color = "var(--gold)"} onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.35)"}>{l}</button>
+                                <button key={l} onClick={() => goTo(l)} style={{ display: "block", background: "none", border: "none", color: "rgba(255,255,255,0.35)", fontFamily: "var(--f-body)", fontSize: "clamp(12px, 0.9vw, 13px)", padding: "6px 0", cursor: "pointer", textAlign: "left", transition: "color 0.2s" }} onMouseEnter={e => e.currentTarget.style.color = "var(--gold)"} onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.35)"}>{l}</button>
                             ))}
                         </div>
 
                         <div>
-                            <h4 style={{ fontFamily: "var(--f-display)", fontSize: 18, fontWeight: 700, marginBottom: 18, color: "#fff" }}>Services</h4>
-                            {["False Ceiling & Gypsum Decor", "Interior Design & Fit-Out", "Mechanical, Electrical, Plumbing (MEP)", "General Civil Works", "Paint & Wall Finishes", "Architectural Design & Planning"].map(s => (
-                                <div key={s} style={{ fontFamily: "var(--f-body)", fontSize: 13, color: "rgba(255,255,255,0.3)", padding: "6px 0", lineHeight: 1.5 }}>{s}</div>
+                            <h4 style={{ fontFamily: "var(--f-display)", fontSize: "clamp(16px, 1.3vw, 18px)", fontWeight: 700, marginBottom: 18, color: "#fff" }}>Services</h4>
+                            {["False Ceiling & Gypsum Decor", "Interior Design & Fit-Out", "Mechanical, Electrical, Plumbing (MEP)", "General Civil Works", "Paint & Wall Finishes"].map(s => (
+                                <div key={s} style={{ fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", color: "rgba(255,255,255,0.3)", padding: "5px 0", lineHeight: 1.5 }}>{s}</div>
                             ))}
                         </div>
 
                         <div>
-                            <h4 style={{ fontFamily: "var(--f-display)", fontSize: 18, fontWeight: 700, marginBottom: 18, color: "#fff" }}>Contact</h4>
+                            <h4 style={{ fontFamily: "var(--f-display)", fontSize: "clamp(16px, 1.3vw, 18px)", fontWeight: 700, marginBottom: 18, color: "#fff" }}>Contact</h4>
                             {[
-                                ["📍", "Office 201 & 202, Block A, Abraj Al Mamzar, Al Mamzar, Dubai, U.A.E."],
+                                ["📍", "Office 201 & 202, Block A, Abraj Al Mamzar, Dubai, U.A.E."],
                                 ["📞", "+971 4 267 5229"],
                                 ["✉️", "info@alaghagroup.com"],
                             ].map(([icon, txt]) => (
-                                <div key={txt} style={{ display: "flex", gap: 10, padding: "6px 0", fontFamily: "var(--f-body)", fontSize: 13, color: "rgba(255,255,255,0.35)", lineHeight: 1.55 }}>
+                                <div key={txt} style={{ display: "flex", gap: 10, padding: "5px 0", fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", color: "rgba(255,255,255,0.35)", lineHeight: 1.55 }}>
                                     <span style={{ flexShrink: 0 }}>{icon}</span><span>{txt}</span>
                                 </div>
                             ))}
-                            <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid rgba(201,168,76,0.15)", height: 180, marginTop: 18 }}>
+                            <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid rgba(201,168,76,0.15)", height: "clamp(140px, 15vw, 180px)", marginTop: 16 }}>
                                 <iframe
                                     title="Al Agha Group Office"
                                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3607.2764583093857!2d55.35445537600424!3d25.28574307758295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5cfe11994ee1%3A0x8bdd77fec9a0e9c3!2sAbraj%20Al%20Mamzar%20-%20Al%20Mamzar%20-%20Dubai!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae"
@@ -1366,9 +1522,9 @@ export default function ViewProjects() {
                         </div>
                     </div>
 
-                    <div style={{ borderTop: "1px solid rgba(201,168,76,0.12)", paddingTop: 22, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
-                        <span style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.2)" }}>© 2025 Al Agha Group of Companies · All rights reserved</span>
-                        <span style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.2)" }}>Privacy Policy · Terms of Service</span>
+                    <div style={{ borderTop: "1px solid rgba(201,168,76,0.12)", paddingTop: "clamp(18px, 1.8vw, 22px)", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
+                        <span style={{ fontFamily: "var(--f-body)", fontSize: "clamp(10px, 0.8vw, 12px)", color: "rgba(255,255,255,0.2)" }}>© 2025 Al Agha Group of Companies · All rights reserved</span>
+                        <span style={{ fontFamily: "var(--f-body)", fontSize: "clamp(10px, 0.8vw, 12px)", color: "rgba(255,255,255,0.2)" }}>Privacy Policy · Terms of Service</span>
                     </div>
                 </div>
             </footer>
