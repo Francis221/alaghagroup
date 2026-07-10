@@ -31,7 +31,7 @@ import qsPhoto4 from "./img/Qs4.jpeg";
 import qsPhoto5 from "./img/Qs5.jpeg";
 import technicalEngineerPhoto from "./img/Technical.jpeg";
 import architectureDesignerPhoto from "./img/ArchitectureDesigner.png";
-import mepPhoto from "./img/MEP.jpeg";
+import mepPhoto from "./img/modal2.jpg";
 import electricalEngineerPhoto from "./img/ElectricalEngineer.jpeg";
 import mechanicalEngineerPhoto from "./img/MechanicalEngineer.jpeg";
 import siteEngineerPhoto1 from "./img/ProjectSiteEngineer.jpeg";
@@ -116,7 +116,7 @@ const PROJECT_VIDEOS = [
     poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJWK-WZLosYT6yzhvBRlmNkrDNwGhrgMbICWOPzjWBoiME6kcjb1wz7sNO&s=10",
   },
   {
-    url: "https://res.cloudinary.com/qh3zic6r/video/upload/v1783357059/SaveClip.App_AQMSBO34EVPtGXUGT4ggLnU0KArrQP7Lcg5hK5xmdIx1IhR5UWf0gXNfchLrmSLsaMu-aYzvaPLe9LOPmMiLeTcn_w4ga5m.mp4",
+    url: "https://res.cloudinary.com/qh3zic6r/video/upload/v1783357064/SaveClip.App_AQMSBO34EVPtGXUGT4ggLnU0KArrQP7Lcg5hK5xmdIx1IhR5UWf0gXNfchLrmSLsaMu-aYzvaPLe9LOPpMiLeTcn_w4ga5m.mp4",
     title: "Complete Fit-Out & MEP Integration",
     subtitle: "A detailed look at our turnkey interior fit-out services, premium paint finishes, and MEP (Mechanical, Electrical, Plumbing) engineering excellence.",
     poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFOSsBiT6sVCYZ_qvZT848l8sPV0EQEu_u_fgF8BIlLoPc-W_BgGzT_j4&s=10",
@@ -1556,10 +1556,10 @@ const CLIENTS_DATA = {
 };
 
 const CAREERS = [
-  { role: "Developer", loc: "Dubai, UAE", type: "Full-time", dept: "Operations" },
-  { role: "Product Manager", loc: "Dubai, UAE", type: "Full-time", dept: "Engineering" },
-  { role: "Graphic Designer", loc: "Dubai, UAE", type: "Full-time", dept: "Design" },
-  { role: "UX Expert", loc: "Dubai, UAE", type: "Contract", dept: "HSE" },
+  { role: "Purchase Officer", loc: "Dubai, UAE", type: "Full-time", dept: "Purchase" },
+  { role: "Accountant", loc: "Dubai, UAE", type: "Full-time", dept: "Account" },
+  { role: "Safety Officer", loc: "Dubai, UAE", type: "Full-time", dept: "Safety" },
+  { role: "QS Engineer", loc: "Dubai, UAE", type: "Contract", dept: "Engineering" },
 ];
 
 const CHAIRMAN_MESSAGE = {
@@ -1595,7 +1595,7 @@ const ENGINEERS = [
   { name: "Mohamed Sana", role: "QS Engineer", dept: "Quantity Surveying", photo: qsPhoto5 },
   { name: "Shanoob Rasheed", role: "Senior Technical Engineer", dept: "Engineering", photo: technicalEngineerPhoto },
   { name: "Muhammed Irfan", role: "Architectural Designer", dept: "Design", photo: architectureDesignerPhoto },
-  { name: "Vijesh Vijayan", role: "MEP Operations Manager", dept: "MEP", photo: mepPhoto },
+  { name: "Sumon Modal", role: "SITE ENGINEER", dept: "MEP", photo: mepPhoto },
   { name: "Shahzad Ahmad", role: "Electrical Engineer", dept: "MEP", photo: electricalEngineerPhoto },
   { name: "Sathish Jayaraman", role: "Mechanical Engineer", dept: "MEP", photo: mechanicalEngineerPhoto },
   { name: "Mohamed Javeed", role: "Project Site Engineer", dept: "Operations", photo: siteEngineerPhoto1 },
