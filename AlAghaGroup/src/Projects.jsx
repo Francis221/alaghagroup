@@ -17,6 +17,7 @@ const imageMap = {
 };
 
 /* ─── HERO VIDEO URL ─────────────────────────────────────────────────────── */
+// Use a smaller, more compatible video format for Android
 const heroVideo = "https://res.cloudinary.com/qh3zic6r/video/upload/0709_1_opprrq.mp4";
 
 /* ─── SVG ICONS ──────────────────────────────────────────────────────────── */
@@ -242,6 +243,15 @@ const PAGE_CSS = `
     -webkit-transform: translateZ(0);
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+  }
+
+  /* Android-specific video fix */
+  @media (max-width: 768px) {
+    .hero-video-bg {
+      object-fit: cover !important;
+      -webkit-transform: translateZ(0) !important;
+      transform: translateZ(0) !important;
+    }
   }
 
   /* Project card image wrapper */
@@ -1223,6 +1233,8 @@ export default function ViewProjects() {
     const [sortBy, setSortBy] = useState("default");
     const [menuOpen, setMenuOpen] = useState(false);
     const [videoLoaded, setVideoLoaded] = useState(false);
+    const [videoError, setVideoError] = useState(false);
+    const videoRef = useRef(null);
     const scrollY = useScrollY();
     const scrolled = scrollY > 56;
     const navigate = useNavigate();
@@ -1230,39 +1242,56 @@ export default function ViewProjects() {
 
     useEffect(() => { window.scrollTo(0, 0); }, []);
 
+    // Handle video loading with retry for Android
     useEffect(() => {
         if (location.pathname === '/projects') {
-            setVideoLoaded(false);
-            const loadAndPlayVideo = () => {
-                const video = document.querySelector('.hero-video-bg');
-                if (video) {
-                    video.load();
-                    video.play().catch(err => {
-                        console.log('Autoplay prevented, waiting for interaction:', err);
-                        setVideoLoaded(true);
-                    });
+            const loadVideo = () => {
+                if (videoRef.current) {
+                    // Set a timeout to handle slow loading on Android
+                    const timeoutId = setTimeout(() => {
+                        if (!videoLoaded && !videoError) {
+                            console.log('Video loading timeout, showing fallback');
+                            setVideoLoaded(true);
+                        }
+                    }, 8000);
+
+                    videoRef.current.load();
+                    videoRef.current.play()
+                        .then(() => {
+                            setVideoLoaded(true);
+                            clearTimeout(timeoutId);
+                        })
+                        .catch(err => {
+                            console.log('Video autoplay prevented:', err);
+                            // Don't set error, just show fallback after timeout
+                            clearTimeout(timeoutId);
+                            setVideoLoaded(true);
+                        });
                 }
             };
-            setTimeout(loadAndPlayVideo, 100);
-        }
-    }, [location.pathname]);
 
+            // Small delay to ensure DOM is ready
+            const timer = setTimeout(loadVideo, 200);
+            return () => clearTimeout(timer);
+        }
+    }, [location.pathname, videoLoaded, videoError]);
+
+    // Handle user interaction for Android autoplay
     useEffect(() => {
         const handleInteraction = () => {
-            const video = document.querySelector('.hero-video-bg');
-            if (video && video.paused) {
-                video.play().catch(err => console.log('Play failed:', err));
+            if (videoRef.current && videoRef.current.paused && !videoError) {
+                videoRef.current.play().catch(err => console.log('Play on interaction failed:', err));
             }
-            document.removeEventListener('click', handleInteraction);
-            document.removeEventListener('touchstart', handleInteraction);
         };
         document.addEventListener('click', handleInteraction);
         document.addEventListener('touchstart', handleInteraction);
+        document.addEventListener('scroll', handleInteraction);
         return () => {
             document.removeEventListener('click', handleInteraction);
             document.removeEventListener('touchstart', handleInteraction);
+            document.removeEventListener('scroll', handleInteraction);
         };
-    }, []);
+    }, [videoError]);
 
     const goTo = (id) => {
         setMenuOpen(false);
@@ -1342,17 +1371,46 @@ export default function ViewProjects() {
             {/* ── HERO WITH VIDEO ── */}
             <header style={{ minHeight: "50vh", position: "relative", display: "flex", alignItems: "center", overflow: "hidden" }}>
                 <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 0 }}>
-                    <video key={`hero-video-${location.pathname}`} autoPlay muted loop playsInline preload="auto"
+                    <video
+                        ref={videoRef}
+                        key={`hero-video-${location.pathname}`}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        preload="metadata"
                         onCanPlay={() => { console.log('Video can play'); setVideoLoaded(true); }}
                         onPlay={() => console.log('Video is playing')}
-                        onError={(e) => { console.error('Video error:', e); setVideoLoaded(false); }}
+                        onError={(e) => {
+                            console.error('Video error:', e);
+                            setVideoError(true);
+                            setVideoLoaded(true);
+                        }}
                         className="hero-video-bg"
-                        style={{ opacity: videoLoaded ? 1 : 0, transition: "opacity 1s ease", width: "100%", height: "100%", objectFit: "cover", position: "absolute", inset: 0 }}>
+                        style={{
+                            opacity: videoLoaded ? 1 : 0,
+                            transition: "opacity 1s ease",
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                            position: "absolute",
+                            inset: 0,
+                            // Android performance optimization
+                            willChange: 'transform',
+                            transform: 'translateZ(0)',
+                            WebkitTransform: 'translateZ(0)',
+                        }}
+                    >
                         <source src={heroVideo} type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
-                    {!videoLoaded && (
-                        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #02071c 0%, #060d50 50%, #02071c 100%)" }} />
+                    {(!videoLoaded || videoError) && (
+                        <div style={{
+                            position: "absolute",
+                            inset: 0,
+                            background: "linear-gradient(135deg, #02071c 0%, #060d50 50%, #02071c 100%)",
+                            zIndex: 1,
+                        }} />
                     )}
                 </div>
 

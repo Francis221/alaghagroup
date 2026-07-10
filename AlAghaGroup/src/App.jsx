@@ -240,6 +240,127 @@ const Icons = {
   ),
 };
 
+/* ─── FLOATING PARTICLES / SNOW EFFECT ──────────────────────────────────── */
+function FloatingParticles() {
+  const canvasRef = useRef(null);
+  const particlesRef = useRef([]);
+  const animationRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+
+    const resize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    };
+    resize();
+    window.addEventListener('resize', resize);
+
+    // Create particles
+    const particleCount = Math.min(80, Math.floor((width * height) / 15000));
+    const particles = [];
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        size: Math.random() * 3 + 1.5,
+        speedX: (Math.random() - 0.5) * 0.4,
+        speedY: Math.random() * 0.6 + 0.2,
+        opacity: Math.random() * 0.5 + 0.2,
+        rotation: Math.random() * Math.PI * 2,
+        rotationSpeed: (Math.random() - 0.5) * 0.02,
+      });
+    }
+    particlesRef.current = particles;
+
+    let isVisible = true;
+    const handleVisibilityChange = () => {
+      isVisible = !document.hidden;
+      if (!isVisible && animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
+      } else if (isVisible && !animationRef.current) {
+        animate();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    const animate = () => {
+      if (document.hidden) {
+        animationRef.current = null;
+        return;
+      }
+
+      ctx.clearRect(0, 0, width, height);
+
+      particles.forEach(p => {
+        p.x += p.speedX;
+        p.y += p.speedY;
+        p.rotation += p.rotationSpeed;
+
+        if (p.x > width + 10) p.x = -10;
+        if (p.x < -10) p.x = width + 10;
+        if (p.y > height + 10) {
+          p.y = -10;
+          p.x = Math.random() * width;
+        }
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rotation);
+        ctx.globalAlpha = p.opacity;
+        ctx.fillStyle = '#C9A84C';
+
+        // Draw diamond/star shape
+        const s = p.size;
+        ctx.beginPath();
+        ctx.moveTo(0, -s);
+        ctx.lineTo(s * 0.6, 0);
+        ctx.lineTo(0, s);
+        ctx.lineTo(-s * 0.6, 0);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.restore();
+      });
+
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      window.removeEventListener('resize', resize);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
+      }
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        pointerEvents: 'none',
+        zIndex: 0,
+      }}
+    />
+  );
+}
+
 /* ─── GLOBAL STYLES ──────────────────────────────────────────────────────── */
 const GLOBAL_CSS = `
   :root {
@@ -1763,34 +1884,46 @@ export default function AlAghaGroup() {
   const [activeVideo, setActiveVideo] = useState(null);
 
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
+  const videoRef = useRef(null);
 
   const YOUTUBE_VIDEO_ID = "-69VznBquek";
 
+  // Video loading with Android fixes
   useEffect(() => {
     if (location.pathname === '/') {
-      setVideoLoaded(false);
-      const loadAndPlayVideo = () => {
-        const video = document.querySelector('.hero-video-bg');
-        if (video) {
-          video.load();
-          video.play().catch(err => {
-            console.log('Autoplay prevented, waiting for interaction:', err);
-            setVideoLoaded(true);
-          });
+      const loadVideo = () => {
+        if (videoRef.current) {
+          const timeoutId = setTimeout(() => {
+            if (!videoLoaded && !videoError) {
+              setVideoLoaded(true);
+            }
+          }, 8000);
+
+          videoRef.current.load();
+          videoRef.current.play()
+            .then(() => {
+              setVideoLoaded(true);
+              clearTimeout(timeoutId);
+            })
+            .catch(err => {
+              console.log('Video autoplay prevented:', err);
+              clearTimeout(timeoutId);
+              setVideoLoaded(true);
+            });
         }
       };
-      setTimeout(loadAndPlayVideo, 100);
+      const timer = setTimeout(loadVideo, 200);
+      return () => clearTimeout(timer);
     }
-  }, [location.pathname]);
+  }, [location.pathname, videoLoaded, videoError]);
 
+  // Handle user interaction for autoplay
   useEffect(() => {
     const handleInteraction = () => {
-      const video = document.querySelector('.hero-video-bg');
-      if (video && video.paused) {
-        video.play().catch(err => console.log('Play failed:', err));
+      if (videoRef.current && videoRef.current.paused && !videoError) {
+        videoRef.current.play().catch(err => console.log('Play failed:', err));
       }
-      document.removeEventListener('click', handleInteraction);
-      document.removeEventListener('touchstart', handleInteraction);
     };
     document.addEventListener('click', handleInteraction);
     document.addEventListener('touchstart', handleInteraction);
@@ -1798,7 +1931,7 @@ export default function AlAghaGroup() {
       document.removeEventListener('click', handleInteraction);
       document.removeEventListener('touchstart', handleInteraction);
     };
-  }, []);
+  }, [videoError]);
 
   const scrollTo = id => {
     setMenu(false);
@@ -1834,10 +1967,14 @@ export default function AlAghaGroup() {
   return (
     <>
       <style>{GLOBAL_CSS}</style>
+
+      {/* Floating Particles / Snow Effect */}
+      <FloatingParticles />
+
       {activeCert && <CertModal cert={activeCert} onClose={() => setActiveCert(null)} />}
       {activeVideo && <VideoModal video={activeVideo} onClose={() => setActiveVideo(null)} />}
 
-      <div style={{ color: "#fff", fontFamily: "var(--f-body)", background: "var(--bg-deep)", overflowX: "hidden" }}>
+      <div style={{ color: "#fff", fontFamily: "var(--f-body)", background: "var(--bg-deep)", overflowX: "hidden", position: "relative", zIndex: 1 }}>
         <ReadingProgress />
 
         <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, overflow: "hidden" }}>
@@ -1847,9 +1984,9 @@ export default function AlAghaGroup() {
 
         {/* ══ NAV ══ */}
         <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000, background: scrolled ? "rgba(2,7,48,0.97)" : "transparent", backdropFilter: scrolled ? "blur(20px)" : "none", boxShadow: scrolled ? "0 1px 0 rgba(201,168,76,0.1)" : "none", transition: "all 0.4s ease" }}>
-          <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 20px", height: 72, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 20px", height: "clamp(64px, 6vh, 72px)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <button onClick={() => scrollTo("Home")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
-              <img src={logo} alt="Al Agha Group Logo" style={{ width: 40, height: 40, objectFit: "contain", borderRadius: 8, flexShrink: 0 }}
+              <img src={logo} alt="Al Agha Group Logo" style={{ width: "clamp(36px, 3.5vw, 40px)", height: "clamp(36px, 3.5vw, 40px)", objectFit: "contain", borderRadius: 8, flexShrink: 0 }}
                 onError={e => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }} />
               <div style={{ display: "none", width: 40, height: 40, borderRadius: 10, flexShrink: 0, background: "linear-gradient(135deg, var(--gold-dk), var(--gold))", alignItems: "center", justifyContent: "center", fontFamily: "var(--f-display)", fontWeight: 800, fontSize: 16, color: "var(--ink)" }}>AG</div>
               <div style={{ textAlign: "left" }}>
@@ -1879,17 +2016,36 @@ export default function AlAghaGroup() {
         {/* ══ HERO ══ */}
         <section id="home" style={{ minHeight: "100vh", position: "relative", display: "flex", alignItems: "center", overflow: "hidden" }}>
           <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 0 }}>
-            <video key={`hero-video-${location.pathname}`} autoPlay muted loop playsInline preload="auto"
+            <video
+              ref={videoRef}
+              key={`hero-video-${location.pathname}`}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
               onCanPlay={() => { console.log('Video can play'); setVideoLoaded(true); }}
               onPlay={() => console.log('Video is playing')}
-              onError={(e) => { console.error('Video error:', e); setVideoLoaded(false); }}
+              onError={(e) => { console.error('Video error:', e); setVideoError(true); setVideoLoaded(true); }}
               className="hero-video-bg"
-              style={{ opacity: videoLoaded ? 1 : 0, transition: "opacity 1s ease", width: "100%", height: "100%", objectFit: "cover", position: "absolute", inset: 0 }}>
+              style={{
+                opacity: videoLoaded ? 1 : 0,
+                transition: "opacity 1s ease",
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                position: "absolute",
+                inset: 0,
+                willChange: 'transform',
+                transform: 'translateZ(0)',
+                WebkitTransform: 'translateZ(0)',
+              }}
+            >
               <source src={heroVideo} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
-            {!videoLoaded && (
-              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #02071c 0%, #060d50 50%, #02071c 100%)" }} />
+            {(!videoLoaded || videoError) && (
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #02071c 0%, #060d50 50%, #02071c 100%)", zIndex: 1 }} />
             )}
           </div>
 
@@ -2252,7 +2408,7 @@ export default function AlAghaGroup() {
           </div>
         </Section>
 
-        {/* ══ FOOTER ══ - Matching Project Page Footer */}
+        {/* ══ FOOTER ══ */}
         <footer style={{ background: "rgba(0,2,20,0.96)", borderTop: "1px solid rgba(201,168,76,0.12)", padding: "clamp(40px, 5vw, 72px) 20px clamp(24px, 2.5vw, 36px)", position: "relative" }}>
           <GeoBg variant="c" />
           <div style={{ maxWidth: 1320, margin: "0 auto", position: "relative", zIndex: 1 }}>
@@ -2316,7 +2472,7 @@ export default function AlAghaGroup() {
                 <div style={{ display: "flex", gap: 10, padding: "6px 0", fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", color: "rgba(255,255,255,0.35)", lineHeight: 1.55 }}>
                   <Icons.Email /><span>info@alaghagroup.com</span>
                 </div>
-                <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid rgba(201,168,76,0.15)", height: 180, marginTop: 18 }}>
+                <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid rgba(201,168,76,0.15)", height: "clamp(140px, 15vw, 180px)", marginTop: 18 }}>
                   <iframe
                     title="Al Agha Group Office"
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3607.2764583093857!2d55.35445537600424!3d25.28574307758295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5cfe11994ee1%3A0x8bdd77fec9a0e9c3!2sAbraj%20Al%20Mamzar%20-%20Al%20Mamzar%20-%20Dubai!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae"
