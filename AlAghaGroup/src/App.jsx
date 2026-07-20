@@ -1871,7 +1871,7 @@ const ALL_PROJECTS = [
   { img: "https://images.adsttc.com/media/images/6203/2036/44ba/f701/6571/b72a/newsletter/20211023-dubaj-pavilon-3048.jpg?1644372080", title: "Hungary Pavilion — Expo 2020 Dubai" },
   { img: projTownSquare, title: "Town Square — UNA Apartments" },
   { img: projBeach, title: "EMAAR Beachfront — Sunrise Bay" },
-  { img: projBeachfront, title: "Al Fatan Tower" },
+  { img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSFZZT3CgKdgN7u9ED9gMukTeHo5BwWy1impTUjqGi_g&s=10", title: "Al Fatan Tower" },
   { img: projCity, title: "Park Ridge" },
 ];
 
