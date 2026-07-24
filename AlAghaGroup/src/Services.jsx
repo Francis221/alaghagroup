@@ -4,7 +4,7 @@ import logo from "../alaghalogo.png";
 import qrCodeImg from "./certimg/QRCODE.jpeg";
 
 /* ─── HERO BACKGROUND VIDEO (same source as App.jsx) ─────────────────────── */
-const heroVideo = "https://res.cloudinary.com/qh3zic6r/video/upload/0709_1_opprrq.mp4";
+const heroVideo = "https://res.cloudinary.com/iwfmnnaa/video/upload/v1784889132/0709_2_cfolje.mp4";
 
 /* ─── GLOBAL CSS ─────────────────────────────────────────────────────────── */
 const GLOBAL_CSS = `

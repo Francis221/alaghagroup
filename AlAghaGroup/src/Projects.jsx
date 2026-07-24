@@ -18,7 +18,7 @@ const imageMap = {
 
 /* ─── HERO VIDEO URL ─────────────────────────────────────────────────────── */
 // Use a smaller, more compatible video format for Android
-const heroVideo = "https://res.cloudinary.com/qh3zic6r/video/upload/0709_1_opprrq.mp4";
+const heroVideo = "https://res.cloudinary.com/iwfmnnaa/video/upload/v1784889132/0709_2_cfolje.mp4";
 
 /* ─── SVG ICONS ──────────────────────────────────────────────────────────── */
 const Icons = {
