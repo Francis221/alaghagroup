@@ -38,6 +38,7 @@ import siteEngineerPhoto1 from "./img/ProjectSiteEngineer.jpeg";
 import siteEngineerPhoto2 from "./img/ProjectSiteEngineer2.jpeg";
 import siteEngineerPhoto3 from "./img/ProjectSiteEngineer3.jpeg";
 import siteEngineerPhoto4 from "./img/ProjectSiteEngineer4.jpeg";
+import secretaryPhoto from "./img/Secretary.jpg";
 
 /* ── Client logos ── */
 import clientEmaar from "./Clientimg/01.png";
@@ -242,10 +243,6 @@ const Icons = {
 
 /* ═══════════════════════════════════════════════════════════════════════════
    RESPONSIVE VIEWPORT HOOK
-   Tracks width/height/isMobile/isTablet reactively so layout decisions
-   never rely on a one-time `window.innerWidth` read at render time.
-   Listens to both `resize` and `orientationchange` because iOS Safari
-   fires them separately (and sometimes only one of the two).
 ═══════════════════════════════════════════════════════════════════════════ */
 function useViewport() {
   const [vp, setVp] = useState(() => ({
@@ -263,7 +260,6 @@ function useViewport() {
     };
     window.addEventListener("resize", update, { passive: true });
     window.addEventListener("orientationchange", update);
-    // iOS Safari sometimes settles innerHeight slightly after orientationchange fires
     const orientationSettle = () => setTimeout(update, 250);
     window.addEventListener("orientationchange", orientationSettle);
     update();
@@ -283,7 +279,7 @@ function useViewport() {
   };
 }
 
-/* ─── FLOATING PARTICLES / SNOW EFFECT ──────────────────────────────────── */
+/* ─── FLOATING PARTICLES ── */
 function FloatingParticles() {
   const canvasRef = useRef(null);
   const particlesRef = useRef([]);
@@ -294,8 +290,6 @@ function FloatingParticles() {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-
-    // Use devicePixelRatio so particles stay crisp on high-density Android/iOS screens
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     const seedParticles = (width, height) => {
@@ -326,8 +320,6 @@ function FloatingParticles() {
       canvas.style.height = `${height}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      // Re-seed only if we don't have particles yet, or the canvas grew a lot
-      // (avoids a jarring re-scatter on every minor iOS toolbar resize)
       if (
         particlesRef.current.length === 0 ||
         Math.abs(width - (particlesRef.current._lastWidth || width)) > 200
@@ -381,9 +373,8 @@ function FloatingParticles() {
         ctx.translate(p.x, p.y);
         ctx.rotate(p.rotation);
         ctx.globalAlpha = p.opacity;
-        ctx.fillStyle = '#C9A84C';
+        ctx.fillStyle = '#2563EB';
 
-        // Draw diamond/star shape
         const s = p.size;
         ctx.beginPath();
         ctx.moveTo(0, -s);
@@ -429,16 +420,16 @@ function FloatingParticles() {
   );
 }
 
-/* ─── GLOBAL STYLES ──────────────────────────────────────────────────────── */
+/* ─── GLOBAL STYLES ── */
 const GLOBAL_CSS = `
   :root {
-    --gold: #C9A84C;
-    --gold-dk: #a8883c;
-    --gold-lt: #e0c068;
-    --ink: #02071c;
-    --bg-deep: #02071c;
-    --surface: #f5f3ef;
-    --border: #e0d9cc;
+    --gold: #2563EB;
+    --gold-dk: #1D4ED8;
+    --gold-lt: #60A5FA;
+    --ink: #0B1220;
+    --bg-deep: #FFFFFF;
+    --surface: #F5F8FF;
+    --border: #DCE6FA;
     --f-display: 'Georgia', 'Times New Roman', serif;
     --f-body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
     --vh: 1vh;
@@ -448,14 +439,13 @@ const GLOBAL_CSS = `
   html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   body {
     background: var(--bg-deep);
-    color: #fff;
+    color: #0B1220;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: none;
   }
   img { max-width: 100%; }
   button, input, select, textarea { font-family: inherit; }
-  /* Prevent iOS Safari auto-zoom on inputs with font-size < 16px */
   input, select, textarea { font-size: 16px; }
   @media (min-width: 768px) {
     input, select, textarea { font-size: 14px; }
@@ -487,9 +477,13 @@ const GLOBAL_CSS = `
     0%   { transform: translateX(-120%) skewX(-15deg); }
     100% { transform: translateX(220%) skewX(-15deg); }
   }
+  @keyframes heroShimmerSweep {
+    0%   { transform: translateX(-150%) skewX(-20deg); }
+    100% { transform: translateX(250%) skewX(-20deg); }
+  }
   @keyframes logoBreath {
-    0%, 100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 8px rgba(201,168,76,0.3)); }
-    50%       { transform: scale(1.06) rotate(1deg); filter: drop-shadow(0 0 18px rgba(201,168,76,0.6)); }
+    0%, 100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 8px rgba(37,99,235,0.3)); }
+    50%       { transform: scale(1.06) rotate(1deg); filter: drop-shadow(0 0 18px rgba(37,99,235,0.6)); }
   }
   @keyframes borderRotate {
     from { transform: rotate(0deg); }
@@ -575,22 +569,22 @@ const GLOBAL_CSS = `
   .btn-gold {
     display: inline-flex; align-items: center; gap: 8px;
     background: linear-gradient(135deg, var(--gold-dk), var(--gold), var(--gold-lt));
-    color: var(--ink); font-family: var(--f-body); font-size: 12px; font-weight: 700;
+    color: #fff; font-family: var(--f-body); font-size: 12px; font-weight: 700;
     letter-spacing: 0.1em; text-transform: uppercase; padding: 12px 28px;
     border-radius: 8px; border: none; cursor: pointer; text-decoration: none;
-    transition: all 0.25s ease; box-shadow: 0 4px 20px rgba(201,168,76,0.25);
+    transition: all 0.25s ease; box-shadow: 0 4px 20px rgba(37,99,235,0.25);
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
     min-height: 44px;
   }
-  .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(201,168,76,0.4); }
+  .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(37,99,235,0.4); }
   .btn-gold:active { transform: translateY(0); }
 
   .btn-outline-gold {
     display: inline-flex; align-items: center; gap: 8px;
     background: transparent; color: var(--gold); font-family: var(--f-body);
     font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    padding: 11px 26px; border-radius: 8px; border: 1px solid rgba(201,168,76,0.5);
+    padding: 11px 26px; border-radius: 8px; border: 1px solid rgba(37,99,235,0.5);
     cursor: pointer; transition: background 0.22s ease, color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
@@ -598,24 +592,24 @@ const GLOBAL_CSS = `
   }
   .btn-outline-gold:hover {
     background: var(--gold);
-    color: var(--ink);
+    color: #fff;
     border-color: var(--gold);
-    box-shadow: 0 6px 24px rgba(201,168,76,0.35);
+    box-shadow: 0 6px 24px rgba(37,99,235,0.35);
     transform: translateY(-2px);
   }
   .btn-outline-gold:active { transform: translateY(0); }
 
   .btn-outline-white {
     display: inline-flex; align-items: center; gap: 8px;
-    background: transparent; color: rgba(255,255,255,0.8); font-family: var(--f-body);
+    background: transparent; color: rgba(11,18,32,0.8); font-family: var(--f-body);
     font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    padding: 14px 28px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.25);
+    padding: 14px 28px; border-radius: 8px; border: 1px solid rgba(11,18,32,0.2);
     cursor: pointer; transition: all 0.25s ease;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
     min-height: 44px;
   }
-  .btn-outline-white:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.5); transform: translateY(-2px); }
+  .btn-outline-white:hover { background: rgba(37,99,235,0.06); border-color: rgba(37,99,235,0.5); transform: translateY(-2px); }
   .btn-outline-white:active { transform: translateY(0); }
 
   .nav-btn {
@@ -636,39 +630,42 @@ const GLOBAL_CSS = `
   .nav-active::after { transform: scaleX(1); }
 
   .svc-card {
-    border: 1px solid rgba(201,168,76,0.12); border-radius: 18px; padding: 36px 30px;
-    background: rgba(255,255,255,0.03); transition: all 0.3s cubic-bezier(0.22,1,0.36,1);
-    backdrop-filter: blur(8px); height: 100%;
+    border: 1px solid rgba(37,99,235,0.15); border-radius: 18px; padding: 36px 30px;
+    background: #FFFFFF; transition: all 0.3s cubic-bezier(0.22,1,0.36,1);
+    box-shadow: 0 2px 12px rgba(11,18,32,0.05);
+    height: 100%;
   }
   .svc-card:hover {
-    border-color: rgba(201,168,76,0.4); background: rgba(255,255,255,0.06);
-    transform: translateY(-4px); box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    border-color: rgba(37,99,235,0.4); background: #F5F8FF;
+    transform: translateY(-4px); box-shadow: 0 20px 50px rgba(37,99,235,0.12);
   }
   .proj-card {
     position: relative; border-radius: 16px; overflow: hidden; cursor: pointer;
-    border: 1px solid rgba(201,168,76,0.1); transition: all 0.35s ease;
+    border: 1px solid rgba(37,99,235,0.15); transition: all 0.35s ease;
   }
   .proj-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s ease; }
-  .proj-card:hover { border-color: rgba(201,168,76,0.35); box-shadow: 0 24px 60px rgba(0,0,0,0.4); }
+  .proj-card:hover { border-color: rgba(37,99,235,0.4); box-shadow: 0 24px 60px rgba(37,99,235,0.15); }
   .proj-card:hover img { transform: scale(1.04); }
 
   .career-row {
-    border: 1px solid rgba(201,168,76,0.12); border-radius: 14px; padding: 20px 22px;
-    background: rgba(255,255,255,0.03); display: flex; justify-content: space-between;
-    align-items: center; transition: all 0.3s ease; backdrop-filter: blur(6px);
+    border: 1px solid rgba(37,99,235,0.15); border-radius: 14px; padding: 20px 22px;
+    background: #FFFFFF; display: flex; justify-content: space-between;
+    align-items: center; transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(11,18,32,0.04);
     flex-wrap: wrap; gap: 10px;
   }
-  .career-row:hover { border-color: rgba(201,168,76,0.35); background: rgba(255,255,255,0.06); transform: translateX(4px); }
+  .career-row:hover { border-color: rgba(37,99,235,0.4); background: #F5F8FF; transform: translateX(4px); }
 
   .client-img-card {
     position: relative; border-radius: 14px; overflow: hidden;
-    border: 1px solid rgba(201,168,76,0.12); aspect-ratio: 3/2;
-    background: rgba(255,255,255,0.03); transition: all 0.3s ease;
+    border: 1px solid rgba(37,99,235,0.15); aspect-ratio: 3/2;
+    background: #FFFFFF; transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(11,18,32,0.05);
     display: flex; align-items: center; justify-content: center;
   }
-  .client-img-card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,0.35); }
+  .client-img-card:hover { border-color: rgba(37,99,235,0.45); transform: translateY(-3px); box-shadow: 0 16px 40px rgba(37,99,235,0.15); }
   .client-img-card img { width: 100%; height: 100%; object-fit: contain; padding: 8px; display: block; }
-  .client-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(1,4,74,0.7) 0%, transparent 50%); opacity: 0; transition: opacity 0.3s; }
+  .client-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(37,99,235,0.55) 0%, transparent 50%); opacity: 0; transition: opacity 0.3s; }
   .client-img-card:hover .client-overlay { opacity: 1; }
   .client-name {
     position: absolute; bottom: 0; left: 0; right: 0; padding: 12px 12px 10px;
@@ -684,7 +681,7 @@ const GLOBAL_CSS = `
   .group-card-wrap { position: relative; border-radius: 22px; overflow: hidden; }
   .group-card-wrap::before {
     content: ''; position: absolute; inset: -1px; border-radius: 22px;
-    background: linear-gradient(120deg, transparent 30%, rgba(201,168,76,0.35) 50%, transparent 70%);
+    background: linear-gradient(120deg, transparent 30%, rgba(37,99,235,0.35) 50%, transparent 70%);
     opacity: 0; transition: opacity 0.4s ease; z-index: 0; pointer-events: none;
   }
   .group-card-wrap:hover::before { opacity: 1; animation: shimmerSweep 1.2s ease forwards; }
@@ -698,43 +695,44 @@ const GLOBAL_CSS = `
   }
   .group-card-wrap:hover .logo-ring::before { opacity: 1; }
   .logo-ring-inner {
-    position: absolute; inset: 2px; border-radius: 50%; background: var(--bg-deep);
+    position: absolute; inset: 2px; border-radius: 50%; background: #FFFFFF;
     display: flex; align-items: center; justify-content: center; overflow: hidden;
   }
   .logo-ring-inner img { width: 88%; height: 88%; object-fit: contain; animation: logoBreath 4s ease-in-out infinite; }
 
   .cert-badge-btn {
     display: flex; align-items: center; gap: 7px;
-    background: rgba(255,255,255,0.05); border: 1px solid rgba(201,168,76,0.2);
-    border-radius: 10px; padding: 7px 12px; backdrop-filter: blur(6px);
+    background: #FFFFFF; border: 1px solid rgba(37,99,235,0.25);
+    border-radius: 10px; padding: 7px 12px;
+    box-shadow: 0 1px 6px rgba(11,18,32,0.05);
     cursor: pointer; transition: all 0.22s ease; text-align: left;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
   }
   .cert-badge-btn:hover {
-    background: rgba(201,168,76,0.12);
-    border-color: rgba(201,168,76,0.55);
+    background: rgba(37,99,235,0.08);
+    border-color: rgba(37,99,235,0.55);
     transform: translateY(-1px);
-    box-shadow: 0 4px 14px rgba(201,168,76,0.18);
+    box-shadow: 0 4px 14px rgba(37,99,235,0.18);
   }
 
   .cert-modal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.82);
+    position: fixed; inset: 0; background: rgba(11,18,32,0.6);
     backdrop-filter: blur(10px); display: flex; align-items: center;
     justify-content: center; z-index: 9000; padding: 20px;
     overscroll-behavior: contain;
   }
   .cert-modal-box {
-    background: #080d38; border: 1px solid rgba(201,168,76,0.3);
+    background: #FFFFFF; border: 1px solid rgba(37,99,235,0.25);
     border-radius: 20px; padding: 32px; max-width: 540px; width: 100%;
     position: relative; animation: modalFadeIn 0.28s cubic-bezier(0.22,1,0.36,1) both;
-    box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+    box-shadow: 0 40px 100px rgba(11,18,32,0.35);
     max-height: 90vh; max-height: 90dvh; overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
   .cert-modal-close {
-    position: absolute; top: 14px; right: 16px; background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.7);
+    position: absolute; top: 14px; right: 16px; background: rgba(37,99,235,0.08);
+    border: 1px solid rgba(37,99,235,0.2); color: rgba(11,18,32,0.6);
     width: 36px; height: 36px; border-radius: 50%; font-size: 16px;
     cursor: pointer; display: flex; align-items: center; justify-content: center;
     transition: all 0.2s; line-height: 1;
@@ -742,20 +740,20 @@ const GLOBAL_CSS = `
     touch-action: manipulation;
     z-index: 2;
   }
-  .cert-modal-close:hover { background: rgba(201,168,76,0.2); color: var(--gold); border-color: var(--gold); }
+  .cert-modal-close:hover { background: rgba(37,99,235,0.2); color: var(--gold); border-color: var(--gold); }
 
   .video-showcase-card:hover {
-    border-color: rgba(201, 168, 76, 0.5) !important;
-    box-shadow: 0 20px 40px rgba(201, 168, 76, 0.15), 0 15px 50px rgba(0, 0, 0, 0.5) !important;
+    border-color: rgba(37, 99, 235, 0.5) !important;
+    box-shadow: 0 20px 40px rgba(37, 99, 235, 0.15), 0 15px 50px rgba(11, 18, 32, 0.15) !important;
     transform: translateY(-4px);
   }
   .video-showcase-card:hover .play-btn-circle {
     background: var(--gold) !important;
     transform: translate(-50%, -50%) scale(1.15) !important;
-    box-shadow: 0 0 30px rgba(201, 168, 76, 0.8) !important;
+    box-shadow: 0 0 30px rgba(37, 99, 235, 0.8) !important;
   }
   .video-showcase-card:hover .play-btn-circle svg {
-    fill: var(--ink) !important;
+    fill: #fff !important;
   }
 
   .hero-video-bg {
@@ -780,8 +778,8 @@ const GLOBAL_CSS = `
     padding-bottom: 56.25%;
     border-radius: 20px;
     overflow: hidden;
-    border: 1px solid rgba(201,168,76,0.2);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    border: 1px solid rgba(37,99,235,0.25);
+    box-shadow: 0 20px 60px rgba(11,18,32,0.2);
     background: #000;
   }
   .video-player-wrapper iframe {
@@ -797,7 +795,6 @@ const GLOBAL_CSS = `
     gap: 48px;
   }
 
-  /* ── Services 5 in a row, degrading gracefully ── */
   .services-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -832,7 +829,6 @@ const GLOBAL_CSS = `
     .grid-2 { grid-template-columns: 1fr !important; }
   }
 
-  /* ── Responsive Grid Helpers ── */
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
   .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
   .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
@@ -849,7 +845,6 @@ const GLOBAL_CSS = `
     .grid-6 { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)) !important; }
   }
 
-  /* Safe-area padding for notched iOS devices */
   @supports (padding: max(0px)) {
     .safe-area-top { padding-top: max(0px, env(safe-area-inset-top)); }
     .safe-area-bottom { padding-bottom: max(0px, env(safe-area-inset-bottom)); }
@@ -866,29 +861,29 @@ function GeoBg({ variant = "a" }) {
         style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
         <defs>
           <radialGradient id="rg1a" cx="20%" cy="30%" r="60%">
-            <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.07" />
-            <stop offset="100%" stopColor="#C9A84C" stopOpacity="0" />
+            <stop offset="0%" stopColor="#2563EB" stopOpacity="0.05" />
+            <stop offset="100%" stopColor="#2563EB" stopOpacity="0" />
           </radialGradient>
           <radialGradient id="rg2a" cx="85%" cy="75%" r="50%">
-            <stop offset="0%" stopColor="#1a2f6a" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="#020730" stopOpacity="0" />
+            <stop offset="0%" stopColor="#DCE6FA" stopOpacity="0.5" />
+            <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
           </radialGradient>
         </defs>
         <rect width="1440" height="900" fill="url(#rg2a)" />
         <rect width="1440" height="900" fill="url(#rg1a)" />
-        <polygon points="160,20 310,105 310,275 160,360 10,275 10,105" fill="none" stroke="rgba(201,168,76,0.07)" strokeWidth="1.5" />
-        <polygon points="160,60 270,122 270,248 160,310 50,248 50,122" fill="none" stroke="rgba(201,168,76,0.05)" strokeWidth="1" />
-        <polygon points="1380,80 1430,108 1430,164 1380,192 1330,164 1330,108" fill="none" stroke="rgba(201,168,76,0.1)" strokeWidth="1" />
-        <polygon points="1340,40 1420,85 1420,175 1340,220 1260,175 1260,85" fill="none" stroke="rgba(201,168,76,0.05)" strokeWidth="1" />
-        <line x1="0" y1="900" x2="500" y2="0" stroke="rgba(201,168,76,0.04)" strokeWidth="1" />
-        <line x1="100" y1="900" x2="600" y2="0" stroke="rgba(201,168,76,0.03)" strokeWidth="1" />
-        <line x1="900" y1="0" x2="1440" y2="600" stroke="rgba(201,168,76,0.03)" strokeWidth="1" />
-        <circle cx="720" cy="450" r="380" fill="none" stroke="rgba(201,168,76,0.04)" strokeWidth="1" strokeDasharray="6 14" />
-        <circle cx="720" cy="450" r="280" fill="none" stroke="rgba(201,168,76,0.03)" strokeWidth="1" />
-        <polygon points="0,900 280,600 0,600" fill="rgba(201,168,76,0.025)" />
-        <polygon points="1440,900 1160,620 1440,620" fill="rgba(10,24,110,0.3)" />
+        <polygon points="160,20 310,105 310,275 160,360 10,275 10,105" fill="none" stroke="rgba(37,99,235,0.08)" strokeWidth="1.5" />
+        <polygon points="160,60 270,122 270,248 160,310 50,248 50,122" fill="none" stroke="rgba(37,99,235,0.05)" strokeWidth="1" />
+        <polygon points="1380,80 1430,108 1430,164 1380,192 1330,164 1330,108" fill="none" stroke="rgba(37,99,235,0.1)" strokeWidth="1" />
+        <polygon points="1340,40 1420,85 1420,175 1340,220 1260,175 1260,85" fill="none" stroke="rgba(37,99,235,0.05)" strokeWidth="1" />
+        <line x1="0" y1="900" x2="500" y2="0" stroke="rgba(37,99,235,0.04)" strokeWidth="1" />
+        <line x1="100" y1="900" x2="600" y2="0" stroke="rgba(37,99,235,0.03)" strokeWidth="1" />
+        <line x1="900" y1="0" x2="1440" y2="600" stroke="rgba(37,99,235,0.03)" strokeWidth="1" />
+        <circle cx="720" cy="450" r="380" fill="none" stroke="rgba(37,99,235,0.05)" strokeWidth="1" strokeDasharray="6 14" />
+        <circle cx="720" cy="450" r="280" fill="none" stroke="rgba(37,99,235,0.04)" strokeWidth="1" />
+        <polygon points="0,900 280,600 0,600" fill="rgba(37,99,235,0.03)" />
+        <polygon points="1440,900 1160,620 1440,620" fill="rgba(37,99,235,0.04)" />
         {[...Array(8)].map((_, row) => [...Array(12)].map((_, col) => (
-          <circle key={`${row}-${col}`} cx={col * 130 + 65} cy={row * 130 + 65} r="1.5" fill="rgba(201,168,76,0.12)" />
+          <circle key={`${row}-${col}`} cx={col * 130 + 65} cy={row * 130 + 65} r="1.5" fill="rgba(37,99,235,0.14)" />
         )))}
       </svg>
     ),
@@ -897,37 +892,37 @@ function GeoBg({ variant = "a" }) {
         style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
         <defs>
           <linearGradient id="lgb1b" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#060d50" />
-            <stop offset="100%" stopColor="#020730" />
+            <stop offset="0%" stopColor="#F5F8FF" />
+            <stop offset="100%" stopColor="#FFFFFF" />
           </linearGradient>
         </defs>
         <rect width="1440" height="700" fill="url(#lgb1b)" />
-        <line x1="0" y1="0" x2="1440" y2="700" stroke="rgba(201,168,76,0.05)" strokeWidth="60" />
-        <line x1="1440" y1="0" x2="0" y2="700" stroke="rgba(10,24,110,0.5)" strokeWidth="60" />
+        <line x1="0" y1="0" x2="1440" y2="700" stroke="rgba(37,99,235,0.06)" strokeWidth="60" />
+        <line x1="1440" y1="0" x2="0" y2="700" stroke="rgba(37,99,235,0.04)" strokeWidth="60" />
         {[...Array(6)].map((_, row) => [...Array(9)].map((_, col) => {
           const cx = col * 180 + (row % 2) * 90;
           const cy = row * 120 + 60;
-          return <polygon key={`${row}-${col}`} points={`${cx},${cy - 30} ${cx + 50},${cy} ${cx},${cy + 30} ${cx - 50},${cy}`} fill="none" stroke="rgba(201,168,76,0.06)" strokeWidth="1" />;
+          return <polygon key={`${row}-${col}`} points={`${cx},${cy - 30} ${cx + 50},${cy} ${cx},${cy + 30} ${cx - 50},${cy}`} fill="none" stroke="rgba(37,99,235,0.07)" strokeWidth="1" />;
         }))}
-        <path d="M 0 700 Q 720 0 1440 700" fill="none" stroke="rgba(201,168,76,0.06)" strokeWidth="2" />
-        <path d="M 0 700 Q 720 100 1440 700" fill="none" stroke="rgba(201,168,76,0.04)" strokeWidth="1" />
-        <circle cx="0" cy="0" r="200" fill="none" stroke="rgba(201,168,76,0.06)" strokeWidth="1.5" />
-        <circle cx="0" cy="0" r="140" fill="none" stroke="rgba(201,168,76,0.04)" strokeWidth="1" />
-        <circle cx="1440" cy="700" r="200" fill="none" stroke="rgba(201,168,76,0.06)" strokeWidth="1.5" />
+        <path d="M 0 700 Q 720 0 1440 700" fill="none" stroke="rgba(37,99,235,0.07)" strokeWidth="2" />
+        <path d="M 0 700 Q 720 100 1440 700" fill="none" stroke="rgba(37,99,235,0.05)" strokeWidth="1" />
+        <circle cx="0" cy="0" r="200" fill="none" stroke="rgba(37,99,235,0.07)" strokeWidth="1.5" />
+        <circle cx="0" cy="0" r="140" fill="none" stroke="rgba(37,99,235,0.05)" strokeWidth="1" />
+        <circle cx="1440" cy="700" r="200" fill="none" stroke="rgba(37,99,235,0.07)" strokeWidth="1.5" />
       </svg>
     ),
     c: (
       <svg viewBox="0 0 1440 600" preserveAspectRatio="xMidYMid slice"
         style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
-        <rect width="1440" height="600" fill="#020730" />
+        <rect width="1440" height="600" fill="#FFFFFF" />
         {[...Array(8)].map((_, i) => (
-          <path key={i} d={`M 0 ${i * 80 + 40} Q 360 ${i * 80 + 40 + (i % 2 ? -40 : 40)} 720 ${i * 80 + 40} T 1440 ${i * 80 + 40}`} fill="none" stroke="rgba(201,168,76,0.04)" strokeWidth="1" />
+          <path key={i} d={`M 0 ${i * 80 + 40} Q 360 ${i * 80 + 40 + (i % 2 ? -40 : 40)} 720 ${i * 80 + 40} T 1440 ${i * 80 + 40}`} fill="none" stroke="rgba(37,99,235,0.05)" strokeWidth="1" />
         ))}
         {[240, 480, 720, 960, 1200].map(x => (
-          <line key={x} x1={x} y1="0" x2={x} y2="600" stroke="rgba(201,168,76,0.05)" strokeWidth="1" strokeDasharray="4 12" />
+          <line key={x} x1={x} y1="0" x2={x} y2="600" stroke="rgba(37,99,235,0.06)" strokeWidth="1" strokeDasharray="4 12" />
         ))}
-        <polygon points="0,0 400,0 0,300" fill="rgba(201,168,76,0.03)" />
-        <polygon points="1440,0 1040,0 1440,300" fill="rgba(201,168,76,0.03)" />
+        <polygon points="0,0 400,0 0,300" fill="rgba(37,99,235,0.04)" />
+        <polygon points="1440,0 1040,0 1440,300" fill="rgba(37,99,235,0.04)" />
       </svg>
     ),
   };
@@ -1032,8 +1027,8 @@ function ReadingProgress() {
     };
   }, []);
   return (
-    <div style={{ position: "fixed", top: 0, left: 0, right: 0, height: 3, zIndex: 9999, background: "rgba(201,168,76,0.12)" }}>
-      <div style={{ height: "100%", width: `${p}%`, background: "linear-gradient(90deg, var(--gold-dk), var(--gold), var(--gold-lt))", transition: "width 0.2s ease", boxShadow: "0 0 12px rgba(201,168,76,0.6)" }} />
+    <div style={{ position: "fixed", top: 0, left: 0, right: 0, height: 3, zIndex: 9999, background: "rgba(37,99,235,0.12)" }}>
+      <div style={{ height: "100%", width: `${p}%`, background: "linear-gradient(90deg, var(--gold-dk), var(--gold), var(--gold-lt))", transition: "width 0.2s ease", boxShadow: "0 0 12px rgba(37,99,235,0.6)" }} />
     </div>
   );
 }
@@ -1065,7 +1060,7 @@ function AnimatedStat({ val, label }) {
       <div style={{ fontFamily: "var(--f-display)", fontSize: "clamp(2.4rem,4.5vw,4rem)", color: "var(--gold)", lineHeight: 1, fontWeight: 700, letterSpacing: "-0.02em" }}>
         {isText ? val : `${count}${suffix}`}
       </div>
-      <div style={{ fontFamily: "var(--f-body)", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(201,168,76,0.65)", marginTop: 10, fontWeight: 600 }}>{label}</div>
+      <div style={{ fontFamily: "var(--f-body)", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(37,99,235,0.7)", marginTop: 10, fontWeight: 600 }}>{label}</div>
     </div>
   );
 }
@@ -1087,23 +1082,23 @@ function ImageSlider({ images, height = 520 }) {
       onMouseLeave={() => setHover(false)}
       onTouchStart={() => setHover(true)}
       onTouchEnd={() => setTimeout(() => setHover(false), 3000)}
-      style={{ position: "relative", borderRadius: 20, overflow: "hidden", boxShadow: "0 40px 80px rgba(0,0,0,0.45)", height, border: "1px solid rgba(201,168,76,0.2)" }}>
+      style={{ position: "relative", borderRadius: 20, overflow: "hidden", boxShadow: "0 40px 80px rgba(37,99,235,0.18)", height, border: "1px solid rgba(37,99,235,0.25)" }}>
       {images.map((img, i) => (
         <div key={i} style={{ position: "absolute", inset: 0, opacity: i === cur ? 1 : 0, transition: "opacity 0.9s ease" }}>
           <img src={img.url} alt={img.caption} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(1,4,74,0.88) 0%, rgba(0,0,0,0.08) 55%, transparent 100%)" }} />
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(11,18,32,0.85) 0%, rgba(11,18,32,0.08) 55%, transparent 100%)" }} />
           <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "40px 22px 22px" }}>
-            <div style={{ fontFamily: "var(--f-body)", fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(201,168,76,0.7)", marginBottom: 8 }}>{img.year} · {img.cat}</div>
+            <div style={{ fontFamily: "var(--f-body)", fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(96,165,250,0.9)", marginBottom: 8 }}>{img.year} · {img.cat}</div>
             <div style={{ fontFamily: "var(--f-display)", fontSize: "clamp(16px, 2vw, 21px)", color: "#fff", fontWeight: 600, lineHeight: 1.3 }}>{img.caption}</div>
           </div>
         </div>
       ))}
       <div style={{ position: "absolute", bottom: 22, right: 22, display: "flex", gap: 7, zIndex: 10 }}>
         {images.map((_, i) => (
-          <button key={i} onClick={() => setCur(i)} aria-label={`Slide ${i + 1}`} style={{ width: i === cur ? 26 : 7, height: 7, borderRadius: 4, background: i === cur ? "var(--gold)" : "rgba(255,255,255,0.35)", border: "none", cursor: "pointer", transition: "all 0.35s", padding: 0, touchAction: "manipulation" }} />
+          <button key={i} onClick={() => setCur(i)} aria-label={`Slide ${i + 1}`} style={{ width: i === cur ? 26 : 7, height: 7, borderRadius: 4, background: i === cur ? "var(--gold)" : "rgba(255,255,255,0.55)", border: "none", cursor: "pointer", transition: "all 0.35s", padding: 0, touchAction: "manipulation" }} />
         ))}
       </div>
-      <div style={{ position: "absolute", top: 18, right: 18, background: "rgba(1,4,74,0.8)", backdropFilter: "blur(8px)", padding: "4px 12px", borderRadius: 20, fontSize: 11, color: "var(--gold)", fontFamily: "var(--f-body)", fontWeight: 700, border: "1px solid rgba(201,168,76,0.25)" }}>
+      <div style={{ position: "absolute", top: 18, right: 18, background: "rgba(11,18,32,0.75)", backdropFilter: "blur(8px)", padding: "4px 12px", borderRadius: 20, fontSize: 11, color: "var(--gold-lt)", fontFamily: "var(--f-body)", fontWeight: 700, border: "1px solid rgba(37,99,235,0.3)" }}>
         {String(cur + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
       </div>
     </div>
@@ -1154,23 +1149,23 @@ function Building4D({ isMobile }) {
 
   return (
     <div ref={containerRef} style={{ maxWidth: 1320, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 60, flexWrap: "wrap" }}>
-      <div style={{ flex: 1, minWidth: 280, color: "#fff" }}>
+      <div style={{ flex: 1, minWidth: 280, color: "var(--ink)" }}>
         <span className="eyebrow" style={{ marginBottom: 16, display: "block" }}>3D Architectural Visualization</span>
-        <h2 className="section-title" style={{ fontSize: "clamp(2rem,4vw,3.5rem)", marginTop: 16, color: "#fff" }}>
+        <h2 className="section-title" style={{ fontSize: "clamp(2rem,4vw,3.5rem)", marginTop: 16, color: "var(--ink)" }}>
           Building the <em style={{ color: "var(--gold)", fontStyle: "italic" }}>future</em>,<br />floor by floor.
         </h2>
-        <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(13px, 1.1vw, 15px)", color: "rgba(255,255,255,0.65)", lineHeight: 1.85, marginTop: 22, maxWidth: 480 }}>
+        <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(13px, 1.1vw, 15px)", color: "rgba(11,18,32,0.65)", lineHeight: 1.85, marginTop: 22, maxWidth: 480 }}>
           Experience our construction process through advanced 3D visualization. Scroll to watch the structure rise in real-time — reflecting our commitment to precision, safety, and timely delivery on every project.
         </p>
         <div style={{ marginTop: 40 }}>
           <div style={{ fontFamily: "var(--f-display)", fontSize: 30, color: "var(--gold)", fontWeight: 700 }}>ISO</div>
-          <div style={{ fontFamily: "var(--f-body)", fontSize: 10, color: "rgba(255,255,255,0.45)", letterSpacing: "0.12em", textTransform: "uppercase", marginTop: 4 }}>Certified Quality</div>
+          <div style={{ fontFamily: "var(--f-body)", fontSize: 10, color: "rgba(11,18,32,0.45)", letterSpacing: "0.12em", textTransform: "uppercase", marginTop: 4 }}>Certified Quality</div>
         </div>
       </div>
 
       <div style={{ flex: 1, minWidth: 280, position: "relative", height: isMobile ? 420 : 580, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ position: "absolute", bottom: 20, right: 20, textAlign: "right", fontFamily: "var(--f-body)", fontSize: 10, color: "var(--gold)", letterSpacing: "0.15em", opacity: 0.8, zIndex: 2 }}>
-          <div style={{ fontSize: "clamp(28px, 4vw, 40px)", fontFamily: "var(--f-display)", fontWeight: 700, lineHeight: 1, color: "#fff" }}><span ref={hudRef}>0%</span></div>
+        <div style={{ position: "absolute", bottom: 20, right: 20, textAlign: "right", fontFamily: "var(--f-body)", fontSize: 10, color: "var(--gold)", letterSpacing: "0.15em", opacity: 0.9, zIndex: 2 }}>
+          <div style={{ fontSize: "clamp(28px, 4vw, 40px)", fontFamily: "var(--f-display)", fontWeight: 700, lineHeight: 1, color: "var(--ink)" }}><span ref={hudRef}>0%</span></div>
           <div style={{ marginTop: 4 }}>COMPLETE</div>
         </div>
 
@@ -1178,19 +1173,19 @@ function Building4D({ isMobile }) {
           <svg viewBox="0 0 400 580" width="100%" height="100%" style={{ overflow: "visible" }}>
             <defs>
               <linearGradient id="topGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#e0c068" /><stop offset="100%" stopColor="#C9A84C" />
+                <stop offset="0%" stopColor="#60A5FA" /><stop offset="100%" stopColor="#2563EB" />
               </linearGradient>
               <linearGradient id="leftGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#1a2f4a" /><stop offset="100%" stopColor="#01044A" />
+                <stop offset="0%" stopColor="#93C5FD" /><stop offset="100%" stopColor="#1D4ED8" />
               </linearGradient>
               <linearGradient id="rightGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#2a4060" /><stop offset="100%" stopColor="#142540" />
+                <stop offset="0%" stopColor="#BFDBFE" /><stop offset="100%" stopColor="#3B82F6" />
               </linearGradient>
               <linearGradient id="winGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.9" /><stop offset="100%" stopColor="#a8883c" stopOpacity="0.3" />
+                <stop offset="0%" stopColor="#2563EB" stopOpacity="0.9" /><stop offset="100%" stopColor="#1D4ED8" stopOpacity="0.3" />
               </linearGradient>
               <radialGradient id="baseGlow" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.4" /><stop offset="100%" stopColor="#C9A84C" stopOpacity="0" />
+                <stop offset="0%" stopColor="#2563EB" stopOpacity="0.35" /><stop offset="100%" stopColor="#2563EB" stopOpacity="0" />
               </radialGradient>
               <filter id="glow"><feGaussianBlur stdDeviation="2.5" result="cb" /><feMerge><feMergeNode in="cb" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
             </defs>
@@ -1209,9 +1204,9 @@ function Building4D({ isMobile }) {
               }
               return (
                 <g key={i} ref={el => floorsRef.current[i] = el} style={{ opacity: 0, transition: "opacity 0.1s, transform 0.1s" }}>
-                  <polygon points={leftPts} fill="url(#leftGrad)" stroke="rgba(201,168,76,0.2)" strokeWidth="0.5" />
-                  <polygon points={rightPts} fill="url(#rightGrad)" stroke="rgba(201,168,76,0.2)" strokeWidth="0.5" />
-                  <polygon points={topPts} fill="url(#topGrad)" stroke="rgba(255,255,255,0.3)" strokeWidth="0.5" />
+                  <polygon points={leftPts} fill="url(#leftGrad)" stroke="rgba(37,99,235,0.3)" strokeWidth="0.5" />
+                  <polygon points={rightPts} fill="url(#rightGrad)" stroke="rgba(37,99,235,0.3)" strokeWidth="0.5" />
+                  <polygon points={topPts} fill="url(#topGrad)" stroke="rgba(255,255,255,0.5)" strokeWidth="0.5" />
                   {leftWins.map((pts, wi) => <polygon key={`lw-${wi}`} points={pts} fill="url(#winGrad)" filter="url(#glow)" />)}
                   {rightWins.map((pts, wi) => <polygon key={`rw-${wi}`} points={pts} fill="url(#winGrad)" filter="url(#glow)" />)}
                 </g>
@@ -1233,7 +1228,7 @@ function Building4D({ isMobile }) {
 ═══════════════════════════════════════════════════════════════════════════ */
 function initials(n) { return n.split(" ").slice(0, 2).map(w => w[0]).join("").toUpperCase(); }
 function avatarBg(name) {
-  const colors = ["#1D3A5C", "#2D4A1A", "#4A2D1A", "#1A2D4A", "#3A1A4A", "#1A4A2D", "#4A1A1A"];
+  const colors = ["#1E3A8A", "#1E40AF", "#1D4ED8", "#2563EB", "#3B82F6", "#0C4A6E", "#075985"];
   return colors[name.charCodeAt(0) % colors.length];
 }
 function Avatar({ name, photo, size = 64 }) {
@@ -1246,7 +1241,7 @@ function Avatar({ name, photo, size = 64 }) {
     );
   }
   return (
-    <div style={{ width: size, height: size, borderRadius: "50%", background: avatarBg(name), display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontFamily: "var(--f-display)", fontSize: size * 0.33, color: "var(--gold)", fontWeight: 700 }}>
+    <div style={{ width: size, height: size, borderRadius: "50%", background: avatarBg(name), display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontFamily: "var(--f-display)", fontSize: size * 0.33, color: "#93C5FD", fontWeight: 700 }}>
       {initials(name)}
     </div>
   );
@@ -1266,15 +1261,15 @@ function ClientImgCard({ name, src, badge }) {
           <div className="client-overlay" />
           <div className="client-name">{name}</div>
           {badge && (
-            <div style={{ position: "absolute", top: 10, left: 10, background: "rgba(1,4,74,0.85)", backdropFilter: "blur(6px)", border: "1px solid rgba(201,168,76,0.3)", borderRadius: 20, padding: "3px 10px", fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--gold)" }}>{badge}</div>
+            <div style={{ position: "absolute", top: 10, left: 10, background: "rgba(37,99,235,0.9)", backdropFilter: "blur(6px)", border: "1px solid rgba(255,255,255,0.3)", borderRadius: 20, padding: "3px 10px", fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#fff" }}>{badge}</div>
           )}
         </>
       ) : (
         <div className="img-placeholder">
-          {badge && <div style={{ position: "absolute", top: 10, left: 10, background: "rgba(1,4,74,0.85)", border: "1px solid rgba(201,168,76,0.3)", borderRadius: 20, padding: "3px 10px", fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--gold)" }}>{badge}</div>}
+          {badge && <div style={{ position: "absolute", top: 10, left: 10, background: "rgba(37,99,235,0.9)", border: "1px solid rgba(255,255,255,0.3)", borderRadius: 20, padding: "3px 10px", fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#fff" }}>{badge}</div>}
           <div style={{ fontSize: 28, opacity: 0.3 }}>🏢</div>
-          <div style={{ fontFamily: "var(--f-display)", fontSize: 13, fontWeight: 600, color: "rgba(201,168,76,0.6)", textAlign: "center", padding: "0 12px", lineHeight: 1.4 }}>{name}</div>
-          <div style={{ fontFamily: "var(--f-body)", fontSize: 9, color: "rgba(255,255,255,0.25)", letterSpacing: "0.1em", textTransform: "uppercase", marginTop: 4 }}>Add logo image</div>
+          <div style={{ fontFamily: "var(--f-display)", fontSize: 13, fontWeight: 600, color: "rgba(37,99,235,0.6)", textAlign: "center", padding: "0 12px", lineHeight: 1.4 }}>{name}</div>
+          <div style={{ fontFamily: "var(--f-body)", fontSize: 9, color: "rgba(11,18,32,0.35)", letterSpacing: "0.1em", textTransform: "uppercase", marginTop: 4 }}>Add logo image</div>
         </div>
       )}
     </div>
@@ -1282,14 +1277,14 @@ function ClientImgCard({ name, src, badge }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   SOCIAL BUTTON (uses SVG icons)
+   SOCIAL BUTTON
 ═══════════════════════════════════════════════════════════════════════════ */
 function SocialBtn({ href, label, children }) {
   const [hov, setHov] = useState(false);
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label}
       onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-      style={{ width: 40, height: 40, borderRadius: 10, background: hov ? "var(--gold)" : "rgba(255,255,255,0.06)", border: `1px solid ${hov ? "var(--gold)" : "rgba(201,168,76,0.25)"}`, display: "flex", alignItems: "center", justifyContent: "center", color: hov ? "var(--ink)" : "var(--gold)", textDecoration: "none", transition: "all 0.25s", transform: hov ? "translateY(-2px)" : "none", flexShrink: 0, touchAction: "manipulation" }}>
+      style={{ width: 40, height: 40, borderRadius: 10, background: hov ? "var(--gold)" : "rgba(37,99,235,0.08)", border: `1px solid ${hov ? "var(--gold)" : "rgba(37,99,235,0.3)"}`, display: "flex", alignItems: "center", justifyContent: "center", color: hov ? "#fff" : "var(--gold)", textDecoration: "none", transition: "all 0.25s", transform: hov ? "translateY(-2px)" : "none", flexShrink: 0, touchAction: "manipulation" }}>
       {children}
     </a>
   );
@@ -1303,7 +1298,7 @@ function FeaturedVideoCard({ videoUrl, title, subtitle, posterImg, onClick, isTo
   const [isPlayingPreview, setIsPlayingPreview] = useState(false);
 
   const handleMouseEnter = () => {
-    if (isTouchDevice) return; // avoid autoplay-on-tap surprises on mobile; tap opens the modal instead
+    if (isTouchDevice) return;
     if (videoRef.current) {
       videoRef.current.play()
         .then(() => setIsPlayingPreview(true))
@@ -1329,9 +1324,9 @@ function FeaturedVideoCard({ videoUrl, title, subtitle, posterImg, onClick, isTo
         position: "relative",
         borderRadius: 20,
         overflow: "hidden",
-        border: "1px solid rgba(201, 168, 76, 0.15)",
-        background: "rgba(255, 255, 255, 0.03)",
-        boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
+        border: "1px solid rgba(37, 99, 235, 0.2)",
+        background: "#FFFFFF",
+        boxShadow: "0 10px 30px rgba(11,18,32,0.1)",
         transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
         cursor: "pointer",
         aspectRatio: "16/9",
@@ -1379,7 +1374,7 @@ function FeaturedVideoCard({ videoUrl, title, subtitle, posterImg, onClick, isTo
         style={{
           position: "absolute",
           inset: 0,
-          background: "linear-gradient(115deg, rgba(2,7,48,0.3) 0%, rgba(1,4,74,0.2) 45%, rgba(6,13,80,0.1) 100%)",
+          background: "linear-gradient(115deg, rgba(11,18,32,0.35) 0%, rgba(37,99,235,0.2) 45%, rgba(11,18,32,0.1) 100%)",
           zIndex: 2,
         }}
       />
@@ -1397,10 +1392,10 @@ function FeaturedVideoCard({ videoUrl, title, subtitle, posterImg, onClick, isTo
           width: 64,
           height: 64,
           borderRadius: "50%",
-          background: "rgba(2, 7, 48, 0.6)",
+          background: "rgba(11, 18, 32, 0.55)",
           border: "2px solid var(--gold)",
           backdropFilter: "blur(4px)",
-          boxShadow: "0 0 20px rgba(201, 168, 76, 0.4)",
+          boxShadow: "0 0 20px rgba(37, 99, 235, 0.5)",
           transition: "all 0.3s cubic-bezier(0.22, 1, 0.36, 1)",
         }}
         className="play-btn-circle"
@@ -1421,8 +1416,8 @@ function FeaturedVideoCard({ videoUrl, title, subtitle, posterImg, onClick, isTo
       >
         <span
           style={{
-            background: "rgba(201, 168, 76, 0.15)",
-            border: "1px solid rgba(201, 168, 76, 0.3)",
+            background: "rgba(255, 255, 255, 0.15)",
+            border: "1px solid rgba(255, 255, 255, 0.35)",
             backdropFilter: "blur(6px)",
             padding: "4px 10px",
             borderRadius: 4,
@@ -1430,7 +1425,7 @@ function FeaturedVideoCard({ videoUrl, title, subtitle, posterImg, onClick, isTo
             fontWeight: 700,
             letterSpacing: "0.1em",
             textTransform: "uppercase",
-            color: "var(--gold)",
+            color: "#fff",
             display: "inline-block",
             marginBottom: 8,
           }}
@@ -1453,7 +1448,7 @@ function FeaturedVideoCard({ videoUrl, title, subtitle, posterImg, onClick, isTo
           style={{
             fontFamily: "var(--f-body)",
             fontSize: 12,
-            color: "rgba(255, 255, 255, 0.65)",
+            color: "rgba(255, 255, 255, 0.8)",
             lineHeight: 1.5,
             margin: 0,
             display: "-webkit-box",
@@ -1477,17 +1472,17 @@ function LeadershipCard({ member }) {
   const [hov, setHov] = useState(false);
   return (
     <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-      style={{ background: hov ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.04)", borderRadius: 20, overflow: "hidden", width: 280, maxWidth: "100%", flexShrink: 0, boxShadow: hov ? "0 24px 60px rgba(0,0,0,0.4)" : "0 4px 16px rgba(0,0,0,0.2)", border: `1px solid ${hov ? "rgba(201,168,76,0.45)" : "rgba(201,168,76,0.15)"}`, transition: "all 0.35s cubic-bezier(0.22,1,0.36,1)", transform: hov ? "translateY(-6px)" : "none", cursor: "default", backdropFilter: "blur(8px)" }}>
-      <div style={{ height: 200, background: "linear-gradient(135deg, #01044A, #0c1870)", position: "relative", overflow: "hidden", display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
-        <div style={{ position: "absolute", inset: 0, opacity: 0.06, backgroundImage: "radial-gradient(circle at 30% 70%, #C9A84C 0%, transparent 60%)" }} />
+      style={{ background: hov ? "#F5F8FF" : "#FFFFFF", borderRadius: 20, overflow: "hidden", width: 280, maxWidth: "100%", flexShrink: 0, boxShadow: hov ? "0 24px 60px rgba(37,99,235,0.18)" : "0 4px 16px rgba(11,18,32,0.08)", border: `1px solid ${hov ? "rgba(37,99,235,0.45)" : "rgba(37,99,235,0.15)"}`, transition: "all 0.35s cubic-bezier(0.22,1,0.36,1)", transform: hov ? "translateY(-6px)" : "none", cursor: "default" }}>
+      <div style={{ height: 200, background: "linear-gradient(135deg, #EFF4FF, #DCE6FA)", position: "relative", overflow: "hidden", display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
+        <div style={{ position: "absolute", inset: 0, opacity: 0.1, backgroundImage: "radial-gradient(circle at 30% 70%, #2563EB 0%, transparent 60%)" }} />
         <div style={{ width: 150, height: 175, overflow: "hidden", borderRadius: "12px 12px 0 0", position: "relative" }}>
           <Avatar name={member.name} photo={member.photo} size={150} />
         </div>
       </div>
       <div style={{ padding: "20px 22px 22px", textAlign: "center" }}>
-        <div style={{ fontFamily: "var(--f-display)", fontSize: 19, fontWeight: 700, color: "#fff", marginBottom: 6 }}>{member.name}</div>
+        <div style={{ fontFamily: "var(--f-display)", fontSize: 19, fontWeight: 700, color: "var(--ink)", marginBottom: 6 }}>{member.name}</div>
         <div style={{ fontFamily: "var(--f-body)", fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)", fontWeight: 600, marginBottom: 4 }}>{member.role}</div>
-        <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.45)" }}>{member.note}</div>
+        <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(11,18,32,0.45)" }}>{member.note}</div>
       </div>
     </div>
   );
@@ -1497,17 +1492,17 @@ function ManagementCard({ member }) {
   const [hov, setHov] = useState(false);
   return (
     <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-      style={{ background: hov ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.04)", borderRadius: 16, overflow: "hidden", border: `1px solid ${hov ? "rgba(201,168,76,0.4)" : "rgba(201,168,76,0.12)"}`, transition: "all 0.3s ease", transform: hov ? "translateY(-4px)" : "none", cursor: "default", backdropFilter: "blur(8px)" }}>
-      <div style={{ height: 130, background: "linear-gradient(135deg, #01044A, #142540)", display: "flex", alignItems: "flex-end", justifyContent: "center", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", inset: 0, opacity: 0.07, backgroundImage: "radial-gradient(circle at 70% 30%, #C9A84C 0%, transparent 60%)" }} />
+      style={{ background: hov ? "#F5F8FF" : "#FFFFFF", borderRadius: 16, overflow: "hidden", border: `1px solid ${hov ? "rgba(37,99,235,0.4)" : "rgba(37,99,235,0.15)"}`, transition: "all 0.3s ease", transform: hov ? "translateY(-4px)" : "none", cursor: "default", boxShadow: hov ? "0 16px 40px rgba(37,99,235,0.14)" : "0 2px 10px rgba(11,18,32,0.05)" }}>
+      <div style={{ height: 130, background: "linear-gradient(135deg, #EFF4FF, #BFDBFE)", display: "flex", alignItems: "flex-end", justifyContent: "center", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, opacity: 0.1, backgroundImage: "radial-gradient(circle at 70% 30%, #2563EB 0%, transparent 60%)" }} />
         <div style={{ width: 96, height: 110, overflow: "hidden", borderRadius: "10px 10px 0 0", position: "relative" }}>
           <Avatar name={member.name} photo={member.photo} size={96} />
         </div>
       </div>
       <div style={{ padding: "14px 14px 16px", textAlign: "center" }}>
-        <div style={{ fontFamily: "var(--f-display)", fontSize: 15, fontWeight: 700, color: "#fff", marginBottom: 4, lineHeight: 1.3 }}>{member.name}</div>
+        <div style={{ fontFamily: "var(--f-display)", fontSize: 15, fontWeight: 700, color: "var(--ink)", marginBottom: 4, lineHeight: 1.3 }}>{member.name}</div>
         <div style={{ fontFamily: "var(--f-body)", fontSize: 10, color: "var(--gold)", fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 6 }}>{member.role}</div>
-        <div style={{ display: "inline-block", background: "rgba(201,168,76,0.1)", borderRadius: 20, padding: "2px 10px", fontFamily: "var(--f-body)", fontSize: 9, color: "rgba(255,255,255,0.45)", fontWeight: 500, border: "1px solid rgba(201,168,76,0.2)" }}>{member.dept}</div>
+        <div style={{ display: "inline-block", background: "rgba(37,99,235,0.08)", borderRadius: 20, padding: "2px 10px", fontFamily: "var(--f-body)", fontSize: 9, color: "rgba(11,18,32,0.5)", fontWeight: 500, border: "1px solid rgba(37,99,235,0.2)" }}>{member.dept}</div>
       </div>
     </div>
   );
@@ -1517,14 +1512,14 @@ function EngineerRow({ member }) {
   const [hov, setHov] = useState(false);
   return (
     <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-      style={{ background: hov ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.03)", border: `1px solid ${hov ? "rgba(201,168,76,0.4)" : "rgba(201,168,76,0.1)"}`, borderRadius: 14, padding: "12px 16px", display: "flex", alignItems: "center", gap: 13, transition: "all 0.3s ease", transform: hov ? "translateX(5px)" : "none", cursor: "default", backdropFilter: "blur(6px)" }}>
+      style={{ background: hov ? "#F5F8FF" : "#FFFFFF", border: `1px solid ${hov ? "rgba(37,99,235,0.4)" : "rgba(37,99,235,0.12)"}`, borderRadius: 14, padding: "12px 16px", display: "flex", alignItems: "center", gap: 13, transition: "all 0.3s ease", transform: hov ? "translateX(5px)" : "none", cursor: "default", boxShadow: "0 2px 8px rgba(11,18,32,0.04)" }}>
       <div style={{ position: "relative" }}>
         <Avatar name={member.name} photo={member.photo} size={48} />
-        <div style={{ position: "absolute", bottom: 0, right: 0, width: 12, height: 12, borderRadius: "50%", background: "#10b981", border: "2px solid var(--bg-deep)" }} />
+        <div style={{ position: "absolute", bottom: 0, right: 0, width: 12, height: 12, borderRadius: "50%", background: "#10b981", border: "2px solid #FFFFFF" }} />
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontFamily: "var(--f-display)", fontSize: 14, fontWeight: 700, color: "#fff", marginBottom: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{member.name}</div>
-        <div style={{ fontFamily: "var(--f-body)", fontSize: 11, color: "rgba(201,168,76,0.7)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{member.role}</div>
+        <div style={{ fontFamily: "var(--f-display)", fontSize: 12, fontWeight: 800, color: "var(--ink)", marginBottom: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{member.name}</div>
+        <div style={{ fontFamily: "var(--f-body)", fontSize: 11, color: "rgba(37,99,235,0.75)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{member.role}</div>
       </div>
       <div style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--gold)", flexShrink: 0, opacity: hov ? 1 : 0.25, transition: "opacity 0.3s" }} />
     </div>
@@ -1574,13 +1569,13 @@ function CareerForm({ careers }) {
 
   if (submitted) return (
     <div style={{ textAlign: "center", padding: "48px 24px" }}>
-      <div style={{ width: 64, height: 64, borderRadius: "50%", background: "linear-gradient(135deg, var(--gold), var(--gold-dk))", margin: "0 auto 18px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26, color: "var(--ink)" }}>✓</div>
+      <div style={{ width: 64, height: 64, borderRadius: "50%", background: "linear-gradient(135deg, var(--gold), var(--gold-dk))", margin: "0 auto 18px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26, color: "#fff" }}>✓</div>
       <div style={{ fontFamily: "var(--f-display)", fontSize: 24, color: "var(--ink)", fontWeight: 700, marginBottom: 8 }}>Application Received</div>
       <div style={{ fontFamily: "var(--f-body)", fontSize: 13, color: "#888", lineHeight: 1.7 }}>Our HR team will respond within 5 business days.</div>
     </div>
   );
 
-  const IS = k => ({ width: "100%", background: focused === k ? "#fff" : "#f9f8f5", border: `1px solid ${errors[k] ? "#e74c3c" : focused === k ? "var(--gold)" : "#e8e3d8"}`, color: "#111", padding: "11px 13px", fontFamily: "var(--f-body)", fontSize: 16, outline: "none", borderRadius: 8, transition: "all 0.2s", boxSizing: "border-box" });
+  const IS = k => ({ width: "100%", background: focused === k ? "#fff" : "#F5F8FF", border: `1px solid ${errors[k] ? "#e74c3c" : focused === k ? "var(--gold)" : "#DCE6FA"}`, color: "#111", padding: "11px 13px", fontFamily: "var(--f-body)", fontSize: 16, outline: "none", borderRadius: 8, transition: "all 0.2s", boxSizing: "border-box" });
   const LS = { display: "block", fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--ink)", marginBottom: 6 };
   const ES = { fontFamily: "var(--f-body)", fontSize: 11, color: "#e74c3c", marginTop: 5 };
 
@@ -1610,7 +1605,7 @@ function CareerForm({ careers }) {
         <input type="url" inputMode="url" value={form.cvLink} onChange={e => set("cvLink", e.target.value)} onFocus={() => setFocused("cvLink")} onBlur={() => setFocused("")} placeholder="https://drive.google.com/file/d/your-cv" style={IS("cvLink")} />
         {errors.cvLink && <div style={ES}>{errors.cvLink}</div>}
         {form.cvLink && isValidUrl(form.cvLink) && (
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 8, background: "#f4f1eb", borderRadius: 8, padding: "7px 12px", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 8, background: "#EFF4FF", borderRadius: 8, padding: "7px 12px", flexWrap: "wrap" }}>
             <span style={{ fontSize: 14 }}>📎</span>
             <a href={form.cvLink} target="_blank" rel="noopener noreferrer" style={{ fontFamily: "var(--f-body)", fontSize: 11, color: "var(--gold-dk)", fontWeight: 600, textDecoration: "none", wordBreak: "break-all" }}>{form.cvLink.length > 55 ? form.cvLink.slice(0, 55) + "…" : form.cvLink}</a>
             <span style={{ fontFamily: "var(--f-body)", fontSize: 10, color: "#10b981", marginLeft: "auto", flexShrink: 0 }}>✓ Valid</span>
@@ -1619,7 +1614,7 @@ function CareerForm({ careers }) {
       </div>
       {sendError && <div style={{ background: "#fff5f5", border: "1px solid #fecaca", borderRadius: 8, padding: "10px 14px", marginBottom: 14, fontFamily: "var(--f-body)", fontSize: 12, color: "#e74c3c" }}>{sendError}</div>}
       <button onClick={submit} disabled={sending} className="btn-gold" style={{ width: "100%", justifyContent: "center", opacity: sending ? 0.6 : 1, cursor: sending ? "not-allowed" : "pointer" }}>
-        {sending ? <><span style={{ width: 13, height: 13, border: "2px solid var(--ink)", borderTopColor: "transparent", borderRadius: "50%", display: "inline-block", animation: "spin 0.7s linear infinite" }} /> Sending…</> : "Submit Application →"}
+        {sending ? <><span style={{ width: 13, height: 13, border: "2px solid #fff", borderTopColor: "transparent", borderRadius: "50%", display: "inline-block", animation: "spin 0.7s linear infinite" }} /> Sending…</> : "Submit Application →"}
       </button>
     </div>
   );
@@ -1660,52 +1655,52 @@ function GroupCard({ company, index = 0 }) {
       style={{
         transitionDelay: cardState === "visible" ? `${index * 130}ms` : "0ms",
         boxShadow: hov
-          ? "0 32px 70px rgba(0,0,0,0.55), 0 0 40px rgba(201,168,76,0.18), inset 0 1px 0 rgba(201,168,76,0.2)"
-          : "0 8px 32px rgba(0,0,0,0.3)",
+          ? "0 32px 70px rgba(37,99,235,0.2), 0 0 40px rgba(37,99,235,0.14), inset 0 1px 0 rgba(37,99,235,0.15)"
+          : "0 8px 32px rgba(11,18,32,0.08)",
         cursor: "default",
       }}
     >
       <div style={{ position: "absolute", inset: 0, borderRadius: 22, overflow: "hidden", pointerEvents: "none", zIndex: 0, opacity: hov ? 1 : 0, transition: "opacity 0.5s ease" }}>
-        <div style={{ position: "absolute", width: 140, height: 140, borderRadius: "50%", background: "radial-gradient(circle, rgba(201,168,76,0.22) 0%, transparent 70%)", top: -40, right: -40, animation: "orb 6s ease-in-out infinite" }} />
-        <div style={{ position: "absolute", width: 100, height: 100, borderRadius: "50%", background: "radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%)", bottom: 20, left: -20, animation: "orb 8s ease-in-out 1s infinite reverse" }} />
+        <div style={{ position: "absolute", width: 140, height: 140, borderRadius: "50%", background: "radial-gradient(circle, rgba(37,99,235,0.18) 0%, transparent 70%)", top: -40, right: -40, animation: "orb 6s ease-in-out infinite" }} />
+        <div style={{ position: "absolute", width: 100, height: 100, borderRadius: "50%", background: "radial-gradient(circle, rgba(37,99,235,0.1) 0%, transparent 70%)", bottom: 20, left: -20, animation: "orb 8s ease-in-out 1s infinite reverse" }} />
       </div>
 
       {hov && (
-        <div style={{ position: "absolute", left: 0, right: 0, height: 2, background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.5), transparent)", zIndex: 2, pointerEvents: "none", animation: "scanLine 1.8s linear infinite" }} />
+        <div style={{ position: "absolute", left: 0, right: 0, height: 2, background: "linear-gradient(90deg, transparent, rgba(37,99,235,0.5), transparent)", zIndex: 2, pointerEvents: "none", animation: "scanLine 1.8s linear infinite" }} />
       )}
 
       <div className="group-card-inner"
-        style={{ border: `1px solid ${hov ? "rgba(201,168,76,0.55)" : "rgba(201,168,76,0.18)"}`, borderRadius: 22, padding: "clamp(26px, 3vw, 36px) clamp(20px, 2.5vw, 30px)", background: hov ? "rgba(10,16,60,0.95)" : "rgba(4,8,36,0.88)", backdropFilter: "blur(14px)", transition: "border-color 0.4s ease, background 0.4s ease", position: "relative", overflow: "hidden" }}>
+        style={{ border: `1px solid ${hov ? "rgba(37,99,235,0.5)" : "rgba(37,99,235,0.18)"}`, borderRadius: 22, padding: "clamp(26px, 3vw, 36px) clamp(20px, 2.5vw, 30px)", background: hov ? "#F5F8FF" : "#FFFFFF", transition: "border-color 0.4s ease, background 0.4s ease", position: "relative", overflow: "hidden" }}>
 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 24, flexWrap: "wrap", gap: 12 }}>
           <div className="logo-ring">
             <div className="logo-ring-inner">
               {!logoErr ? (
                 <img src={logo} alt="Al Agha Group Logo" onError={() => setLogoErr(true)}
-                  style={{ width: "88%", height: "88%", objectFit: "contain", filter: hov ? "drop-shadow(0 0 10px rgba(201,168,76,0.7)) brightness(1.1)" : "drop-shadow(0 0 5px rgba(201,168,76,0.3))", transition: "filter 0.4s ease" }} />
+                  style={{ width: "88%", height: "88%", objectFit: "contain", filter: hov ? "drop-shadow(0 0 10px rgba(37,99,235,0.5)) brightness(1.05)" : "drop-shadow(0 0 5px rgba(37,99,235,0.2))", transition: "filter 0.4s ease" }} />
               ) : (
                 <div style={{ fontFamily: "var(--f-display)", fontSize: 16, fontWeight: 800, color: "var(--gold)", letterSpacing: "0.04em" }}>{company.abbr}</div>
               )}
             </div>
           </div>
-          <div style={{ fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold)", background: "rgba(201,168,76,0.1)", border: "1px solid rgba(201,168,76,0.28)", borderRadius: 20, padding: "5px 14px" }}>
+          <div style={{ fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold)", background: "rgba(37,99,235,0.08)", border: "1px solid rgba(37,99,235,0.3)", borderRadius: 20, padding: "5px 14px" }}>
             Est. {company.year}
           </div>
         </div>
 
-        <div style={{ fontFamily: "var(--f-display)", fontSize: "clamp(18px, 1.8vw, 20px)", fontWeight: 700, color: hov ? "#fff" : "rgba(255,255,255,0.92)", marginBottom: 10, lineHeight: 1.3, transition: "color 0.35s ease" }}>{company.name}</div>
+        <div style={{ fontFamily: "var(--f-display)", fontSize: "clamp(18px, 1.8vw, 20px)", fontWeight: 700, color: hov ? "var(--ink)" : "rgba(11,18,32,0.9)", marginBottom: 10, lineHeight: 1.3, transition: "color 0.35s ease" }}>{company.name}</div>
 
         <div style={{ overflow: "hidden", marginBottom: 14, height: 2 }}>
-          <div style={{ height: 2, background: hov ? "linear-gradient(90deg, var(--gold), var(--gold-lt), transparent)" : "linear-gradient(90deg, rgba(201,168,76,0.45), transparent)", borderRadius: 2, width: "100%", transition: "background 0.4s ease" }} />
+          <div style={{ height: 2, background: hov ? "linear-gradient(90deg, var(--gold), var(--gold-lt), transparent)" : "linear-gradient(90deg, rgba(37,99,235,0.45), transparent)", borderRadius: 2, width: "100%", transition: "background 0.4s ease" }} />
         </div>
 
-        <div style={{ fontFamily: "var(--f-body)", fontSize: 13, color: hov ? "rgba(255,255,255,0.72)" : "rgba(255,255,255,0.48)", marginBottom: 20, lineHeight: 1.75, transition: "color 0.35s ease" }}>{company.focus}</div>
+        <div style={{ fontFamily: "var(--f-body)", fontSize: 13, color: hov ? "rgba(11,18,32,0.75)" : "rgba(11,18,32,0.5)", marginBottom: 20, lineHeight: 1.75, transition: "color 0.35s ease" }}>{company.focus}</div>
 
-        <div style={{ fontFamily: "var(--f-display)", fontSize: 15, color: hov ? "rgba(201,168,76,0.8)" : "rgba(201,168,76,0.45)", fontStyle: "italic", direction: "rtl", textAlign: "right", transition: "color 0.4s ease", paddingTop: 16, borderTop: `1px solid rgba(201,168,76,${hov ? "0.2" : "0.1"})` }}>
+        <div style={{ fontFamily: "var(--f-display)", fontSize: 15, color: hov ? "rgba(37,99,235,0.9)" : "rgba(37,99,235,0.55)", fontStyle: "italic", direction: "rtl", textAlign: "right", transition: "color 0.4s ease", paddingTop: 16, borderTop: `1px solid rgba(37,99,235,${hov ? "0.25" : "0.12"})` }}>
           {company.arabic}
         </div>
 
-        <div style={{ position: "absolute", bottom: 0, right: 0, width: 60, height: 60, background: "linear-gradient(135deg, transparent 50%, rgba(201,168,76,0.08) 50%)", borderRadius: "0 0 22px 0", opacity: hov ? 1 : 0, transition: "opacity 0.4s ease", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: 0, right: 0, width: 60, height: 60, background: "linear-gradient(135deg, transparent 50%, rgba(37,99,235,0.08) 50%)", borderRadius: "0 0 22px 0", opacity: hov ? 1 : 0, transition: "opacity 0.4s ease", pointerEvents: "none" }} />
       </div>
     </div>
   );
@@ -1737,24 +1732,24 @@ function CertModal({ cert, onClose }) {
         <button className="cert-modal-close" onClick={onClose} aria-label="Close">✕</button>
         <div style={{ marginBottom: 24, paddingRight: 40 }}>
           <span className="eyebrow" style={{ marginBottom: 6, display: "block" }}>Certification</span>
-          <div style={{ fontFamily: "var(--f-display)", fontSize: "clamp(19px, 2vw, 22px)", fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>{cert.name}</div>
-          <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.45)", marginTop: 6 }}>{cert.desc}</div>
+          <div style={{ fontFamily: "var(--f-display)", fontSize: "clamp(19px, 2vw, 22px)", fontWeight: 700, color: "var(--ink)", lineHeight: 1.2 }}>{cert.name}</div>
+          <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(11,18,32,0.5)", marginTop: 6 }}>{cert.desc}</div>
         </div>
-        <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(201,168,76,0.2)", borderRadius: 14, overflow: "hidden", minHeight: 240, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+        <div style={{ background: "#F5F8FF", border: "1px solid rgba(37,99,235,0.2)", borderRadius: 14, overflow: "hidden", minHeight: 240, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
           {cert.image ? (
             <img src={cert.image} alt={`${cert.name} certificate`} style={{ width: "100%", height: "auto", display: "block", maxHeight: 400, objectFit: "contain" }} />
           ) : (
             <div style={{ textAlign: "center", padding: "48px 32px" }}>
               <div style={{ fontSize: 52, marginBottom: 16, opacity: 0.4 }}>📜</div>
               <div style={{ fontFamily: "var(--f-display)", fontSize: 18, color: "var(--gold)", fontWeight: 700, marginBottom: 8 }}>{cert.name}</div>
-              <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.3)", lineHeight: 1.6 }}>Certificate image will appear here.<br />Add the image path to the CERTIFICATIONS data array.</div>
+              <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(11,18,32,0.35)", lineHeight: 1.6 }}>Certificate image will appear here.<br />Add the image path to the CERTIFICATIONS data array.</div>
               <div style={{ width: 48, height: 2, background: "linear-gradient(90deg, transparent, var(--gold), transparent)", margin: "20px auto 0" }} />
             </div>
           )}
         </div>
         <div style={{ marginTop: 20, display: "flex", alignItems: "center", gap: 10 }}>
           <Icons.Check />
-          <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.45)", lineHeight: 1.5 }}>
+          <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(11,18,32,0.5)", lineHeight: 1.5 }}>
             Al Agha Group holds valid {cert.name} certification, demonstrating our commitment to {cert.desc.toLowerCase()}.
           </div>
         </div>
@@ -1785,13 +1780,13 @@ function VideoModal({ video, onClose }) {
 
   return (
     <div className="cert-modal-overlay" onClick={onClose}>
-      <div className="cert-modal-box" style={{ maxWidth: 880, padding: 24, background: "#010430" }} onClick={e => e.stopPropagation()}>
+      <div className="cert-modal-box" style={{ maxWidth: 880, padding: 24, background: "#0B1220" }} onClick={e => e.stopPropagation()}>
         <button className="cert-modal-close" onClick={onClose} aria-label="Close">✕</button>
         <div style={{ marginBottom: 16, paddingRight: 40 }}>
-          <span className="eyebrow" style={{ marginBottom: 4, display: "block" }}>Project Tour</span>
+          <span className="eyebrow" style={{ marginBottom: 4, display: "block", color: "#60A5FA" }}>Project Tour</span>
           <div style={{ fontFamily: "var(--f-display)", fontSize: "clamp(19px, 2vw, 22px)", fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>{video.title}</div>
         </div>
-        <div style={{ position: "relative", width: "100%", paddingBottom: "56.25%", borderRadius: 14, overflow: "hidden", background: "#000", border: "1px solid rgba(201,168,76,0.3)" }}>
+        <div style={{ position: "relative", width: "100%", paddingBottom: "56.25%", borderRadius: 14, overflow: "hidden", background: "#000", border: "1px solid rgba(37,99,235,0.4)" }}>
           <video
             src={video.url}
             controls
@@ -1802,7 +1797,7 @@ function VideoModal({ video, onClose }) {
         </div>
         <div style={{ marginTop: 18, display: "flex", alignItems: "center", gap: 10 }}>
           <Icons.Play />
-          <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.45)", lineHeight: 1.5 }}>
+          <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.55)", lineHeight: 1.5 }}>
             Watch the full video walkthrough showcasing our dedicated decoration, interior design, and contracting engineering.
           </div>
         </div>
@@ -1846,9 +1841,9 @@ function SectionHeader({ eyebrow, title, subtitle, light = false, center = true 
     <div style={{ textAlign: center ? "center" : "left", marginBottom: 64 }}>
       {eyebrow && <span className="eyebrow">{eyebrow}</span>}
       <h2 className="section-title"
-        style={{ fontSize: "clamp(1.8rem,4vw,3.4rem)", marginTop: 14, color: light ? "var(--ink)" : "#fff", maxWidth: center ? 700 : "none", margin: center ? "14px auto 0" : "14px 0 0" }}
+        style={{ fontSize: "clamp(1.8rem,4vw,3.4rem)", marginTop: 14, color: "var(--ink)", maxWidth: center ? 700 : "none", margin: center ? "14px auto 0" : "14px 0 0" }}
         dangerouslySetInnerHTML={{ __html: title }} />
-      {subtitle && <p style={{ fontFamily: "var(--f-body)", fontSize: 15, color: light ? "#888" : "rgba(255,255,255,0.55)", maxWidth: 540, margin: "16px auto 0", lineHeight: 1.8 }}>{subtitle}</p>}
+      {subtitle && <p style={{ fontFamily: "var(--f-body)", fontSize: 15, color: "rgba(11,18,32,0.6)", maxWidth: 540, margin: "16px auto 0", lineHeight: 1.8 }}>{subtitle}</p>}
     </div>
   );
 }
@@ -1856,7 +1851,7 @@ function SectionHeader({ eyebrow, title, subtitle, light = false, center = true 
 /* ═══════════════════════════════════════════════════════════════════════════
    DATA
 ═══════════════════════════════════════════════════════════════════════════ */
-const NAV = ["Home", "Services", "Projects", "Career", "Clients", "Team", "About"];
+const NAV = ["Home", "About", "Services", "Projects", "Clients", "Career", "Team"];
 
 const ALL_SERVICES = [
   { icon: "🏛️", title: "GYPSUM FALSE CEILING", desc: "We are offering services for Gypsum false ceiling works such as, regular false ceiling works (Wet and Dry Areas), partitions, bulkheads, 60 x 60 cm false ceiling tiles, Suspended ceiling works that are lightweight, sound insulated, fire resistance, soft and thermally insulated. We are experienced in the field of False Ceiling and we are focused on achieving professional goals and customer's satisfactions." },
@@ -1984,7 +1979,7 @@ const MANAGEMENT = [
 const ENGINEERS = [
   { name: "Olga Regala", role: "Proposal & Estimating Engineer", dept: "Commercial", photo: proposalManagerPhoto },
   { name: "Omar Ibrahim", role: "Accounting Manager", dept: "Finance", photo: accountingManagerPhoto },
-  { name: "Abdelkader Mouine", role: "Accountant", dept: "Finance", photo: accountantPhoto },
+  { name: "Abdulkader Mouine", role: "Accountant", dept: "Finance", photo: accountantPhoto },
   { name: "Fayaz Hyder Ali", role: "Senior Purchasing Officer", dept: "Procurement", photo: seniorPurchasingOfficerPhoto },
   { name: "Nour Al Hayek", role: "P.R.O.", dept: "Administration", photo: proPhoto },
   { name: "Jannath TP", role: "QS Engineer", dept: "Quantity Surveying", photo: qsPhoto1 },
@@ -1994,13 +1989,14 @@ const ENGINEERS = [
   { name: "Mohamed Sana", role: "QS Engineer", dept: "Quantity Surveying", photo: qsPhoto5 },
   { name: "Shanoob Rasheed", role: "Senior Technical Engineer", dept: "Engineering", photo: technicalEngineerPhoto },
   { name: "Muhammed Irfan", role: "Architectural Designer", dept: "Design", photo: architectureDesignerPhoto },
-  { name: "Sumon Modal", role: "SITE ENGINEER", dept: "MEP", photo: mepPhoto },
+  { name: "Sumon Modal", role: "Site Engineer", dept: "MEP", photo: mepPhoto },
   { name: "Shahzad Ahmad", role: "Electrical Engineer", dept: "MEP", photo: electricalEngineerPhoto },
   { name: "Sathish Jayaraman", role: "Mechanical Engineer", dept: "MEP", photo: mechanicalEngineerPhoto },
   { name: "Mohamed Javeed", role: "Project Site Engineer", dept: "Operations", photo: siteEngineerPhoto1 },
   { name: "Muhammed Suhair", role: "Project Site Engineer", dept: "Operations", photo: siteEngineerPhoto2 },
   { name: "Mohammed Firoz R.", role: "Project Site Engineer", dept: "Operations", photo: siteEngineerPhoto3 },
   { name: "Muhammed Fayiz N.P", role: "Project Site Engineer", dept: "Operations", photo: siteEngineerPhoto4 },
+  { name: "Camille De Guzman", role: "Secretary", dept: "Operations", photo: secretaryPhoto },
 ];
 
 const GROUP_COMPANIES = [
@@ -2031,8 +2027,6 @@ export default function AlAghaGroup() {
 
   const YOUTUBE_VIDEO_ID = "-69VznBquek";
 
-  // Lock the --vh custom property to the true visual viewport height so
-  // `100vh`-based layouts don't jump when the iOS/Android URL bar shows/hides.
   useEffect(() => {
     const setVhVar = () => {
       document.documentElement.style.setProperty("--vh", `${window.innerHeight * 0.01}px`);
@@ -2046,7 +2040,6 @@ export default function AlAghaGroup() {
     };
   }, []);
 
-  // Video loading with Android fixes
   useEffect(() => {
     if (location.pathname === '/') {
       const loadVideo = () => {
@@ -2075,7 +2068,6 @@ export default function AlAghaGroup() {
     }
   }, [location.pathname, videoLoaded, videoError]);
 
-  // Handle user interaction for autoplay
   useEffect(() => {
     const handleInteraction = () => {
       if (videoRef.current && videoRef.current.paused && !videoError) {
@@ -2114,7 +2106,6 @@ export default function AlAghaGroup() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock body scroll while the mobile nav drawer is open
   useEffect(() => {
     if (menu) {
       document.body.style.overflow = "hidden";
@@ -2137,52 +2128,50 @@ export default function AlAghaGroup() {
     <>
       <style>{GLOBAL_CSS}</style>
 
-      {/* Floating Particles / Snow Effect */}
       <FloatingParticles />
 
       {activeCert && <CertModal cert={activeCert} onClose={() => setActiveCert(null)} />}
       {activeVideo && <VideoModal video={activeVideo} onClose={() => setActiveVideo(null)} />}
 
-      <div style={{ color: "#fff", fontFamily: "var(--f-body)", background: "var(--bg-deep)", overflowX: "hidden", position: "relative", zIndex: 1, width: "100%", maxWidth: "100vw" }}>
+      <div style={{ color: "var(--ink)", fontFamily: "var(--f-body)", background: "var(--bg-deep)", overflowX: "hidden", position: "relative", zIndex: 1, width: "100%", maxWidth: "100vw" }}>
         <ReadingProgress />
 
         <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, overflow: "hidden" }}>
-          <div style={{ position: "absolute", width: 600, height: 600, top: "-200px", left: "-200px", background: "radial-gradient(circle, rgba(201,168,76,0.04) 0%, transparent 70%)", animation: "floatBg 18s ease-in-out infinite" }} />
-          <div style={{ position: "absolute", width: 500, height: 500, bottom: "10%", right: "-100px", background: "radial-gradient(circle, rgba(12,24,112,0.6) 0%, transparent 70%)", animation: "floatBgReverse 22s ease-in-out infinite" }} />
+          <div style={{ position: "absolute", width: 600, height: 600, top: "-200px", left: "-200px", background: "radial-gradient(circle, rgba(37,99,235,0.05) 0%, transparent 70%)", animation: "floatBg 18s ease-in-out infinite" }} />
+          <div style={{ position: "absolute", width: 500, height: 500, bottom: "10%", right: "-100px", background: "radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 70%)", animation: "floatBgReverse 22s ease-in-out infinite" }} />
         </div>
 
         {/* ══ NAV ══ */}
-        <nav className="safe-area-top" style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000, background: scrolled ? "rgba(2,7,48,0.97)" : "transparent", backdropFilter: scrolled ? "blur(20px)" : "none", boxShadow: scrolled ? "0 1px 0 rgba(201,168,76,0.1)" : "none", transition: "all 0.4s ease" }}>
+        <nav className="safe-area-top" style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000, background: scrolled ? "rgba(255,255,255,0.97)" : "transparent", backdropFilter: scrolled ? "blur(20px)" : "none", boxShadow: scrolled ? "0 1px 0 rgba(37,99,235,0.12)" : "none", transition: "all 0.4s ease" }}>
           <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 20px", height: "clamp(60px, 6vh, 72px)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <button onClick={() => scrollTo("Home")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 12, flexShrink: 0, touchAction: "manipulation" }}>
               <img src={logo} alt="Al Agha Group Logo" style={{ width: "clamp(34px, 3.5vw, 40px)", height: "clamp(34px, 3.5vw, 40px)", objectFit: "contain", borderRadius: 8, flexShrink: 0 }}
                 onError={e => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }} />
-              <div style={{ display: "none", width: 40, height: 40, borderRadius: 10, flexShrink: 0, background: "linear-gradient(135deg, var(--gold-dk), var(--gold))", alignItems: "center", justifyContent: "center", fontFamily: "var(--f-display)", fontWeight: 800, fontSize: 16, color: "var(--ink)" }}>AG</div>
+              <div style={{ display: "none", width: 40, height: 40, borderRadius: 10, flexShrink: 0, background: "linear-gradient(135deg, var(--gold-dk), var(--gold))", alignItems: "center", justifyContent: "center", fontFamily: "var(--f-display)", fontWeight: 800, fontSize: 16, color: "#fff" }}>AG</div>
               <div style={{ textAlign: "left" }}>
-                <div style={{ fontFamily: "var(--f-display)", fontWeight: 700, fontSize: "clamp(14px, 2vw, 19px)", color: "#fff", letterSpacing: "-0.01em", lineHeight: 1.15, whiteSpace: "nowrap" }}>Al Agha Group</div>
-                <div style={{ fontFamily: "var(--f-body)", fontSize: "clamp(6px, 0.8vw, 8px)", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(201,168,76,0.8)", whiteSpace: "nowrap" }}>of Companies</div>
+                <div style={{ fontFamily: "var(--f-display)", fontWeight: 700, fontSize: "clamp(14px, 2vw, 19px)", color: scrolled ? "var(--ink)" : "#fff", letterSpacing: "-0.01em", lineHeight: 1.15, whiteSpace: "nowrap" }}>Al Agha Group</div>
+                <div style={{ fontFamily: "var(--f-body)", fontSize: "clamp(6px, 0.8vw, 8px)", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold)", whiteSpace: "nowrap" }}>of Companies</div>
               </div>
             </button>
             <div style={{ display: "flex", gap: "clamp(14px, 2.5vw, 32px)", alignItems: "center" }} className="desktop-nav">
               {NAV.map(l => (
-                <button key={l} onClick={() => scrollTo(l)} className={`nav-btn${active === l ? " nav-active" : ""}`} style={{ color: active === l ? "var(--gold)" : "rgba(255,255,255,0.8)", fontSize: "clamp(11px, 1.1vw, 13px)" }}>{l}</button>
+                <button key={l} onClick={() => scrollTo(l)} className={`nav-btn${active === l ? " nav-active" : ""}`} style={{ color: active === l ? "var(--gold)" : (scrolled ? "rgba(11,18,32,0.75)" : "rgba(255,255,255,0.9)"), fontSize: "clamp(11px, 1.1vw, 13px)" }}>{l}</button>
               ))}
               <button className="btn-gold" style={{ padding: "10px 22px", fontSize: "clamp(10px, 0.9vw, 12px)" }} onClick={() => scrollTo("Career")}>Join Us</button>
             </div>
-            <button onClick={() => setMenu(o => !o)} aria-label={menu ? "Close menu" : "Open menu"} style={{ background: "none", border: "none", color: "#fff", fontSize: 22, cursor: "pointer", display: "none", padding: 8, touchAction: "manipulation" }} className="mobile-menu-btn">
+            <button onClick={() => setMenu(o => !o)} aria-label={menu ? "Close menu" : "Open menu"} style={{ background: "none", border: "none", color: scrolled ? "var(--ink)" : "#fff", fontSize: 22, cursor: "pointer", display: "none", padding: 8, touchAction: "manipulation" }} className="mobile-menu-btn">
               {menu ? <Icons.Close /> : <Icons.Menu />}
             </button>
           </div>
           {menu && (
-            <div className="safe-area-bottom" style={{ background: "rgba(2,7,48,0.98)", borderTop: "1px solid rgba(201,168,76,0.1)", maxHeight: "calc(100vh - 60px)", maxHeight: "calc(100dvh - 60px)", overflowY: "auto", WebkitOverflowScrolling: "touch" }}>
+            <div className="safe-area-bottom" style={{ background: "rgba(255,255,255,0.98)", borderTop: "1px solid rgba(37,99,235,0.12)", maxHeight: "calc(100vh - 60px)", maxHeight: "calc(100dvh - 60px)", overflowY: "auto", WebkitOverflowScrolling: "touch" }}>
               {NAV.map(l => (
-                <button key={l} onClick={() => scrollTo(l)} style={{ display: "block", width: "100%", background: "none", border: "none", borderBottom: "1px solid rgba(201,168,76,0.08)", color: active === l ? "var(--gold)" : "rgba(255,255,255,0.75)", fontFamily: "var(--f-body)", fontSize: 15, fontWeight: 500, padding: "16px 20px", textAlign: "left", cursor: "pointer", touchAction: "manipulation" }}>{l}</button>
+                <button key={l} onClick={() => scrollTo(l)} style={{ display: "block", width: "100%", background: "none", border: "none", borderBottom: "1px solid rgba(37,99,235,0.1)", color: active === l ? "var(--gold)" : "rgba(11,18,32,0.75)", fontFamily: "var(--f-body)", fontSize: 15, fontWeight: 500, padding: "16px 20px", textAlign: "left", cursor: "pointer", touchAction: "manipulation" }}>{l}</button>
               ))}
             </div>
           )}
         </nav>
 
-        {/* ══ HERO ══ */}
         <section id="home" style={{ minHeight: "100vh", minHeight: "calc(var(--vh, 1vh) * 100)", position: "relative", display: "flex", alignItems: "center", overflow: "hidden" }}>
           <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 0 }}>
             <video
@@ -2214,51 +2203,63 @@ export default function AlAghaGroup() {
               Your browser does not support the video tag.
             </video>
             {(!videoLoaded || videoError) && (
-              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #02071c 0%, #060d50 50%, #02071c 100%)", zIndex: 1 }} />
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #1D4ED8 100%)", zIndex: 1 }} />
             )}
           </div>
 
-          {/* Layer 1: Main gradient overlay */}
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(115deg, rgba(2,7,48,0.5) 0%, rgba(1,4,74,0.4) 45%, rgba(6,13,80,0.35) 100%)", zIndex: 1 }} />
-          {/* Layer 2: Cinematic vignette */}
-          <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, transparent 40%, rgba(2,7,48,0.5) 100%)", zIndex: 1, pointerEvents: "none" }} />
-          {/* Layer 3: Bottom fade */}
-          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "60%", background: "linear-gradient(to top, rgba(2,7,48,0.55) 0%, transparent 100%)", zIndex: 1, pointerEvents: "none" }} />
-          {/* Layer 4: Film grain */}
+          {/* ══ SHIMMER SWEEP OVERLAY (NEW) ══ */}
+          <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 1, pointerEvents: "none" }}>
+            <div style={{
+              position: "absolute",
+              top: "-20%",
+              left: 0,
+              width: "35%",
+              height: "140%",
+              background: "linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.06) 35%, rgba(147,197,253,0.35) 50%, rgba(255,255,255,0.06) 65%, transparent 100%)",
+              animation: "heroShimmerSweep 6s ease-in-out 1s infinite",
+              filter: "blur(2px)",
+            }} />
+          </div>
+
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(115deg, rgba(11,18,32,0.5) 0%, rgba(30,58,138,0.4) 45%, rgba(37,99,235,0.35) 100%)", zIndex: 1 }} />
+          <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, transparent 40%, rgba(11,18,32,0.5) 100%)", zIndex: 1, pointerEvents: "none" }} />
+          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "60%", background: "linear-gradient(to top, rgba(11,18,32,0.55) 0%, transparent 100%)", zIndex: 1, pointerEvents: "none" }} />
+
+
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(115deg, rgba(11,18,32,0.5) 0%, rgba(30,58,138,0.4) 45%, rgba(37,99,235,0.35) 100%)", zIndex: 1 }} />
+          <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, transparent 40%, rgba(11,18,32,0.5) 100%)", zIndex: 1, pointerEvents: "none" }} />
+          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "60%", background: "linear-gradient(to top, rgba(11,18,32,0.55) 0%, transparent 100%)", zIndex: 1, pointerEvents: "none" }} />
           <div style={{ position: "absolute", inset: 0, backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E\")", opacity: 0.35, zIndex: 1, pointerEvents: "none" }} />
 
-          {/* Geometric overlay */}
           <div style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 1 }}>
             <svg viewBox="0 0 1440 900" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} preserveAspectRatio="xMidYMid slice">
-              <line x1="0" y1="0" x2="400" y2="900" stroke="rgba(201,168,76,0.04)" strokeWidth="1" />
-              <line x1="80" y1="0" x2="480" y2="900" stroke="rgba(201,168,76,0.03)" strokeWidth="1" />
-              <polygon points="1100,0 1440,0 1440,480 1100,240" fill="rgba(201,168,76,0.02)" />
-              <circle cx="1200" cy="200" r="300" fill="none" stroke="rgba(201,168,76,0.03)" strokeWidth="1" strokeDasharray="8 18" />
-              <circle cx="1200" cy="200" r="200" fill="none" stroke="rgba(201,168,76,0.02)" strokeWidth="1" />
+              <line x1="0" y1="0" x2="400" y2="900" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
+              <line x1="80" y1="0" x2="480" y2="900" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+              <polygon points="1100,0 1440,0 1440,480 1100,240" fill="rgba(255,255,255,0.03)" />
+              <circle cx="1200" cy="200" r="300" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="1" strokeDasharray="8 18" />
+              <circle cx="1200" cy="200" r="200" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
             </svg>
           </div>
 
-          {/* Left gold accent */}
-          <div style={{ position: "absolute", left: 0, top: "10%", bottom: "10%", width: 2, background: "linear-gradient(to bottom, transparent, var(--gold), transparent)", zIndex: 1, opacity: 0.6 }} />
+          <div style={{ position: "absolute", left: 0, top: "10%", bottom: "10%", width: 2, background: "linear-gradient(to bottom, transparent, var(--gold-lt), transparent)", zIndex: 1, opacity: 0.7 }} />
 
-          {/* Hero content */}
           <div className="safe-area-top" style={{ maxWidth: 1320, margin: "0 auto", padding: "clamp(110px, 16vw, 130px) 20px clamp(60px, 8vw, 90px)", position: "relative", zIndex: 2, width: "100%" }}>
             <div style={{ maxWidth: 700 }}>
               <div style={{ marginBottom: 28, animation: "fadeUp 0.8s 0.1s both" }}>
-                <span style={{ background: "rgba(201,168,76,0.15)", border: "1px solid rgba(201,168,76,0.3)", backdropFilter: "blur(20px)", padding: "8px 20px", borderRadius: 40, fontSize: "clamp(9px, 1vw, 10px)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--gold)", boxShadow: "0 4px 15px rgba(201,168,76,0.1)", display: "inline-block" }}>
+                <span style={{ background: "rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.35)", backdropFilter: "blur(20px)", padding: "8px 20px", borderRadius: 40, fontSize: "clamp(9px, 1vw, 10px)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "#fff", boxShadow: "0 4px 15px rgba(11,18,32,0.15)", display: "inline-block" }}>
                   Est. 2008 · Dubai, UAE
                 </span>
               </div>
-              <h1 style={{ fontFamily: "var(--f-display)", fontWeight: 700, lineHeight: 1.04, letterSpacing: "-0.02em", fontSize: "clamp(2.2rem, 7.5vw, 5.5rem)", color: "#fff", marginBottom: 28, animation: "fadeUp 0.9s 0.2s both", textShadow: "0 2px 20px rgba(0,0,0,0.3)" }}>
+              <h1 style={{ fontFamily: "var(--f-display)", fontWeight: 700, lineHeight: 1.04, letterSpacing: "-0.02em", fontSize: "clamp(2.2rem, 7.5vw, 5.5rem)", color: "#fff", marginBottom: 28, animation: "fadeUp 0.9s 0.2s both", textShadow: "0 2px 20px rgba(11,18,32,0.3)" }}>
                 BUILDING THE<br />
-                <em style={{ color: "var(--gold)", fontStyle: "italic" }}>FUTURE TOGETHER.</em>
+                <em style={{ color: "#93C5FD", fontStyle: "italic" }}>FUTURE TOGETHER.</em>
               </h1>
-              <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(14px, 1.3vw, 17px)", color: "rgba(255,255,255,0.8)", lineHeight: 1.8, maxWidth: 520, marginBottom: 44, animation: "fadeUp 1s 0.35s both", textShadow: "0 1px 10px rgba(0,0,0,0.3)" }}>
+              <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(14px, 1.3vw, 17px)", color: "rgba(255,255,255,0.9)", lineHeight: 1.8, maxWidth: 520, marginBottom: 44, animation: "fadeUp 1s 0.35s both", textShadow: "0 1px 10px rgba(11,18,32,0.3)" }}>
                 Al Agha Group delivers world-class false ceiling, gypsum works, interior fit-out, and MEP services across the UAE — with trust and quality at the core of every project.
               </p>
               <div style={{ display: "flex", gap: 14, flexWrap: "wrap", animation: "fadeUp 1s 0.45s both" }}>
                 <button className="btn-gold" style={{ padding: "clamp(12px, 1.2vw, 16px) clamp(20px, 2.5vw, 36px)", fontSize: "clamp(11px, 1vw, 13px)" }} onClick={() => navigate("/projects")}>View Our Projects</button>
-                <button className="btn-outline-white" style={{ padding: "clamp(12px, 1.2vw, 16px) clamp(20px, 2.5vw, 36px)", fontSize: "clamp(11px, 1vw, 13px)" }} onClick={() => scrollTo("About")}>Our Story</button>
+                <button className="btn-outline-white" style={{ padding: "clamp(12px, 1.2vw, 16px) clamp(20px, 2.5vw, 36px)", fontSize: "clamp(11px, 1vw, 13px)", color: "#fff", borderColor: "rgba(255,255,255,0.4)" }} onClick={() => scrollTo("About")}>Our Story</button>
               </div>
             </div>
           </div>
@@ -2297,18 +2298,18 @@ export default function AlAghaGroup() {
           <div style={{ maxWidth: 1320, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "clamp(36px, 5vw, 80px)", alignItems: "center" }} className="grid-2">
             <Reveal dir="left">
               <span className="eyebrow">Who We Are</span>
-              <h2 className="section-title" style={{ fontSize: "clamp(1.8rem, 4vw, 3.6rem)", margin: "16px 0 20px", color: "#fff" }}>
+              <h2 className="section-title" style={{ fontSize: "clamp(1.8rem, 4vw, 3.6rem)", margin: "16px 0 20px", color: "var(--ink)" }}>
                 A legacy of <em style={{ color: "var(--gold)", fontStyle: "italic" }}>trust &amp; quality</em>
               </h2>
               <span className="divider-gold" style={{ marginBottom: 28 }} />
-              <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.9, marginBottom: 18, fontSize: "clamp(14px, 1.1vw, 15px)" }}>
+              <p style={{ color: "rgba(11,18,32,0.7)", lineHeight: 1.9, marginBottom: 18, fontSize: "clamp(14px, 1.1vw, 15px)" }}>
                 Established in 2008 as a small gypsum false ceiling workshop, we have grown through the priceless efforts of our team to form the Al Agha Group of Companies — offering false ceiling, partition works, interior design, full fit-out, and MEP services.
               </p>
-              <p style={{ color: "rgba(255,255,255,0.45)", lineHeight: 1.9, marginBottom: 40, fontSize: "clamp(13px, 1vw, 14px)" }}>
+              <p style={{ color: "rgba(11,18,32,0.5)", lineHeight: 1.9, marginBottom: 40, fontSize: "clamp(13px, 1vw, 14px)" }}>
                 Our aim was to prove we can finalise any work without mistake or delay. Client satisfaction is our top priority; accuracy and dedication in execution is what distinguishes us from others.
               </p>
               <div style={{ marginBottom: 36 }}>
-                <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", marginBottom: 16 }}>
+                <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(11,18,32,0.35)", marginBottom: 16 }}>
                   Certifications &amp; Accreditations
                 </div>
                 <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
@@ -2317,7 +2318,7 @@ export default function AlAghaGroup() {
                       <Icons.Check />
                       <div>
                         <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 600, color: "var(--gold)", letterSpacing: "0.04em" }}>{cert.name}</div>
-                        <div style={{ fontFamily: "var(--f-body)", fontSize: 9, color: "rgba(255,255,255,0.35)" }}>{cert.desc}</div>
+                        <div style={{ fontFamily: "var(--f-body)", fontSize: 9, color: "rgba(11,18,32,0.4)" }}>{cert.desc}</div>
                       </div>
                     </button>
                   ))}
@@ -2330,14 +2331,14 @@ export default function AlAghaGroup() {
           </div>
         </Section>
 
-        {/* ══ SERVICES ══ - 5 in a row, degrades on smaller screens */}
+        {/* ══ SERVICES ══ */}
         <Section id="services" geoVariant="a" style={{ padding: "clamp(50px, 8vw, 110px) 20px" }}>
           <div style={{ maxWidth: 1320, margin: "0 auto" }}>
             <Reveal>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 52, flexWrap: "wrap", gap: 20 }}>
                 <div>
                   <span className="eyebrow">What We Build</span>
-                  <h2 className="section-title" style={{ fontSize: "clamp(1.8rem,4vw,3.4rem)", marginTop: 14, color: "#fff" }}>
+                  <h2 className="section-title" style={{ fontSize: "clamp(1.8rem,4vw,3.4rem)", marginTop: 14, color: "var(--ink)" }}>
                     Our <em style={{ color: "var(--gold)", fontStyle: "italic" }}>Services</em>
                   </h2>
                 </div>
@@ -2349,8 +2350,8 @@ export default function AlAghaGroup() {
                 <Reveal key={s.title} delay={(i % 5) * 55} dir="up">
                   <div className="svc-card" style={{ padding: "clamp(24px, 2.5vw, 36px) clamp(20px, 2vw, 30px)" }}>
                     <div style={{ fontSize: "clamp(28px, 3vw, 36px)", marginBottom: 18 }}>{s.icon}</div>
-                    <h3 style={{ fontFamily: "var(--f-display)", fontSize: "clamp(18px, 1.6vw, 22px)", fontWeight: 700, color: "#fff", marginBottom: 10, lineHeight: 1.25 }}>{s.title}</h3>
-                    <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(12px, 1vw, 13px)", color: "rgba(255,255,255,0.5)", lineHeight: 1.75 }}>{s.desc}</p>
+                    <h3 style={{ fontFamily: "var(--f-display)", fontSize: "clamp(18px, 1.6vw, 22px)", fontWeight: 700, color: "var(--ink)", marginBottom: 10, lineHeight: 1.25 }}>{s.title}</h3>
+                    <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(12px, 1vw, 13px)", color: "rgba(11,18,32,0.55)", lineHeight: 1.75 }}>{s.desc}</p>
                   </div>
                 </Reveal>
               ))}
@@ -2365,7 +2366,7 @@ export default function AlAghaGroup() {
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 52, flexWrap: "wrap", gap: 20 }}>
                 <div>
                   <span className="eyebrow">Our Portfolio</span>
-                  <h2 className="section-title" style={{ fontSize: "clamp(1.8rem,4vw,3.4rem)", marginTop: 14, color: "#fff" }}>
+                  <h2 className="section-title" style={{ fontSize: "clamp(1.8rem,4vw,3.4rem)", marginTop: 14, color: "var(--ink)" }}>
                     Featured <em style={{ color: "var(--gold)", fontStyle: "italic" }}>Projects</em>
                   </h2>
                 </div>
@@ -2376,7 +2377,7 @@ export default function AlAghaGroup() {
                 <Reveal key={p.title} delay={(i % 3) * 50} dir="zoom">
                   <div className="proj-card" style={{ height: "clamp(220px, 25vw, 300px)" }}>
                     <img src={p.img} alt={p.title} loading="lazy" style={{ height: "100%" }} />
-                    <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(2,7,48,0.92) 0%, transparent 55%)", borderRadius: 16 }} />
+                    <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(11,18,32,0.9) 0%, transparent 55%)", borderRadius: 16 }} />
                     <div style={{ position: "absolute", bottom: 0, left: 0, padding: "0 22px 20px" }}>
                       <div style={{ fontFamily: "var(--f-display)", fontSize: "clamp(15px, 1.4vw, 20px)", fontWeight: 700, color: "#fff", marginBottom: 4 }}>{p.title}</div>
                     </div>
@@ -2389,8 +2390,8 @@ export default function AlAghaGroup() {
               <Reveal>
                 <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 32 }}>
                   <div style={{ width: 28, height: 2, background: "var(--gold)" }} />
-                  <span style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.6)" }}>Project Video Showcases</span>
-                  <div style={{ flex: 1, height: 1, background: "rgba(201,168,76,0.1)" }} />
+                  <span style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(11,18,32,0.65)" }}>Project Video Showcases</span>
+                  <div style={{ flex: 1, height: 1, background: "rgba(37,99,235,0.15)" }} />
                 </div>
               </Reveal>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 28 }}>
@@ -2418,7 +2419,7 @@ export default function AlAghaGroup() {
               <div style={{ display: "flex", justifyContent: "center", gap: 10, flexWrap: "wrap", marginBottom: 48 }}>
                 {Object.entries(clientTabData).map(([key, { label }]) => (
                   <button key={key} onClick={() => setClientTab(key)}
-                    style={{ fontFamily: "var(--f-body)", fontSize: "clamp(10px, 0.9vw, 12px)", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", padding: "clamp(8px, 0.8vw, 10px) clamp(16px, 1.5vw, 24px)", borderRadius: 8, border: `1px solid ${clientTab === key ? "var(--gold)" : "rgba(201,168,76,0.2)"}`, background: clientTab === key ? "var(--gold)" : "rgba(255,255,255,0.04)", color: clientTab === key ? "var(--ink)" : "rgba(255,255,255,0.6)", cursor: "pointer", transition: "all 0.25s", backdropFilter: "blur(6px)", touchAction: "manipulation" }}>
+                    style={{ fontFamily: "var(--f-body)", fontSize: "clamp(10px, 0.9vw, 12px)", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", padding: "clamp(8px, 0.8vw, 10px) clamp(16px, 1.5vw, 24px)", borderRadius: 8, border: `1px solid ${clientTab === key ? "var(--gold)" : "rgba(37,99,235,0.25)"}`, background: clientTab === key ? "var(--gold)" : "#FFFFFF", color: clientTab === key ? "#fff" : "rgba(11,18,32,0.65)", cursor: "pointer", transition: "all 0.25s", boxShadow: clientTab === key ? "0 4px 14px rgba(37,99,235,0.3)" : "0 2px 8px rgba(11,18,32,0.05)", touchAction: "manipulation" }}>
                     {label}
                   </button>
                 ))}
@@ -2445,7 +2446,7 @@ export default function AlAghaGroup() {
                 <Reveal dir="left">
                   <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 28 }}>
                     <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#10b981", animation: "pulse 2s infinite", boxShadow: "0 0 8px #10b981" }} />
-                    <span style={{ fontFamily: "var(--f-body)", fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.6)" }}>{CAREERS.length} open positions</span>
+                    <span style={{ fontFamily: "var(--f-body)", fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(11,18,32,0.65)" }}>{CAREERS.length} open positions</span>
                   </div>
                 </Reveal>
                 <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -2453,11 +2454,11 @@ export default function AlAghaGroup() {
                     <Reveal key={c.role} delay={i * 65} dir="left">
                       <div className="career-row" style={{ padding: "clamp(16px, 1.5vw, 20px) clamp(16px, 1.5vw, 22px)" }}>
                         <div>
-                          <div style={{ fontFamily: "var(--f-display)", fontSize: "clamp(17px, 1.4vw, 19px)", fontWeight: 700, color: "#fff", marginBottom: 6 }}>{c.role}</div>
+                          <div style={{ fontFamily: "var(--f-display)", fontSize: "clamp(17px, 1.4vw, 19px)", fontWeight: 700, color: "var(--ink)", marginBottom: 6 }}>{c.role}</div>
                           <div style={{ display: "flex", gap: "clamp(8px, 1vw, 12px)", alignItems: "center", flexWrap: "wrap" }}>
-                            <span style={{ fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.9vw, 12px)", color: "rgba(255,255,255,0.45)" }}>📍 {c.loc}</span>
+                            <span style={{ fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.9vw, 12px)", color: "rgba(11,18,32,0.5)" }}>📍 {c.loc}</span>
                             <span style={{ fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--gold)" }}>{c.type}</span>
-                            <span style={{ fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 600, color: "rgba(255,255,255,0.4)", background: "rgba(255,255,255,0.07)", padding: "2px 8px", borderRadius: 4 }}>{c.dept}</span>
+                            <span style={{ fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 600, color: "rgba(11,18,32,0.45)", background: "rgba(37,99,235,0.08)", padding: "2px 8px", borderRadius: 4 }}>{c.dept}</span>
                           </div>
                         </div>
                       </div>
@@ -2466,7 +2467,7 @@ export default function AlAghaGroup() {
                 </div>
               </div>
               <Reveal delay={100} dir="right">
-                <div style={{ border: "1px solid var(--border)", padding: "clamp(22px, 3vw, 40px)", borderRadius: 20, background: "#fff", boxShadow: "0 4px 40px rgba(0,0,0,0.3)" }}>
+                <div style={{ border: "1px solid var(--border)", padding: "clamp(22px, 3vw, 40px)", borderRadius: 20, background: "#fff", boxShadow: "0 4px 40px rgba(37,99,235,0.1)" }}>
                   <span className="eyebrow" style={{ marginBottom: 8, display: "block" }}>Submit your application</span>
                   <h3 style={{ fontFamily: "var(--f-display)", fontSize: "clamp(22px, 2.5vw, 28px)", fontWeight: 700, color: "var(--ink)", marginBottom: 6 }}>Apply Now</h3>
                   <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(12px, 1vw, 13px)", color: "#888", marginBottom: 28, lineHeight: 1.6 }}>Our HR team will respond within 5 business days.</p>
@@ -2486,8 +2487,8 @@ export default function AlAghaGroup() {
             <div style={{ marginBottom: 80 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 18, marginBottom: 40 }}>
                 <div style={{ width: 28, height: 2, background: "var(--gold)" }} />
-                <span style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)" }}>Leadership</span>
-                <div style={{ flex: 1, height: 1, background: "rgba(201,168,76,0.1)" }} />
+                <span style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(11,18,32,0.55)" }}>Leadership</span>
+                <div style={{ flex: 1, height: 1, background: "rgba(37,99,235,0.15)" }} />
               </div>
               <div style={{ display: "flex", gap: "clamp(14px, 2vw, 24px)", flexWrap: "wrap", justifyContent: "center" }}>
                 {LEADERSHIP.map((m, i) => (<Reveal key={m.name} delay={i * 100} dir="zoom"><LeadershipCard member={m} /></Reveal>))}
@@ -2496,8 +2497,8 @@ export default function AlAghaGroup() {
             <div style={{ marginBottom: 80 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 18, marginBottom: 40 }}>
                 <div style={{ width: 28, height: 2, background: "var(--gold)" }} />
-                <span style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)" }}>Management</span>
-                <div style={{ flex: 1, height: 1, background: "rgba(201,168,76,0.1)" }} />
+                <span style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(11,18,32,0.55)" }}>Management</span>
+                <div style={{ flex: 1, height: 1, background: "rgba(37,99,235,0.15)" }} />
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(150px,1fr))", gap: "clamp(12px, 1.2vw, 18px)" }}>
                 {MANAGEMENT.map((m, i) => (<Reveal key={m.name} delay={(i % 4) * 55} dir="up"><ManagementCard member={m} /></Reveal>))}
@@ -2506,8 +2507,8 @@ export default function AlAghaGroup() {
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 18, marginBottom: 40 }}>
                 <div style={{ width: 28, height: 2, background: "var(--gold)" }} />
-                <span style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)" }}>Engineering &amp; Operations</span>
-                <div style={{ flex: 1, height: 1, background: "rgba(201,168,76,0.1)" }} />
+                <span style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(11,18,32,0.55)" }}>Engineering &amp; Operations</span>
+                <div style={{ flex: 1, height: 1, background: "rgba(37,99,235,0.15)" }} />
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(230px,1fr))", gap: "clamp(10px, 0.9vw, 12px)" }}>
                 {ENGINEERS.map((m, i) => (<Reveal key={m.name} delay={(i % 6) * 35} dir="up"><EngineerRow member={m} /></Reveal>))}
@@ -2522,17 +2523,17 @@ export default function AlAghaGroup() {
             <Reveal><SectionHeader eyebrow="Chairman's Message" title='A Word From Our <em style="color:var(--gold);font-style:italic">Chairman</em>' /></Reveal>
             <div style={{ maxWidth: 800, margin: "0 auto" }}>
               <Reveal>
-                <div style={{ border: "1px solid rgba(201,168,76,0.2)", padding: "clamp(28px, 4vw, 52px)", position: "relative", borderRadius: 20, background: "rgba(255,255,255,0.03)", backdropFilter: "blur(10px)" }}>
-                  <div style={{ fontFamily: "var(--f-display)", fontSize: 110, lineHeight: 0.8, color: "rgba(201,168,76,0.08)", position: "absolute", top: 20, left: 28, fontWeight: 700, pointerEvents: "none", userSelect: "none" }}>"</div>
-                  <p style={{ fontFamily: "var(--f-display)", fontSize: "clamp(1rem, 1.5vw, 1.6rem)", fontWeight: 500, fontStyle: "italic", color: "rgba(255,255,255,0.88)", lineHeight: 1.65, textAlign: "center", position: "relative", zIndex: 1, maxWidth: 640, margin: "0 auto" }}>
+                <div style={{ border: "1px solid rgba(37,99,235,0.2)", padding: "clamp(28px, 4vw, 52px)", position: "relative", borderRadius: 20, background: "#FFFFFF", boxShadow: "0 4px 30px rgba(37,99,235,0.08)" }}>
+                  <div style={{ fontFamily: "var(--f-display)", fontSize: 110, lineHeight: 0.8, color: "rgba(37,99,235,0.1)", position: "absolute", top: 20, left: 28, fontWeight: 700, pointerEvents: "none", userSelect: "none" }}>"</div>
+                  <p style={{ fontFamily: "var(--f-display)", fontSize: "clamp(1rem, 1.5vw, 1.6rem)", fontWeight: 500, fontStyle: "italic", color: "rgba(11,18,32,0.85)", lineHeight: 1.65, textAlign: "center", position: "relative", zIndex: 1, maxWidth: 640, margin: "0 auto" }}>
                     "{CHAIRMAN_MESSAGE.message}"
                   </p>
-                  <div style={{ marginTop: 36, paddingTop: 28, borderTop: "1px solid rgba(201,168,76,0.12)", display: "flex", alignItems: "center", justifyContent: "center", gap: 18, flexWrap: "wrap" }}>
-                    <div style={{ width: 60, height: 60, borderRadius: "50%", overflow: "hidden", border: "2px solid rgba(201,168,76,0.4)", flexShrink: 0 }}>
+                  <div style={{ marginTop: 36, paddingTop: 28, borderTop: "1px solid rgba(37,99,235,0.15)", display: "flex", alignItems: "center", justifyContent: "center", gap: 18, flexWrap: "wrap" }}>
+                    <div style={{ width: 60, height: 60, borderRadius: "50%", overflow: "hidden", border: "2px solid rgba(37,99,235,0.4)", flexShrink: 0 }}>
                       <Avatar name={CHAIRMAN_MESSAGE.name} photo={CHAIRMAN_MESSAGE.photo} size={60} />
                     </div>
                     <div>
-                      <div style={{ fontFamily: "var(--f-display)", fontSize: "clamp(17px, 1.4vw, 19px)", color: "#fff", fontWeight: 700 }}>{CHAIRMAN_MESSAGE.name}</div>
+                      <div style={{ fontFamily: "var(--f-display)", fontSize: "clamp(17px, 1.4vw, 19px)", color: "var(--ink)", fontWeight: 700 }}>{CHAIRMAN_MESSAGE.name}</div>
                       <div style={{ fontFamily: "var(--f-body)", fontSize: 10, color: "var(--gold)", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginTop: 4 }}>{CHAIRMAN_MESSAGE.role} · Al Agha Group</div>
                     </div>
                   </div>
@@ -2548,8 +2549,8 @@ export default function AlAghaGroup() {
             <Reveal>
               <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 32 }}>
                 <div style={{ width: 28, height: 1, background: "var(--gold)" }} />
-                <span style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.6)" }}>Featured Video</span>
-                <div style={{ flex: 1, height: 1, background: "rgba(201,168,76,0.1)" }} />
+                <span style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(11,18,32,0.65)" }}>Featured Video</span>
+                <div style={{ flex: 1, height: 1, background: "rgba(37,99,235,0.15)" }} />
               </div>
             </Reveal>
             <Reveal dir="up" delay={100}>
@@ -2563,10 +2564,10 @@ export default function AlAghaGroup() {
           <div style={{ maxWidth: 1320, margin: "0 auto", textAlign: "center" }}>
             <Reveal dir="zoom">
               <span className="eyebrow" style={{ marginBottom: 14, display: "block" }}>Ready to Build?</span>
-              <h2 style={{ fontFamily: "var(--f-display)", fontWeight: 700, fontSize: "clamp(1.6rem, 4vw, 3.2rem)", color: "#fff", marginBottom: 18 }}>
+              <h2 style={{ fontFamily: "var(--f-display)", fontWeight: 700, fontSize: "clamp(1.6rem, 4vw, 3.2rem)", color: "var(--ink)", marginBottom: 18 }}>
                 Let's bring your vision to <em style={{ color: "var(--gold)", fontStyle: "italic" }}>life</em>
               </h2>
-              <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(14px, 1.2vw, 16px)", color: "rgba(255,255,255,0.5)", maxWidth: 520, margin: "0 auto 44px", lineHeight: 1.75 }}>
+              <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(14px, 1.2vw, 16px)", color: "rgba(11,18,32,0.55)", maxWidth: 520, margin: "0 auto 44px", lineHeight: 1.75 }}>
                 From false ceiling concepts to complete interior fit-out, Al Agha Group delivers results with integrity, craftsmanship, and a commitment to finishing on time.
               </p>
               <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
@@ -2578,37 +2579,34 @@ export default function AlAghaGroup() {
         </Section>
 
         {/* ══ FOOTER ══ */}
-        <footer className="safe-area-bottom" style={{ background: "rgba(0,2,20,0.96)", borderTop: "1px solid rgba(201,168,76,0.12)", padding: "clamp(36px, 5vw, 72px) 20px clamp(24px, 2.5vw, 36px)", position: "relative" }}>
-          <GeoBg variant="c" />
+        <footer className="safe-area-bottom" style={{ background: "#0B1220", borderTop: "1px solid rgba(37,99,235,0.2)", padding: "clamp(36px, 5vw, 72px) 20px clamp(24px, 2.5vw, 36px)", position: "relative" }}>
           <div style={{ maxWidth: 1320, margin: "0 auto", position: "relative", zIndex: 1 }}>
             <div className="footer-grid">
               {/* Column 1 - Brand */}
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: 11, marginBottom: 16 }}>
-                  <div style={{ width: 40, height: 40, borderRadius: 8, overflow: "hidden", background: "#070d5a", flexShrink: 0 }}>
+                  <div style={{ width: 40, height: 40, borderRadius: 8, overflow: "hidden", background: "#ffffffff", flexShrink: 0 }}>
                     <img src={logo} alt="Al Agha Group" style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => e.target.style.display = "none"} />
                   </div>
                   <div>
                     <div style={{ fontFamily: "var(--f-display)", fontSize: "clamp(15px, 1.3vw, 17px)", fontWeight: 700, color: "#fff" }}>Al Agha Group</div>
-                    <div style={{ fontFamily: "var(--f-body)", fontSize: "clamp(7px, 0.6vw, 9px)", fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--gold)" }}>of Companies</div>
+                    <div style={{ fontFamily: "var(--f-body)", fontSize: "clamp(7px, 0.6vw, 9px)", fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: "#60A5FA" }}>of Companies</div>
                   </div>
                 </div>
-                <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(12px, 0.9vw, 13px)", color: "rgba(255,255,255,0.35)", lineHeight: 1.8, maxWidth: 260, marginBottom: 22 }}>
+                <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(12px, 0.9vw, 13px)", color: "rgba(255,255,255,0.45)", lineHeight: 1.8, maxWidth: 260, marginBottom: 22 }}>
                   False ceiling, gypsum works, interior fit-out, and MEP services across the UAE since 2008.
                 </p>
                 <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                   <SocialBtn href="https://www.facebook.com/profile.php?id=61551030990492" label="Facebook"><Icons.Facebook /></SocialBtn>
                   <SocialBtn href="https://www.instagram.com/reel/DAVwH2TpoJP/" label="Instagram"><Icons.Instagram /></SocialBtn>
-                  <SocialBtn href="https://wa.me/97142675229" label="WhatsApp"><Icons.WhatsApp /></SocialBtn>
-                  <SocialBtn href="https://linkedin.com/company/alaghagroup" label="LinkedIn"><Icons.LinkedIn /></SocialBtn>
                 </div>
-                <div style={{ display: "flex", gap: 12, alignItems: "center", background: "rgba(201,168,76,0.06)", border: "1px solid rgba(201,168,76,0.15)", borderRadius: 12, padding: "12px 14px", marginTop: 26, flexWrap: "wrap" }}>
+                <div style={{ display: "flex", gap: 12, alignItems: "center", background: "rgba(37,99,235,0.1)", border: "1px solid rgba(37,99,235,0.25)", borderRadius: 12, padding: "12px 14px", marginTop: 26, flexWrap: "wrap" }}>
                   <div style={{ width: 72, height: 72, borderRadius: 8, overflow: "hidden", flexShrink: 0, background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", padding: 4 }}>
                     <img src={qrCodeImg} alt="QR Code" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
                   </div>
                   <div>
-                    <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 4 }}>Scan to connect</div>
-                    <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(201,168,76,0.5)", lineHeight: 1.5 }}>Point your camera to visit Al Agha Group online</div>
+                    <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#60A5FA", marginBottom: 4 }}>Scan to connect</div>
+                    <div style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(147,197,253,0.7)", lineHeight: 1.5 }}>Point your camera to visit Al Agha Group online</div>
                   </div>
                 </div>
               </div>
@@ -2617,7 +2615,7 @@ export default function AlAghaGroup() {
               <div>
                 <h4 style={{ fontFamily: "var(--f-display)", fontSize: "clamp(15px, 1.3vw, 18px)", fontWeight: 700, marginBottom: 18, color: "#fff" }}>Quick Links</h4>
                 {NAV.map(l => (
-                  <button key={l} onClick={() => scrollTo(l)} style={{ display: "block", background: "none", border: "none", color: "rgba(255,255,255,0.35)", fontFamily: "var(--f-body)", fontSize: "clamp(12px, 0.9vw, 13px)", padding: "7px 0", cursor: "pointer", textAlign: "left", transition: "color 0.2s", touchAction: "manipulation" }} onMouseEnter={e => e.currentTarget.style.color = "var(--gold)"} onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.35)"}>{l}</button>
+                  <button key={l} onClick={() => scrollTo(l)} style={{ display: "block", background: "none", border: "none", color: "rgba(255,255,255,0.45)", fontFamily: "var(--f-body)", fontSize: "clamp(12px, 0.9vw, 13px)", padding: "7px 0", cursor: "pointer", textAlign: "left", transition: "color 0.2s", touchAction: "manipulation" }} onMouseEnter={e => e.currentTarget.style.color = "#60A5FA"} onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.45)"}>{l}</button>
                 ))}
               </div>
 
@@ -2625,36 +2623,36 @@ export default function AlAghaGroup() {
               <div>
                 <h4 style={{ fontFamily: "var(--f-display)", fontSize: "clamp(15px, 1.3vw, 18px)", fontWeight: 700, marginBottom: 18, color: "#fff" }}>Services</h4>
                 {["False Ceiling & Gypsum Decor", "Interior Design & Fit-Out", "Mechanical, Electrical, Plumbing (MEP)", "General Civil Works", "Paint & Wall Finishes", "Architectural Design & Planning"].map(s => (
-                  <div key={s} style={{ fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", color: "rgba(255,255,255,0.3)", padding: "6px 0", lineHeight: 1.5 }}>{s}</div>
+                  <div key={s} style={{ fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", color: "rgba(255,255,255,0.4)", padding: "6px 0", lineHeight: 1.5 }}>{s}</div>
                 ))}
               </div>
 
               {/* Column 4 - Contact */}
               <div>
                 <h4 style={{ fontFamily: "var(--f-display)", fontSize: "clamp(15px, 1.3vw, 18px)", fontWeight: 700, marginBottom: 18, color: "#fff" }}>Contact</h4>
-                <div className="footer-contact-row" style={{ display: "flex", gap: 10, padding: "6px 0", fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", color: "rgba(255,255,255,0.35)", lineHeight: 1.55 }}>
+                <div className="footer-contact-row" style={{ display: "flex", gap: 10, padding: "6px 0", fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", color: "rgba(255,255,255,0.45)", lineHeight: 1.55 }}>
                   <Icons.Location /><span>Office 201 & 202, Block A, Abraj Al Mamzar, Dubai, U.A.E.</span>
                 </div>
-                <div className="footer-contact-row" style={{ display: "flex", gap: 10, padding: "6px 0", fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", color: "rgba(255,255,255,0.35)", lineHeight: 1.55 }}>
+                <div className="footer-contact-row" style={{ display: "flex", gap: 10, padding: "6px 0", fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", color: "rgba(255,255,255,0.45)", lineHeight: 1.55 }}>
                   <Icons.Phone /><span>+971 4 267 5229</span>
                 </div>
-                <div className="footer-contact-row" style={{ display: "flex", gap: 10, padding: "6px 0", fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", color: "rgba(255,255,255,0.35)", lineHeight: 1.55 }}>
+                <div className="footer-contact-row" style={{ display: "flex", gap: 10, padding: "6px 0", fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", color: "rgba(255,255,255,0.45)", lineHeight: 1.55 }}>
                   <Icons.Email /><span>info@alaghagroup.com</span>
                 </div>
-                <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid rgba(201,168,76,0.15)", height: "clamp(140px, 15vw, 180px)", marginTop: 18 }}>
+                <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid rgba(37,99,235,0.25)", height: "clamp(140px, 15vw, 180px)", marginTop: 18 }}>
                   <iframe
                     title="Al Agha Group Office"
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3607.2764583093857!2d55.35445537600424!3d25.28574307758295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5cfe11994ee1%3A0x8bdd77fec9a0e9c3!2sAbraj%20Al%20Mamzar%20-%20Al%20Mamzar%20-%20Dubai!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae"
-                    width="100%" height="100%" style={{ border: "none", display: "block", filter: "invert(90%) hue-rotate(180deg)" }}
+                    width="100%" height="100%" style={{ border: "none", display: "block" }}
                     allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
                   />
                 </div>
               </div>
             </div>
 
-            <div style={{ borderTop: "1px solid rgba(201,168,76,0.12)", paddingTop: "clamp(18px, 1.8vw, 22px)", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
-              <span style={{ fontFamily: "var(--f-body)", fontSize: "clamp(10px, 0.8vw, 12px)", color: "rgba(255,255,255,0.2)" }}>© 2025 Al Agha Group of Companies · All rights reserved</span>
-              <span style={{ fontFamily: "var(--f-body)", fontSize: "clamp(10px, 0.8vw, 12px)", color: "rgba(255,255,255,0.2)" }}>Privacy Policy · Terms of Service</span>
+            <div style={{ borderTop: "1px solid rgba(37,99,235,0.2)", paddingTop: "clamp(18px, 1.8vw, 22px)", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
+              <span style={{ fontFamily: "var(--f-body)", fontSize: "clamp(10px, 0.8vw, 12px)", color: "rgba(255,255,255,0.3)" }}>© 2025 Al Agha Group of Companies · All rights reserved</span>
+              <span style={{ fontFamily: "var(--f-body)", fontSize: "clamp(10px, 0.8vw, 12px)", color: "rgba(255,255,255,0.3)" }}>Privacy Policy · Terms of Service</span>
             </div>
           </div>
         </footer>

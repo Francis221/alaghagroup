@@ -1,24 +1,28 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../alaghalogo.png";
+import qrCodeImg from "./certimg/QRCODE.jpeg";
+
+/* ─── HERO BACKGROUND VIDEO (same source as App.jsx) ─────────────────────── */
+const heroVideo = "https://res.cloudinary.com/qh3zic6r/video/upload/0709_1_opprrq.mp4";
 
 /* ─── GLOBAL CSS ─────────────────────────────────────────────────────────── */
 const GLOBAL_CSS = `
   :root {
-    --gold: #C9A84C;
-    --gold-dk: #a8883c;
-    --gold-lt: #e0c068;
-    --ink: #02071c;
-    --bg-deep: #02071c;
-    --surface: #f5f3ef;
-    --border: #e0d9cc;
+    --gold: #2563EB;
+    --gold-dk: #1D4ED8;
+    --gold-lt: #60A5FA;
+    --ink: #0B1220;
+    --bg-deep: #FFFFFF;
+    --surface: #F5F8FF;
+    --border: #DCE6FA;
     --f-display: 'Georgia', 'Times New Roman', serif;
     --f-body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
-  body { background: var(--bg-deep); color: #fff; }
+  body { background: var(--bg-deep); color: var(--ink); }
 
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(32px); }
@@ -33,20 +37,12 @@ const GLOBAL_CSS = `
     50%       { opacity: 1; }
   }
   @keyframes pulse-gold {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.3); }
-    50% { box-shadow: 0 0 0 8px rgba(201,168,76,0); }
-  }
-  @keyframes ticker {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-33.333%); }
+    0%, 100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.3); }
+    50% { box-shadow: 0 0 0 8px rgba(37,99,235,0); }
   }
   @keyframes float {
     0%, 100% { transform: translateY(0px); }
     50% { transform: translateY(-8px); }
-  }
-  @keyframes rotateSlow {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
   }
   @keyframes lineGrow {
     from { transform: scaleY(0); transform-origin: top; }
@@ -56,39 +52,21 @@ const GLOBAL_CSS = `
     from { opacity: 0; transform: translateX(-60px); }
     to { opacity: 1; transform: translateX(0); }
   }
-  @keyframes slideInRight {
-    from { opacity: 0; transform: translateX(60px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
-  @keyframes scaleIn {
-    from { opacity: 0; transform: scale(0.88); }
-    to { opacity: 1; transform: scale(1); }
-  }
   @keyframes borderPulse {
-    0%, 100% { border-color: rgba(201,168,76,0.2); }
-    50% { border-color: rgba(201,168,76,0.5); }
-  }
-  @keyframes particleDrift {
-    0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { transform: translateY(-120px) translateX(40px) rotate(360deg); opacity: 0; }
+    0%, 100% { border-color: rgba(37,99,235,0.15); }
+    50% { border-color: rgba(37,99,235,0.4); }
   }
   @keyframes counterUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
   @keyframes glowPulse {
-    0%, 100% { text-shadow: 0 0 20px rgba(201,168,76,0.2); }
-    50% { text-shadow: 0 0 40px rgba(201,168,76,0.5), 0 0 80px rgba(201,168,76,0.2); }
+    0%, 100% { text-shadow: 0 0 20px rgba(37,99,235,0.12); }
+    50% { text-shadow: 0 0 40px rgba(37,99,235,0.28), 0 0 80px rgba(37,99,235,0.1); }
   }
   @keyframes revealLine {
     from { width: 0; }
     to { width: 48px; }
-  }
-  @keyframes footerSocialHover {
-    from { transform: translateY(0) rotate(0deg); }
-    to { transform: translateY(-3px) rotate(5deg); }
   }
 
   .eyebrow {
@@ -114,7 +92,7 @@ const GLOBAL_CSS = `
     align-items: center;
     gap: 8px;
     background: linear-gradient(135deg, var(--gold-dk), var(--gold), var(--gold-lt));
-    color: var(--ink);
+    color: #fff;
     font-family: var(--f-body);
     font-size: 12px;
     font-weight: 700;
@@ -126,7 +104,7 @@ const GLOBAL_CSS = `
     cursor: pointer;
     text-decoration: none;
     transition: all 0.25s ease;
-    box-shadow: 0 4px 20px rgba(201,168,76,0.25);
+    box-shadow: 0 4px 20px rgba(37,99,235,0.25);
     position: relative;
     overflow: hidden;
   }
@@ -141,7 +119,7 @@ const GLOBAL_CSS = `
   .btn-gold:hover::before { opacity: 1; }
   .btn-gold:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(201,168,76,0.4);
+    box-shadow: 0 8px 32px rgba(37,99,235,0.4);
   }
   .btn-gold span { position: relative; z-index: 1; }
 
@@ -158,15 +136,40 @@ const GLOBAL_CSS = `
     text-transform: uppercase;
     padding: 11px 26px;
     border-radius: 8px;
-    border: 1px solid rgba(201,168,76,0.4);
+    border: 1px solid rgba(37,99,235,0.4);
     cursor: pointer;
     transition: all 0.25s ease;
   }
   .btn-outline-gold:hover {
-    background: rgba(201,168,76,0.08);
+    background: var(--gold);
+    color: #fff;
     border-color: var(--gold);
     transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(201,168,76,0.15);
+    box-shadow: 0 4px 20px rgba(37,99,235,0.25);
+  }
+
+  .btn-outline-white {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    font-family: var(--f-body);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 11px 26px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.4);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    backdrop-filter: blur(10px);
+  }
+  .btn-outline-white:hover {
+    background: rgba(255,255,255,0.2);
+    border-color: #fff;
+    transform: translateY(-2px);
   }
 
   .nav-btn {
@@ -195,56 +198,57 @@ const GLOBAL_CSS = `
   .nav-btn:hover::after { transform: scaleX(1); }
 
   .feat-card {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(201,168,76,0.12);
+    background: #FFFFFF;
+    border: 1px solid rgba(37,99,235,0.14);
     border-radius: 14px;
     padding: 20px 22px;
     transition: all 0.4s cubic-bezier(0.22,1,0.36,1);
     cursor: default;
-    backdrop-filter: blur(6px);
     position: relative;
     overflow: hidden;
+    box-shadow: 0 2px 10px rgba(11,18,32,0.04);
   }
   .feat-card::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(201,168,76,0.06) 0%, transparent 60%);
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(37,99,235,0.06) 0%, transparent 60%);
     opacity: 0;
     transition: opacity 0.4s ease;
     pointer-events: none;
   }
   .feat-card:hover {
-    background: rgba(255,255,255,0.07);
-    border-color: rgba(201,168,76,0.45);
+    background: var(--surface);
+    border-color: rgba(37,99,235,0.4);
     transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.3), 0 0 0 1px rgba(201,168,76,0.2);
+    box-shadow: 0 12px 32px rgba(37,99,235,0.12), 0 0 0 1px rgba(37,99,235,0.15);
   }
   .feat-card:hover::before { opacity: 1; }
 
   .svc-pill {
-    background: transparent;
-    border: 1px solid rgba(201,168,76,0.3);
+    background: #FFFFFF;
+    border: 1px solid rgba(37,99,235,0.3);
     border-radius: 30px;
     padding: 8px 20px;
     font-family: var(--f-body);
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.06em;
-    color: rgba(255,255,255,0.65);
+    color: rgba(11,18,32,0.6);
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.22,1,0.36,1);
     white-space: nowrap;
     flex-shrink: 0;
+    box-shadow: 0 1px 6px rgba(11,18,32,0.04);
   }
   .svc-pill.active {
     background: var(--gold);
     border-color: var(--gold);
-    color: var(--ink);
-    box-shadow: 0 4px 16px rgba(201,168,76,0.35);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(37,99,235,0.35);
   }
   .svc-pill:hover:not(.active) {
-    border-color: rgba(201,168,76,0.6);
+    border-color: rgba(37,99,235,0.6);
     color: var(--gold);
     transform: translateY(-1px);
   }
@@ -259,22 +263,22 @@ const GLOBAL_CSS = `
     pointer-events: none;
     z-index: 2;
   }
-  .pill-wrap::before { left: 0; background: linear-gradient(to right, rgba(2,7,48,1), transparent); }
-  .pill-wrap::after  { right: 0; background: linear-gradient(to left, rgba(2,7,48,1), transparent); }
+  .pill-wrap::before { left: 0; background: linear-gradient(to right, rgba(255,255,255,1), transparent); }
+  .pill-wrap::after  { right: 0; background: linear-gradient(to left, rgba(255,255,255,1), transparent); }
 
   .rp-bar {
     position: fixed; top: 0; left: 0; right: 0;
     height: 3px; z-index: 9999;
-    background: rgba(201,168,76,0.12);
+    background: rgba(37,99,235,0.1);
   }
   .rp-fill {
     height: 100%;
     background: linear-gradient(90deg, var(--gold-dk), var(--gold), var(--gold-lt));
     transition: width 0.1s linear;
-    box-shadow: 0 0 12px rgba(201,168,76,0.6);
+    box-shadow: 0 0 12px rgba(37,99,235,0.5);
   }
 
-  /* Footer specific */
+  /* Footer specific (kept dark for contrast) */
   .footer-link {
     background: none; border: none; padding: 0;
     font-family: var(--f-body);
@@ -287,13 +291,13 @@ const GLOBAL_CSS = `
     line-height: 1;
   }
   .footer-link:hover {
-    color: var(--gold);
+    color: var(--gold-lt);
     transform: translateX(4px);
   }
   .footer-social {
     width: 40px; height: 40px; border-radius: 10px;
     background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(201,168,76,0.2);
+    border: 1px solid rgba(37,99,235,0.25);
     display: flex; align-items: center; justify-content: center;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.22,1,0.36,1);
@@ -302,11 +306,11 @@ const GLOBAL_CSS = `
     text-decoration: none;
   }
   .footer-social:hover {
-    background: rgba(201,168,76,0.12);
-    border-color: var(--gold);
-    color: var(--gold);
+    background: rgba(37,99,235,0.18);
+    border-color: var(--gold-lt);
+    color: var(--gold-lt);
     transform: translateY(-3px) rotate(5deg);
-    box-shadow: 0 8px 20px rgba(201,168,76,0.2);
+    box-shadow: 0 8px 20px rgba(37,99,235,0.25);
   }
   .footer-heading {
     font-family: var(--f-body);
@@ -314,7 +318,7 @@ const GLOBAL_CSS = `
     font-weight: 700;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--gold-lt);
     margin-bottom: 20px;
     display: flex;
     align-items: center;
@@ -324,73 +328,44 @@ const GLOBAL_CSS = `
     content: '';
     flex: 1;
     height: 1px;
-    background: linear-gradient(to right, rgba(201,168,76,0.4), transparent);
+    background: linear-gradient(to right, rgba(37,99,235,0.4), transparent);
   }
 
-  /* Scroll reveal utility classes */
-  .reveal-ready {
-    transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
-  }
-  .reveal-hidden-up { opacity: 0; transform: translateY(50px); }
-  .reveal-hidden-left { opacity: 0; transform: translateX(-50px); }
-  .reveal-hidden-right { opacity: 0; transform: translateX(50px); }
-  .reveal-hidden-zoom { opacity: 0; transform: scale(0.9); }
-  .reveal-hidden-fade { opacity: 0; }
-  .reveal-visible { opacity: 1 !important; transform: none !important; }
-
-  /* Parallax layers */
   .parallax-slow { will-change: transform; }
   .parallax-fast { will-change: transform; }
 
-  /* Service section number watermark */
   .svc-num-watermark {
     pointer-events: none;
     user-select: none;
     font-family: var(--f-display);
     font-weight: 700;
-    color: rgba(201,168,76,0.035);
+    color: rgba(37,99,235,0.045);
     line-height: 1;
     letter-spacing: -0.05em;
     transition: color 0.5s ease;
   }
   .svc-section:hover .svc-num-watermark {
-    color: rgba(201,168,76,0.06);
+    color: rgba(37,99,235,0.08);
   }
 
-  /* Animated stat counters */
   .stat-val {
     display: inline-block;
     animation: counterUp 0.6s ease both;
   }
 
-  /* Image reveal overlay */
   .img-reveal-wrap {
     position: relative;
     overflow: hidden;
   }
-  .img-reveal-wrap::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--bg-deep);
-    transform-origin: left;
-    transition: transform 0.9s cubic-bezier(0.77,0,0.18,1);
-  }
-  .img-reveal-wrap.revealed::after {
-    transform: scaleX(0);
-    transform-origin: right;
-  }
 
-  /* Magnetic button effect */
   .btn-magnetic {
     display: inline-flex;
     transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
   }
 
-  /* QR card */
   .qr-card {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(201,168,76,0.2);
+    background:rgba(37,99,235,0.1);
+    border: 1px solid rgba(37,99,235,0.22);
     border-radius: 12px;
     padding: 16px;
     display: flex;
@@ -400,24 +375,22 @@ const GLOBAL_CSS = `
     animation: borderPulse 3s ease infinite;
   }
   .qr-card:hover {
-    background: rgba(201,168,76,0.06);
-    border-color: rgba(201,168,76,0.45);
+    background: var(--surface);
+    border-color: rgba(37,99,235,0.5);
     animation: none;
   }
 
-  /* Map embed */
   .map-embed {
     border-radius: 12px;
     overflow: hidden;
-    border: 1px solid rgba(201,168,76,0.2);
+    border: 1px solid rgba(37,99,235,0.22);
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
   .map-embed:hover {
-    border-color: rgba(201,168,76,0.5);
+    border-color: rgba(37,99,235,0.5);
     box-shadow: 0 8px 32px rgba(0,0,0,0.4);
   }
 
-  /* Footer contact item */
   .contact-item {
     display: flex;
     align-items: flex-start;
@@ -427,22 +400,34 @@ const GLOBAL_CSS = `
   .contact-item:hover { transform: translateX(4px); }
   .contact-icon {
     width: 32px; height: 32px; border-radius: 8px;
-    background: rgba(201,168,76,0.1);
-    border: 1px solid rgba(201,168,76,0.2);
+    background: rgba(37,99,235,0.12);
+    border: 1px solid rgba(37,99,235,0.25);
     display: flex; align-items: center; justify-content: center;
     font-size: 13px; flex-shrink: 0;
     transition: all 0.3s ease;
   }
   .contact-item:hover .contact-icon {
-    background: rgba(201,168,76,0.2);
-    border-color: var(--gold);
+    background: rgba(37,99,235,0.25);
+    border-color: var(--gold-lt);
   }
 
-  /* Scroll-triggered line animation */
   .gold-line-v {
     width: 1px;
     background: linear-gradient(to bottom, transparent, var(--gold), transparent);
     transition: height 1.2s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  .hero-video-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    z-index: 0;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
   }
 
   @media (max-width: 900px) {
@@ -467,24 +452,24 @@ function GeoBg({ variant = "a" }) {
                 style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
                 <defs>
                     <radialGradient id="svRg1" cx="20%" cy="30%" r="60%">
-                        <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.07" />
-                        <stop offset="100%" stopColor="#C9A84C" stopOpacity="0" />
+                        <stop offset="0%" stopColor="#2563EB" stopOpacity="0.05" />
+                        <stop offset="100%" stopColor="#2563EB" stopOpacity="0" />
                     </radialGradient>
                     <radialGradient id="svRg2" cx="85%" cy="75%" r="50%">
-                        <stop offset="0%" stopColor="#1a2f6a" stopOpacity="0.9" />
-                        <stop offset="100%" stopColor="#020730" stopOpacity="0" />
+                        <stop offset="0%" stopColor="#DCE6FA" stopOpacity="0.6" />
+                        <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
                     </radialGradient>
                 </defs>
                 <rect width="1440" height="900" fill="url(#svRg2)" />
                 <rect width="1440" height="900" fill="url(#svRg1)" />
-                <polygon points="160,20 310,105 310,275 160,360 10,275 10,105" fill="none" stroke="rgba(201,168,76,0.07)" strokeWidth="1.5" />
-                <polygon points="160,60 270,122 270,248 160,310 50,248 50,122" fill="none" stroke="rgba(201,168,76,0.05)" strokeWidth="1" />
-                <polygon points="1380,80 1430,108 1430,164 1380,192 1330,164 1330,108" fill="none" stroke="rgba(201,168,76,0.1)" strokeWidth="1" />
-                <line x1="0" y1="900" x2="500" y2="0" stroke="rgba(201,168,76,0.04)" strokeWidth="1" />
-                <line x1="100" y1="900" x2="600" y2="0" stroke="rgba(201,168,76,0.03)" strokeWidth="1" />
-                <circle cx="720" cy="450" r="380" fill="none" stroke="rgba(201,168,76,0.04)" strokeWidth="1" strokeDasharray="6 14" />
+                <polygon points="160,20 310,105 310,275 160,360 10,275 10,105" fill="none" stroke="rgba(37,99,235,0.08)" strokeWidth="1.5" />
+                <polygon points="160,60 270,122 270,248 160,310 50,248 50,122" fill="none" stroke="rgba(37,99,235,0.05)" strokeWidth="1" />
+                <polygon points="1380,80 1430,108 1430,164 1380,192 1330,164 1330,108" fill="none" stroke="rgba(37,99,235,0.1)" strokeWidth="1" />
+                <line x1="0" y1="900" x2="500" y2="0" stroke="rgba(37,99,235,0.04)" strokeWidth="1" />
+                <line x1="100" y1="900" x2="600" y2="0" stroke="rgba(37,99,235,0.03)" strokeWidth="1" />
+                <circle cx="720" cy="450" r="380" fill="none" stroke="rgba(37,99,235,0.05)" strokeWidth="1" strokeDasharray="6 14" />
                 {[...Array(8)].map((_, row) => [...Array(12)].map((_, col) => (
-                    <circle key={`${row}-${col}`} cx={col * 130 + 65} cy={row * 130 + 65} r="1.5" fill="rgba(201,168,76,0.12)" />
+                    <circle key={`${row}-${col}`} cx={col * 130 + 65} cy={row * 130 + 65} r="1.5" fill="rgba(37,99,235,0.14)" />
                 )))}
             </svg>
         ),
@@ -493,35 +478,35 @@ function GeoBg({ variant = "a" }) {
                 style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
                 <defs>
                     <linearGradient id="svLgb" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#060d50" />
-                        <stop offset="100%" stopColor="#020730" />
+                        <stop offset="0%" stopColor="#F5F8FF" />
+                        <stop offset="100%" stopColor="#FFFFFF" />
                     </linearGradient>
                 </defs>
                 <rect width="1440" height="700" fill="url(#svLgb)" />
-                <line x1="0" y1="0" x2="1440" y2="700" stroke="rgba(201,168,76,0.05)" strokeWidth="60" />
-                <line x1="1440" y1="0" x2="0" y2="700" stroke="rgba(10,24,110,0.5)" strokeWidth="60" />
+                <line x1="0" y1="0" x2="1440" y2="700" stroke="rgba(37,99,235,0.06)" strokeWidth="60" />
+                <line x1="1440" y1="0" x2="0" y2="700" stroke="rgba(37,99,235,0.04)" strokeWidth="60" />
                 {[...Array(6)].map((_, row) => [...Array(9)].map((_, col) => {
                     const cx = col * 180 + (row % 2) * 90;
                     const cy = row * 120 + 60;
-                    return <polygon key={`${row}-${col}`} points={`${cx},${cy - 30} ${cx + 50},${cy} ${cx},${cy + 30} ${cx - 50},${cy}`} fill="none" stroke="rgba(201,168,76,0.06)" strokeWidth="1" />;
+                    return <polygon key={`${row}-${col}`} points={`${cx},${cy - 30} ${cx + 50},${cy} ${cx},${cy + 30} ${cx - 50},${cy}`} fill="none" stroke="rgba(37,99,235,0.06)" strokeWidth="1" />;
                 }))}
-                <path d="M 0 700 Q 720 0 1440 700" fill="none" stroke="rgba(201,168,76,0.06)" strokeWidth="2" />
-                <circle cx="0" cy="0" r="200" fill="none" stroke="rgba(201,168,76,0.06)" strokeWidth="1.5" />
-                <circle cx="1440" cy="700" r="200" fill="none" stroke="rgba(201,168,76,0.06)" strokeWidth="1.5" />
+                <path d="M 0 700 Q 720 0 1440 700" fill="none" stroke="rgba(37,99,235,0.06)" strokeWidth="2" />
+                <circle cx="0" cy="0" r="200" fill="none" stroke="rgba(37,99,235,0.06)" strokeWidth="1.5" />
+                <circle cx="1440" cy="700" r="200" fill="none" stroke="rgba(37,99,235,0.06)" strokeWidth="1.5" />
             </svg>
         ),
         c: (
             <svg viewBox="0 0 1440 600" preserveAspectRatio="xMidYMid slice"
                 style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
-                <rect width="1440" height="600" fill="#020730" />
+                <rect width="1440" height="600" fill="#FFFFFF" />
                 {[...Array(8)].map((_, i) => (
-                    <path key={i} d={`M 0 ${i * 80 + 40} Q 360 ${i * 80 + 40 + (i % 2 ? -40 : 40)} 720 ${i * 80 + 40} T 1440 ${i * 80 + 40}`} fill="none" stroke="rgba(201,168,76,0.04)" strokeWidth="1" />
+                    <path key={i} d={`M 0 ${i * 80 + 40} Q 360 ${i * 80 + 40 + (i % 2 ? -40 : 40)} 720 ${i * 80 + 40} T 1440 ${i * 80 + 40}`} fill="none" stroke="rgba(37,99,235,0.05)" strokeWidth="1" />
                 ))}
                 {[240, 480, 720, 960, 1200].map(x => (
-                    <line key={x} x1={x} y1="0" x2={x} y2="600" stroke="rgba(201,168,76,0.05)" strokeWidth="1" strokeDasharray="4 12" />
+                    <line key={x} x1={x} y1="0" x2={x} y2="600" stroke="rgba(37,99,235,0.06)" strokeWidth="1" strokeDasharray="4 12" />
                 ))}
-                <polygon points="0,0 400,0 0,300" fill="rgba(201,168,76,0.03)" />
-                <polygon points="1440,0 1040,0 1440,300" fill="rgba(201,168,76,0.03)" />
+                <polygon points="0,0 400,0 0,300" fill="rgba(37,99,235,0.04)" />
+                <polygon points="1440,0 1040,0 1440,300" fill="rgba(37,99,235,0.04)" />
             </svg>
         ),
     };
@@ -619,24 +604,6 @@ function Reveal({ children, delay = 0, dir = "up", style = {}, className = "" })
     );
 }
 
-/* ─── STAGGER REVEAL ─────────────────────────────────────────────────────── */
-function StaggerReveal({ children, stagger = 80, dir = "up", containerStyle = {} }) {
-    const [ref, visible] = useInView(0.05);
-    return (
-        <div ref={ref} style={containerStyle}>
-            {Array.isArray(children) ? children.map((child, i) => (
-                <div key={i} style={{
-                    opacity: visible ? 1 : 0,
-                    transform: visible ? "none" : (dir === "up" ? "translateY(40px)" : "translateX(-40px)"),
-                    transition: `opacity 0.7s cubic-bezier(0.22,1,0.36,1) ${i * stagger}ms, transform 0.7s cubic-bezier(0.22,1,0.36,1) ${i * stagger}ms`,
-                }}>
-                    {child}
-                </div>
-            )) : children}
-        </div>
-    );
-}
-
 /* ─── READING PROGRESS ───────────────────────────────────────────────────── */
 function ReadingProgress() {
     const [p, setP] = useState(0);
@@ -677,7 +644,7 @@ function AnimatedStat({ val, label, visible }) {
                 fontFamily: "var(--f-body)", fontSize: 10,
                 fontWeight: 600, letterSpacing: "0.14em",
                 textTransform: "uppercase",
-                color: "rgba(255,255,255,0.35)", marginTop: 6,
+                color: "rgba(11,18,32,0.4)", marginTop: 6,
             }}>
                 {label}
             </div>
@@ -686,7 +653,7 @@ function AnimatedStat({ val, label, visible }) {
 }
 
 /* ─── DATA ───────────────────────────────────────────────────────────────── */
-const NAV = ["Home", "Services", "Projects", "Career", "Clients", "Team", "About"];
+const NAV = ["Home", "About", "Services", "Projects", "Clients", "Career", "Team"];
 
 const SERVICES = [
     {
@@ -763,9 +730,7 @@ const MEP_PROJECTS = [
     { name: "B+G+17+R Residential Building", location: "Business Bay, Dubai, UAE", client: "Mr. Ahmed Ali Abdullah Al Alsari", consultant: "M/s Rimal Engineering Consultant", contractor: "M/s Technomech L.L.C.", type: "Residential Tower" },
     { name: "Warehouse Blocks A-2 & B-3", location: "Al Sajaa Industrial, Sharjah, UAE", client: "M/s Dubai Investment", consultant: "M/s. Al Hashemi", contractor: "M/s Prime Star Electrical & Mechanical Works LLC", type: "Industrial" },
     { name: "DHRE: Myrtyle Residence — City Walk", location: "Phase 5, City Walk, Dubai, UAE", client: "M/s MEERAS", consultant: "M/s. Arif & Bintoak", contractor: "M/s. Conversion Electromechanical Company LLC", type: "Residential" },
-    { name: "Riva Residences — Dubai Maritime City", location: "Dubai Maritime City, Dubai, UAE", client: "Kazim Abbas Vakil & Partners", consultant: "M/s. Khatib & Alami", contractor: "M/s Buhaleeba Contracting LLC", type: "Residential & Commercial" },
-    { name: "41 Villas — Jumeirah Park", location: "Jumeirah Park, Dubai, UAE", client: "M/s. Sunrise Valley", consultant: "M/s. ERGA Progress Engineering", contractor: "M/s. Synchro Electromechanical Contracting LLC", type: "Residential Villas" },
-    { name: "G+1 Villa — Nadd Al Shiba Third", location: "Nadd Al Shiba Third, Dubai, UAE", client: "M/s. Mohammad Shafiq Ahmad & Saleh Abdelhameed", consultant: "M/s. National Engineering Bureau", contractor: "M/s. RAY Construction LLC", type: "Villa" },
+
 ];
 
 const QUICK_LINKS = ["Home", "Services", "Projects", "Career", "Clients", "Team", "About"];
@@ -796,13 +761,13 @@ function FeatureCard({ feature, index }) {
                     <div>
                         <div style={{
                             fontFamily: "var(--f-display)", fontSize: 16, fontWeight: 700,
-                            color: "#fff", marginBottom: 6, lineHeight: 1.3,
+                            color: "var(--ink)", marginBottom: 6, lineHeight: 1.3,
                         }}>
                             {feature.label}
                         </div>
                         <div style={{
                             fontFamily: "var(--f-body)", fontSize: 13,
-                            color: "rgba(255,255,255,0.5)", lineHeight: 1.7,
+                            color: "rgba(11,18,32,0.55)", lineHeight: 1.7,
                         }}>
                             {feature.desc}
                         </div>
@@ -821,20 +786,20 @@ function MepProjectRow({ project }) {
             onMouseEnter={() => setHov(true)}
             onMouseLeave={() => setHov(false)}
             style={{
-                background: hov ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.03)",
-                border: `1px solid ${hov ? "rgba(201,168,76,0.4)" : "rgba(201,168,76,0.1)"}`,
+                background: hov ? "var(--surface)" : "#FFFFFF",
+                border: `1px solid ${hov ? "rgba(37,99,235,0.4)" : "rgba(37,99,235,0.12)"}`,
                 borderRadius: 14, padding: "14px 18px",
                 display: "flex", alignItems: "flex-start", gap: 14,
                 transition: "all 0.35s cubic-bezier(0.22,1,0.36,1)",
                 transform: hov ? "translateX(6px)" : "none",
-                backdropFilter: "blur(6px)", cursor: "default",
-                boxShadow: hov ? "0 4px 24px rgba(0,0,0,0.25)" : "none",
+                cursor: "default",
+                boxShadow: hov ? "0 4px 24px rgba(37,99,235,0.1)" : "0 1px 6px rgba(11,18,32,0.03)",
             }}
         >
             <div style={{
                 flexShrink: 0, marginTop: 2,
-                background: hov ? "rgba(201,168,76,0.18)" : "rgba(201,168,76,0.1)",
-                border: "1px solid rgba(201,168,76,0.2)",
+                background: hov ? "rgba(37,99,235,0.18)" : "rgba(37,99,235,0.1)",
+                border: "1px solid rgba(37,99,235,0.25)",
                 borderRadius: 6, padding: "3px 9px",
                 fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 700,
                 letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)",
@@ -845,14 +810,14 @@ function MepProjectRow({ project }) {
             <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{
                     fontFamily: "var(--f-display)", fontSize: 14, fontWeight: 700,
-                    color: "#fff", marginBottom: 4, lineHeight: 1.3,
+                    color: "var(--ink)", marginBottom: 4, lineHeight: 1.3,
                 }}>
                     {project.name}
                 </div>
-                <div style={{ fontFamily: "var(--f-body)", fontSize: 11, color: "rgba(255,255,255,0.4)", lineHeight: 1.6 }}>
+                <div style={{ fontFamily: "var(--f-body)", fontSize: 11, color: "rgba(11,18,32,0.45)", lineHeight: 1.6 }}>
                     📍 {project.location} &nbsp;·&nbsp; Client: {project.client}
                 </div>
-                <div style={{ fontFamily: "var(--f-body)", fontSize: 11, color: "rgba(201,168,76,0.55)", marginTop: 3 }}>
+                <div style={{ fontFamily: "var(--f-body)", fontSize: 11, color: "rgba(37,99,235,0.75)", marginTop: 3 }}>
                     Contractor: {project.contractor}
                 </div>
             </div>
@@ -899,7 +864,7 @@ function ServiceSection({ service, index }) {
                 position: "absolute",
                 [isEven ? "left" : "right"]: 0,
                 top: "20%", bottom: "20%", width: 2,
-                background: "linear-gradient(to bottom, transparent, rgba(201,168,76,0.4), transparent)",
+                background: "linear-gradient(to bottom, transparent, rgba(37,99,235,0.35), transparent)",
             }} />
 
             <div style={{
@@ -918,11 +883,11 @@ function ServiceSection({ service, index }) {
                                 background: "linear-gradient(135deg, var(--gold-dk), var(--gold))",
                                 display: "flex", alignItems: "center", justifyContent: "center",
                                 fontSize: 24, flexShrink: 0,
-                                boxShadow: "0 8px 28px rgba(201,168,76,0.3)",
+                                boxShadow: "0 8px 28px rgba(37,99,235,0.3)",
                                 transition: "transform 0.3s ease, box-shadow 0.3s ease",
                             }}
-                                onMouseEnter={(e) => { e.currentTarget.style.transform = "rotate(10deg) scale(1.08)"; e.currentTarget.style.boxShadow = "0 12px 36px rgba(201,168,76,0.45)"; }}
-                                onMouseLeave={(e) => { e.currentTarget.style.transform = "none"; e.currentTarget.style.boxShadow = "0 8px 28px rgba(201,168,76,0.3)"; }}
+                                onMouseEnter={(e) => { e.currentTarget.style.transform = "rotate(10deg) scale(1.08)"; e.currentTarget.style.boxShadow = "0 12px 36px rgba(37,99,235,0.45)"; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.transform = "none"; e.currentTarget.style.boxShadow = "0 8px 28px rgba(37,99,235,0.3)"; }}
                             >
                                 {service.icon}
                             </div>
@@ -932,7 +897,7 @@ function ServiceSection({ service, index }) {
                         <h2 style={{
                             fontFamily: "var(--f-display)", fontWeight: 700,
                             fontSize: "clamp(2rem, 4.5vw, 3.2rem)",
-                            color: "#fff", lineHeight: 1.1,
+                            color: "var(--ink)", lineHeight: 1.1,
                             letterSpacing: "-0.015em", marginBottom: 8,
                         }}>
                             {service.title}
@@ -952,7 +917,7 @@ function ServiceSection({ service, index }) {
                         <p style={{
                             fontFamily: "var(--f-body)",
                             fontSize: "clamp(14px, 1.4vw, 15px)",
-                            color: "rgba(255,255,255,0.6)", lineHeight: 1.85, marginBottom: 32,
+                            color: "rgba(11,18,32,0.62)", lineHeight: 1.85, marginBottom: 32,
                         }}>
                             {service.description}
                         </p>
@@ -961,8 +926,8 @@ function ServiceSection({ service, index }) {
                         <div ref={statRef} style={{
                             display: "flex", gap: "clamp(24px, 4vw, 48px)",
                             padding: "22px 0",
-                            borderTop: "1px solid rgba(201,168,76,0.15)",
-                            borderBottom: "1px solid rgba(201,168,76,0.15)",
+                            borderTop: "1px solid rgba(37,99,235,0.15)",
+                            borderBottom: "1px solid rgba(37,99,235,0.15)",
                             marginBottom: 32, flexWrap: "wrap",
                         }}>
                             {[service.stat1, service.stat2].map((s) => (
@@ -990,7 +955,7 @@ function ServiceSection({ service, index }) {
                                     <span className="eyebrow" style={{ marginBottom: 10, display: "block" }}>MEP Project References</span>
                                     <h3 style={{
                                         fontFamily: "var(--f-display)", fontSize: "clamp(1.2rem, 2vw, 1.6rem)",
-                                        fontWeight: 700, color: "#fff",
+                                        fontWeight: 700, color: "var(--ink)",
                                     }}>
                                         Delivered across Dubai & Sharjah
                                     </h3>
@@ -1011,14 +976,14 @@ function ServiceSection({ service, index }) {
                 <div style={{ order: isEven ? 2 : 1 }}>
                     <Reveal dir={isEven ? "right" : "left"} delay={100}>
                         <div
-                            className="img-reveal-wrap revealed"
+                            className="img-reveal-wrap"
                             onMouseEnter={() => setImgHov(true)}
                             onMouseLeave={() => setImgHov(false)}
                             style={{
                                 position: "relative", borderRadius: 20, overflow: "hidden",
                                 boxShadow: imgHov
-                                    ? "0 56px 100px rgba(0,0,0,0.55), 0 0 0 1px rgba(201,168,76,0.4)"
-                                    : "0 24px 64px rgba(0,0,0,0.35), 0 0 0 1px rgba(201,168,76,0.12)",
+                                    ? "0 56px 100px rgba(37,99,235,0.28), 0 0 0 1px rgba(37,99,235,0.35)"
+                                    : "0 24px 64px rgba(11,18,32,0.15), 0 0 0 1px rgba(37,99,235,0.12)",
                                 transition: "box-shadow 0.6s cubic-bezier(0.22,1,0.36,1)",
                                 aspectRatio: "4/5",
                             }}
@@ -1034,17 +999,17 @@ function ServiceSection({ service, index }) {
                             />
                             <div style={{
                                 position: "absolute", inset: 0,
-                                background: "linear-gradient(to top, rgba(2,7,48,0.9) 0%, rgba(2,7,48,0.1) 50%, transparent 100%)",
+                                background: "linear-gradient(to top, rgba(11,18,32,0.85) 0%, rgba(11,18,32,0.08) 50%, transparent 100%)",
                             }} />
 
                             {/* Top badge */}
                             <div style={{
                                 position: "absolute", top: 20, left: 20,
-                                background: "rgba(2,7,48,0.85)", backdropFilter: "blur(12px)",
-                                border: "1px solid rgba(201,168,76,0.3)", borderRadius: 40,
+                                background: "rgba(11,18,32,0.7)", backdropFilter: "blur(12px)",
+                                border: "1px solid rgba(37,99,235,0.4)", borderRadius: 40,
                                 padding: "6px 16px",
                                 fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700,
-                                letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--gold)",
+                                letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--gold-lt)",
                                 transition: "all 0.3s ease",
                             }}>
                                 Al Agha Group
@@ -1056,8 +1021,8 @@ function ServiceSection({ service, index }) {
                                 opacity: imgHov ? 1 : 0,
                                 transform: imgHov ? "scale(1)" : "scale(0.8)",
                                 transition: "all 0.4s cubic-bezier(0.22,1,0.36,1)",
-                                background: "rgba(201,168,76,0.15)", backdropFilter: "blur(12px)",
-                                border: "1px solid rgba(201,168,76,0.4)", borderRadius: "50%",
+                                background: "rgba(37,99,235,0.22)", backdropFilter: "blur(12px)",
+                                border: "1px solid rgba(37,99,235,0.5)", borderRadius: "50%",
                                 width: 48, height: 48, display: "flex", alignItems: "center", justifyContent: "center",
                                 fontSize: 20,
                             }}>
@@ -1079,7 +1044,7 @@ function ServiceSection({ service, index }) {
                                 </div>
                                 <div style={{
                                     fontFamily: "var(--f-body)", fontSize: 11,
-                                    color: "rgba(201,168,76,0.75)", marginTop: 6, fontWeight: 500,
+                                    color: "rgba(96,165,250,0.9)", marginTop: 6, fontWeight: 500,
                                 }}>
                                     {service.features.length} specialisations
                                 </div>
@@ -1102,14 +1067,14 @@ function SocialIcon({ href, label, children }) {
     );
 }
 
-/* ─── RICH FOOTER (matches App.jsx reference) ────────────────────────────── */
+/* ─── RICH FOOTER (dark for contrast against light body; matches App.jsx QR code) ── */
 function Footer({ goHome, goProjects, scrollToService }) {
     const [ref, visible] = useInView(0.05);
 
     return (
         <footer ref={ref} style={{
-            background: "rgba(0,2,20,0.98)",
-            borderTop: "1px solid rgba(201,168,76,0.12)",
+            background: "#0B1220",
+            borderTop: "1px solid rgba(37,99,235,0.2)",
             position: "relative",
             overflow: "hidden",
         }}>
@@ -1119,19 +1084,19 @@ function Footer({ goHome, goProjects, scrollToService }) {
                     style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.4 }}>
                     <defs>
                         <radialGradient id="fRg1" cx="10%" cy="50%" r="40%">
-                            <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.06" />
-                            <stop offset="100%" stopColor="#C9A84C" stopOpacity="0" />
+                            <stop offset="0%" stopColor="#2563EB" stopOpacity="0.1" />
+                            <stop offset="100%" stopColor="#2563EB" stopOpacity="0" />
                         </radialGradient>
                         <radialGradient id="fRg2" cx="90%" cy="50%" r="40%">
-                            <stop offset="0%" stopColor="#1a2f6a" stopOpacity="0.5" />
-                            <stop offset="100%" stopColor="#020730" stopOpacity="0" />
+                            <stop offset="0%" stopColor="#1E3A8A" stopOpacity="0.5" />
+                            <stop offset="100%" stopColor="#0B1220" stopOpacity="0" />
                         </radialGradient>
                     </defs>
                     <rect width="1440" height="600" fill="url(#fRg2)" />
                     <rect width="1440" height="600" fill="url(#fRg1)" />
                     {[...Array(5)].map((_, i) => (
                         <line key={i} x1={i * 360} y1="0" x2={i * 360} y2="600"
-                            stroke="rgba(201,168,76,0.04)" strokeWidth="1" strokeDasharray="4 12" />
+                            stroke="rgba(37,99,235,0.06)" strokeWidth="1" strokeDasharray="4 12" />
                     ))}
                 </svg>
             </div>
@@ -1164,11 +1129,11 @@ function Footer({ goHome, goProjects, scrollToService }) {
                                 alt="Al Agha Group"
                                 style={{
                                     height: 52, width: "auto", objectFit: "contain",
-                                    filter: "drop-shadow(0 4px 12px rgba(201,168,76,0.25))",
+                                    filter: "drop-shadow(0 4px 12px rgba(37,99,235,0.3))",
                                     transition: "filter 0.3s ease, transform 0.3s ease",
                                 }}
-                                onMouseEnter={(e) => { e.currentTarget.style.filter = "drop-shadow(0 6px 20px rgba(201,168,76,0.5))"; e.currentTarget.style.transform = "scale(1.05)"; }}
-                                onMouseLeave={(e) => { e.currentTarget.style.filter = "drop-shadow(0 4px 12px rgba(201,168,76,0.25))"; e.currentTarget.style.transform = "none"; }}
+                                onMouseEnter={(e) => { e.currentTarget.style.filter = "drop-shadow(0 6px 20px rgba(37,99,235,0.55))"; e.currentTarget.style.transform = "scale(1.05)"; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.filter = "drop-shadow(0 4px 12px rgba(37,99,235,0.3))"; e.currentTarget.style.transform = "none"; }}
                             />
                             <div style={{ textAlign: "left" }}>
                                 <div style={{
@@ -1180,7 +1145,7 @@ function Footer({ goHome, goProjects, scrollToService }) {
                                 <div style={{
                                     fontFamily: "var(--f-body)", fontSize: 8, fontWeight: 700,
                                     letterSpacing: "0.18em", textTransform: "uppercase",
-                                    color: "rgba(201,168,76,0.7)",
+                                    color: "var(--gold-lt)",
                                 }}>
                                     of Companies
                                 </div>
@@ -1197,63 +1162,45 @@ function Footer({ goHome, goProjects, scrollToService }) {
 
                         {/* Social icons */}
                         <div style={{ display: "flex", gap: 10, marginBottom: 28 }}>
-                            <SocialIcon href="https://facebook.com" label="Facebook">
+                            <SocialIcon href="https://www.facebook.com/profile.php?id=61551030990492" label="Facebook">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
                                 </svg>
                             </SocialIcon>
-                            <SocialIcon href="https://instagram.com" label="Instagram">
+                            <SocialIcon href="https://www.instagram.com/reel/DAVwH2TpoJP/" label="Instagram">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                     <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                                     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
                                     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
                                 </svg>
                             </SocialIcon>
-                            <SocialIcon href="https://wa.me/97142675229" label="WhatsApp">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
-                                </svg>
-                            </SocialIcon>
-                            <SocialIcon href="https://linkedin.com" label="LinkedIn">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z" />
-                                    <circle cx="4" cy="4" r="2" />
-                                </svg>
-                            </SocialIcon>
                         </div>
 
-                        {/* QR card */}
+                        {/* QR card — same QR image asset as App.jsx */}
                         <div className="qr-card">
                             <div style={{
                                 width: 56, height: 56, borderRadius: 8,
-                                background: "#fff", flexShrink: 0,
+                                background: "rgba(37,99,235,0.25)", flexShrink: 0,
                                 display: "flex", alignItems: "center", justifyContent: "center",
-                                padding: 6,
+                                padding: 4, overflow: "hidden",
                             }}>
-                                <svg viewBox="0 0 100 100" width="44" height="44">
-                                    {/* QR grid pattern */}
-                                    {[0, 1, 2, 3, 4, 5, 6].map(r => [0, 1, 2, 3, 4, 5, 6].map(c => {
-                                        const qrData = [
-                                            [1, 1, 1, 1, 1, 1, 1], [1, 0, 0, 0, 0, 0, 1], [1, 0, 1, 1, 1, 0, 1],
-                                            [1, 0, 1, 0, 1, 0, 1], [1, 0, 1, 1, 1, 0, 1], [1, 0, 0, 0, 0, 0, 1], [1, 1, 1, 1, 1, 1, 1]
-                                        ];
-                                        return qrData[r][c] ? (
-                                            <rect key={`${r}-${c}`} x={c * 14 + 1} y={r * 14 + 1} width="12" height="12" fill="#02071c" rx="1" />
-                                        ) : null;
-                                    }))}
-                                </svg>
+                                <img
+                                    src={qrCodeImg}
+                                    alt="QR Code"
+                                    style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                                />
                             </div>
                             <div>
                                 <div style={{
                                     fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 700,
                                     letterSpacing: "0.16em", textTransform: "uppercase",
-                                    color: "var(--gold)", marginBottom: 4,
+                                    color: "var(--gold-lt)", marginBottom: 4,
                                 }}>
                                     Scan to Connect
                                 </div>
                                 <div style={{
                                     fontFamily: "var(--f-body)", fontSize: 11,
-                                    color: "rgba(255,255,255,0.4)", lineHeight: 1.5,
+                                    color: "rgba(96,165,250,0.6)", lineHeight: 1.5,
                                 }}>
                                     Point your camera to visit<br />Al Agha Group online
                                 </div>
@@ -1332,7 +1279,7 @@ function Footer({ goHome, goProjects, scrollToService }) {
                                     <div style={{
                                         fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 700,
                                         letterSpacing: "0.14em", textTransform: "uppercase",
-                                        color: "rgba(201,168,76,0.55)", marginBottom: 4,
+                                        color: "rgba(96,165,250,0.65)", marginBottom: 4,
                                     }}>
                                         Office
                                     </div>
@@ -1353,7 +1300,7 @@ function Footer({ goHome, goProjects, scrollToService }) {
                                     <div style={{
                                         fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 700,
                                         letterSpacing: "0.14em", textTransform: "uppercase",
-                                        color: "rgba(201,168,76,0.55)", marginBottom: 4,
+                                        color: "rgba(96,165,250,0.65)", marginBottom: 4,
                                     }}>
                                         Phone
                                     </div>
@@ -1363,7 +1310,7 @@ function Footer({ goHome, goProjects, scrollToService }) {
                                         transition: "color 0.2s ease",
                                         letterSpacing: "0.02em",
                                     }}
-                                        onMouseEnter={(e) => (e.currentTarget.style.color = "var(--gold)")}
+                                        onMouseEnter={(e) => (e.currentTarget.style.color = "var(--gold-lt)")}
                                         onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.75)")}
                                     >
                                         +971 4 267 5229
@@ -1378,7 +1325,7 @@ function Footer({ goHome, goProjects, scrollToService }) {
                                     <div style={{
                                         fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 700,
                                         letterSpacing: "0.14em", textTransform: "uppercase",
-                                        color: "rgba(201,168,76,0.55)", marginBottom: 4,
+                                        color: "rgba(96,165,250,0.65)", marginBottom: 4,
                                     }}>
                                         Email
                                     </div>
@@ -1387,7 +1334,7 @@ function Footer({ goHome, goProjects, scrollToService }) {
                                         color: "rgba(255,255,255,0.55)", textDecoration: "none",
                                         transition: "color 0.2s ease",
                                     }}
-                                        onMouseEnter={(e) => (e.currentTarget.style.color = "var(--gold)")}
+                                        onMouseEnter={(e) => (e.currentTarget.style.color = "var(--gold-lt)")}
                                         onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.55)")}
                                     >
                                         info@alaghagroup.com
@@ -1399,7 +1346,7 @@ function Footer({ goHome, goProjects, scrollToService }) {
                         {/* Map embed */}
                         <div className="map-embed" style={{ height: 160, overflow: "hidden" }}>
                             <iframe
-                                src=" https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115536.95256710752!2d55.19120299696603!3d25.18535093670777!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5c89fbf4c7bf%3A0xeb51121eac30f9a!2sAbraj%20Al%20Mamzar%2C%20Block%20A!5e0!3m2!1sen!2sph!4v1781382895149!5m2!1sen!2sph"
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3607.2764583093857!2d55.35445537600424!3d25.28574307758295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5cfe11994ee1%3A0x8bdd77fec9a0e9c3!2sAbraj%20Al%20Mamzar%20-%20Al%20Mamzar%20-%20Dubai!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae"
                                 width="100%"
                                 height="160"
                                 style={{ border: 0, display: "block" }}
@@ -1415,7 +1362,7 @@ function Footer({ goHome, goProjects, scrollToService }) {
                 {/* Divider */}
                 <div style={{
                     height: 1,
-                    background: "linear-gradient(to right, transparent, rgba(201,168,76,0.2), transparent)",
+                    background: "linear-gradient(to right, transparent, rgba(37,99,235,0.25), transparent)",
                     margin: "clamp(32px, 4vw, 48px) 0 clamp(24px, 3vw, 32px)",
                     opacity: visible ? 1 : 0,
                     transform: visible ? "scaleX(1)" : "scaleX(0)",
@@ -1447,8 +1394,8 @@ function Footer({ goHome, goProjects, scrollToService }) {
                         </span>
                     </button>
 
-                    <div style={{ fontFamily: "var(--f-body)", fontSize: 11, color: "rgba(201,168,76,0.3)" }}>
-                        © 2024 Al Agha Group · All rights reserved
+                    <div style={{ fontFamily: "var(--f-body)", fontSize: 11, color: "rgba(96,165,250,0.4)" }}>
+                        © 2025 Al Agha Group · All rights reserved
                     </div>
 
                     <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
@@ -1463,11 +1410,11 @@ function Footer({ goHome, goProjects, scrollToService }) {
                                 style={{
                                     background: "none", border: "none",
                                     fontFamily: "var(--f-body)", fontSize: 12, fontWeight: 500,
-                                    color: "rgba(201,168,76,0.4)", cursor: "pointer",
+                                    color: "rgba(96,165,250,0.45)", cursor: "pointer",
                                     transition: "color 0.2s ease", padding: 0,
                                 }}
-                                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--gold)")}
-                                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(201,168,76,0.4)")}
+                                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--gold-lt)")}
+                                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(96,165,250,0.45)")}
                             >
                                 {l}
                             </button>
@@ -1480,7 +1427,7 @@ function Footer({ goHome, goProjects, scrollToService }) {
 }
 
 /* ─── LOGO COMPONENT ─────────────────────────────────────────────────────── */
-function LogoMark({ size = 44, onClick }) {
+function LogoMark({ size = 44, onClick, dark = false }) {
     return (
         <button onClick={onClick} style={{
             background: "none", border: "none", cursor: "pointer",
@@ -1491,23 +1438,24 @@ function LogoMark({ size = 44, onClick }) {
                 alt="Al Agha Group"
                 style={{
                     height: size, width: "auto", objectFit: "contain",
-                    filter: "drop-shadow(0 2px 8px rgba(201,168,76,0.3))",
+                    filter: "drop-shadow(0 2px 8px rgba(37,99,235,0.3))",
                     transition: "filter 0.3s ease, transform 0.3s ease",
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.filter = "drop-shadow(0 4px 16px rgba(201,168,76,0.5))"; e.currentTarget.style.transform = "scale(1.05)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.filter = "drop-shadow(0 2px 8px rgba(201,168,76,0.3))"; e.currentTarget.style.transform = "none"; }}
+                onMouseEnter={(e) => { e.currentTarget.style.filter = "drop-shadow(0 4px 16px rgba(37,99,235,0.5))"; e.currentTarget.style.transform = "scale(1.05)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.filter = "drop-shadow(0 2px 8px rgba(37,99,235,0.3))"; e.currentTarget.style.transform = "none"; }}
             />
             <div style={{ textAlign: "left" }}>
                 <div style={{
                     fontFamily: "var(--f-display)", fontWeight: 700, fontSize: 19,
-                    color: "#fff", letterSpacing: "-0.01em", lineHeight: 1.15,
+                    color: dark ? "var(--ink)" : "#fff", letterSpacing: "-0.01em", lineHeight: 1.15,
+                    transition: "color 0.3s ease",
                 }}>
                     Al Agha Group
                 </div>
                 <div style={{
                     fontFamily: "var(--f-body)", fontSize: 8, fontWeight: 700,
                     letterSpacing: "0.18em", textTransform: "uppercase",
-                    color: "rgba(201,168,76,0.8)",
+                    color: "var(--gold)",
                 }}>
                     of Companies
                 </div>
@@ -1523,6 +1471,28 @@ export default function ViewServices() {
     const scrolled = scrollY > 60;
     const [menu, setMenu] = useState(false);
     const [activePill, setActivePill] = useState(0);
+
+    // Hero video state
+    const [videoLoaded, setVideoLoaded] = useState(false);
+    const [videoError, setVideoError] = useState(false);
+    const videoRef = useRef(null);
+
+    useEffect(() => {
+        const loadVideo = () => {
+            if (videoRef.current) {
+                const timeoutId = setTimeout(() => {
+                    if (!videoLoaded && !videoError) setVideoLoaded(true);
+                }, 8000);
+                videoRef.current.load();
+                videoRef.current.play()
+                    .then(() => { setVideoLoaded(true); clearTimeout(timeoutId); })
+                    .catch(() => { clearTimeout(timeoutId); setVideoLoaded(true); });
+            }
+        };
+        const timer = setTimeout(loadVideo, 200);
+        return () => clearTimeout(timer);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const scrollToService = (index) => {
         setActivePill(index);
@@ -1582,7 +1552,7 @@ export default function ViewServices() {
         <>
             <style>{GLOBAL_CSS}</style>
             <div style={{
-                background: "var(--bg-deep)", color: "#fff",
+                background: "var(--bg-deep)", color: "var(--ink)",
                 fontFamily: "var(--f-body)", overflowX: "hidden",
             }}>
                 <ReadingProgress />
@@ -1592,19 +1562,19 @@ export default function ViewServices() {
                     <div style={{
                         position: "absolute", width: 700, height: 700,
                         top: "-250px", left: "-250px",
-                        background: "radial-gradient(circle, rgba(201,168,76,0.04) 0%, transparent 70%)",
+                        background: "radial-gradient(circle, rgba(37,99,235,0.05) 0%, transparent 70%)",
                         animation: "float 8s ease-in-out infinite",
                     }} />
                     <div style={{
                         position: "absolute", width: 500, height: 500,
                         bottom: "10%", right: "-100px",
-                        background: "radial-gradient(circle, rgba(12,24,112,0.6) 0%, transparent 70%)",
+                        background: "radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 70%)",
                         animation: "float 10s ease-in-out infinite reverse",
                     }} />
                     <div style={{
                         position: "absolute", width: 300, height: 300,
                         top: "40%", right: "25%",
-                        background: "radial-gradient(circle, rgba(201,168,76,0.025) 0%, transparent 70%)",
+                        background: "radial-gradient(circle, rgba(37,99,235,0.035) 0%, transparent 70%)",
                         animation: "float 12s ease-in-out infinite",
                         animationDelay: "2s",
                     }} />
@@ -1613,9 +1583,9 @@ export default function ViewServices() {
                 {/* ── NAV ── */}
                 <nav style={{
                     position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000,
-                    background: scrolled ? "rgba(2,7,48,0.97)" : "transparent",
+                    background: scrolled ? "rgba(255,255,255,0.97)" : "transparent",
                     backdropFilter: scrolled ? "blur(20px)" : "none",
-                    boxShadow: scrolled ? "0 1px 0 rgba(201,168,76,0.1)" : "none",
+                    boxShadow: scrolled ? "0 1px 0 rgba(37,99,235,0.12)" : "none",
                     transition: "all 0.4s cubic-bezier(0.22,1,0.36,1)",
                 }}>
                     <div style={{
@@ -1623,7 +1593,7 @@ export default function ViewServices() {
                         padding: "0 clamp(16px, 4vw, 36px)",
                         height: 72, display: "flex", alignItems: "center", justifyContent: "space-between",
                     }}>
-                        <LogoMark size={42} onClick={goHome} />
+                        <LogoMark size={42} onClick={goHome} dark={scrolled} />
 
                         {/* Desktop nav */}
                         <div style={{ display: "flex", gap: 32, alignItems: "center" }} className="desktop-nav">
@@ -1631,12 +1601,12 @@ export default function ViewServices() {
                                 <button
                                     key={l}
                                     onClick={() => {
-                                        if (l === "Projects") goProjects();
+                                        if (l === "Projects") goHome(4);
                                         else if (l === "Services") scrollToService(0);
                                         else goHome();
                                     }}
                                     className="nav-btn"
-                                    style={{ color: l === "Services" ? "var(--gold)" : "rgba(255,255,255,0.8)" }}
+                                    style={{ color: l === "Services" ? "var(--gold)" : (scrolled ? "rgba(11,18,32,0.75)" : "rgba(255,255,255,0.92)") }}
                                 >
                                     {l}
                                 </button>
@@ -1650,9 +1620,9 @@ export default function ViewServices() {
                         <button
                             onClick={() => setMenu((o) => !o)}
                             style={{
-                                background: "none", border: "none", color: "#fff",
+                                background: "none", border: "none", color: scrolled ? "var(--ink)" : "#fff",
                                 fontSize: 22, cursor: "pointer", display: "none",
-                                transition: "transform 0.3s ease",
+                                transition: "transform 0.3s ease, color 0.3s ease",
                                 transform: menu ? "rotate(90deg)" : "none",
                             }}
                             className="mobile-btn"
@@ -1664,8 +1634,8 @@ export default function ViewServices() {
                     {/* Mobile menu */}
                     {menu && (
                         <div style={{
-                            background: "rgba(2,7,48,0.98)",
-                            borderTop: "1px solid rgba(201,168,76,0.1)",
+                            background: "rgba(255,255,255,0.98)",
+                            borderTop: "1px solid rgba(37,99,235,0.12)",
                             animation: "fadeDown 0.3s ease both",
                         }}>
                             {NAV.map((l, i) => (
@@ -1673,14 +1643,14 @@ export default function ViewServices() {
                                     key={l}
                                     onClick={() => {
                                         setMenu(false);
-                                        if (l === "Projects") goProjects();
+                                        if (l === "Projects") goHome(4);
                                         else if (l === "Services") scrollToService(0);
                                         else goHome();
                                     }}
                                     style={{
                                         display: "block", width: "100%", background: "none",
-                                        border: "none", borderBottom: "1px solid rgba(201,168,76,0.08)",
-                                        color: l === "Services" ? "var(--gold)" : "rgba(255,255,255,0.75)",
+                                        border: "none", borderBottom: "1px solid rgba(37,99,235,0.08)",
+                                        color: l === "Services" ? "var(--gold)" : "rgba(11,18,32,0.75)",
                                         fontFamily: "var(--f-body)", fontSize: 14, fontWeight: 500,
                                         padding: "15px 32px", textAlign: "left", cursor: "pointer",
                                         animation: `slideInLeft 0.3s ease ${i * 40}ms both`,
@@ -1693,23 +1663,62 @@ export default function ViewServices() {
                     )}
                 </nav>
 
-                {/* ── HERO ── */}
+                {/* ── HERO (video background, matching App.jsx) ── */}
                 <section style={{
-                    background: "var(--bg-deep)", minHeight: "100vh",
+                    minHeight: "100vh",
                     display: "flex", flexDirection: "column", justifyContent: "center",
                     position: "relative", overflow: "hidden",
                     padding: "clamp(110px, 14vw, 140px) clamp(20px, 5vw, 60px) clamp(80px, 10vw, 100px)",
                 }}>
-                    <GeoBg variant="a" />
+                    {/* Video background */}
+                    <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 0 }}>
+                        <video
+                            ref={videoRef}
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                            webkit-playsinline="true"
+                            preload="metadata"
+                            onCanPlay={() => setVideoLoaded(true)}
+                            onError={() => { setVideoError(true); setVideoLoaded(true); }}
+                            className="hero-video-bg"
+                            style={{
+                                opacity: videoLoaded ? 1 : 0,
+                                transition: "opacity 1s ease",
+                            }}
+                        >
+                            <source src={heroVideo} type="video/mp4" />
+                            Your browser does not support the video tag.
+                        </video>
+                        {(!videoLoaded || videoError) && (
+                            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #1D4ED8 100%)", zIndex: 1 }} />
+                        )}
+                    </div>
+
+                    {/* Overlays for legibility over video */}
+                    <div style={{ position: "absolute", inset: 0, background: "linear-gradient(115deg, rgba(11,18,32,0.62) 0%, rgba(30,58,138,0.5) 45%, rgba(37,99,235,0.4) 100%)", zIndex: 1 }} />
+                    <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, transparent 35%, rgba(11,18,32,0.55) 100%)", zIndex: 1, pointerEvents: "none" }} />
+                    <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "55%", background: "linear-gradient(to top, rgba(11,18,32,0.6) 0%, transparent 100%)", zIndex: 1, pointerEvents: "none" }} />
+
+                    <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none" }}>
+                        <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice"
+                            style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+                            <polygon points="160,20 310,105 310,275 160,360 10,275 10,105" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="1.5" />
+                            <polygon points="1380,80 1430,108 1430,164 1380,192 1330,164 1330,108" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
+                            <circle cx="720" cy="450" r="380" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" strokeDasharray="6 14" />
+                        </svg>
+                    </div>
 
                     {/* Left accent line */}
                     <div style={{
                         position: "absolute", left: 0, top: 0, bottom: 0, width: 3,
-                        background: "linear-gradient(to bottom, transparent 0%, var(--gold) 30%, var(--gold) 70%, transparent 100%)",
+                        background: "linear-gradient(to bottom, transparent 0%, var(--gold-lt) 30%, var(--gold-lt) 70%, transparent 100%)",
                         animation: "lineGrow 1.2s cubic-bezier(0.22,1,0.36,1) 0.3s both",
+                        zIndex: 2,
                     }} />
 
-                    <div style={{ maxWidth: 1320, margin: "0 auto", width: "100%", position: "relative", zIndex: 1 }}>
+                    <div style={{ maxWidth: 1320, margin: "0 auto", width: "100%", position: "relative", zIndex: 2 }}>
                         {/* Breadcrumb */}
                         <div style={{ marginBottom: 48, animation: "fadeUp 0.7s 0.1s both" }}>
                             <button
@@ -1718,19 +1727,19 @@ export default function ViewServices() {
                                     background: "none", border: "none", cursor: "pointer",
                                     fontFamily: "var(--f-body)", fontSize: 12, fontWeight: 600,
                                     letterSpacing: "0.12em", textTransform: "uppercase",
-                                    color: "rgba(201,168,76,0.5)", padding: 0,
+                                    color: "rgba(255,255,255,0.65)", padding: 0,
                                     display: "inline-flex", alignItems: "center", gap: 8,
                                     transition: "color 0.2s, transform 0.2s",
                                 }}
-                                onMouseEnter={(e) => { e.currentTarget.style.color = "var(--gold)"; e.currentTarget.style.transform = "translateX(-4px)"; }}
-                                onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(201,168,76,0.5)"; e.currentTarget.style.transform = "none"; }}
+                                onMouseEnter={(e) => { e.currentTarget.style.color = "var(--gold-lt)"; e.currentTarget.style.transform = "translateX(-4px)"; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(255,255,255,0.65)"; e.currentTarget.style.transform = "none"; }}
                             >
                                 ← Al Agha Group
                             </button>
-                            <span style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(201,168,76,0.25)", margin: "0 10px" }}>/</span>
+                            <span style={{ fontFamily: "var(--f-body)", fontSize: 12, color: "rgba(255,255,255,0.35)", margin: "0 10px" }}>/</span>
                             <span style={{
                                 fontFamily: "var(--f-body)", fontSize: 12, fontWeight: 600,
-                                letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--gold)",
+                                letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--gold-lt)",
                             }}>
                                 Our Services
                             </span>
@@ -1746,15 +1755,16 @@ export default function ViewServices() {
                                 <div style={{ animation: "fadeUp 0.8s 0.15s both" }}>
                                     <span style={{
                                         display: "inline-flex", alignItems: "center", gap: 8,
-                                        background: "rgba(201,168,76,0.1)", border: "1px solid rgba(201,168,76,0.3)",
+                                        background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.35)",
+                                        backdropFilter: "blur(10px)",
                                         borderRadius: 40, padding: "7px 18px",
                                         fontFamily: "var(--f-body)", fontSize: 11, fontWeight: 600,
                                         letterSpacing: "0.14em", textTransform: "uppercase",
-                                        color: "var(--gold)", marginBottom: 28,
+                                        color: "#fff", marginBottom: 28,
                                     }}>
                                         <span style={{
                                             width: 6, height: 6, borderRadius: "50%",
-                                            background: "var(--gold)", animation: "shimmer 2s infinite",
+                                            background: "var(--gold-lt)", animation: "shimmer 2s infinite",
                                         }} />
                                         What We Offer
                                     </span>
@@ -1768,20 +1778,21 @@ export default function ViewServices() {
                                         fontSize: "clamp(3rem, 8vw, 5rem)",
                                         color: "#fff", marginBottom: 28,
                                         animation: "fadeUp 0.9s 0.25s both",
-                                        textShadow: "0 0 60px rgba(201,168,76,0.08)",
+                                        textShadow: "0 2px 24px rgba(11,18,32,0.35)",
                                     }}
                                 >
                                     Crafted to<br />
-                                    <em style={{ color: "var(--gold)", fontStyle: "italic", animation: "glowPulse 3s ease infinite" }}>perfection,</em><br />
+                                    <em style={{ color: "#93C5FD", fontStyle: "italic", animation: "glowPulse 3s ease infinite" }}>perfection,</em><br />
                                     every time.
                                 </h1>
 
                                 <p style={{
                                     fontFamily: "var(--f-body)",
                                     fontSize: "clamp(15px, 1.8vw, 17px)",
-                                    color: "rgba(255,255,255,0.6)", lineHeight: 1.8,
+                                    color: "rgba(255,255,255,0.88)", lineHeight: 1.8,
                                     maxWidth: 520, marginBottom: 44,
                                     animation: "fadeUp 1s 0.35s both",
+                                    textShadow: "0 1px 10px rgba(11,18,32,0.3)",
                                 }}>
                                     From the first coat of paint to a fully fitted-out luxury interior — Al Agha Group delivers each service with the same obsession for quality that has defined our name since 2008.
                                 </p>
@@ -1793,7 +1804,7 @@ export default function ViewServices() {
                                     <button className="btn-gold btn-magnetic" style={{ padding: "13px 30px" }} onClick={() => scrollToService(0)}>
                                         <span>Explore Services</span>
                                     </button>
-                                    <button className="btn-outline-gold" style={{ padding: "13px 30px" }} onClick={goProjects}>
+                                    <button className="btn-outline-white" style={{ padding: "13px 30px" }} onClick={goProjects}>
                                         View Projects →
                                     </button>
                                 </div>
@@ -1806,8 +1817,9 @@ export default function ViewServices() {
                                         key={s.id}
                                         onClick={() => scrollToService(i)}
                                         style={{
-                                            background: "rgba(255,255,255,0.04)",
-                                            border: "1px solid rgba(201,168,76,0.18)",
+                                            background: "rgba(255,255,255,0.12)",
+                                            backdropFilter: "blur(10px)",
+                                            border: "1px solid rgba(255,255,255,0.28)",
                                             borderRadius: 16, padding: "18px 22px",
                                             display: "flex", alignItems: "center", gap: 18,
                                             cursor: "pointer", transition: "all 0.35s cubic-bezier(0.22,1,0.36,1)",
@@ -1815,22 +1827,22 @@ export default function ViewServices() {
                                             animationDelay: `${i * 80 + 600}ms`,
                                         }}
                                         onMouseEnter={(e) => {
-                                            e.currentTarget.style.background = "rgba(201,168,76,0.08)";
-                                            e.currentTarget.style.borderColor = "rgba(201,168,76,0.45)";
+                                            e.currentTarget.style.background = "rgba(37,99,235,0.28)";
+                                            e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)";
                                             e.currentTarget.style.transform = "translateX(6px)";
-                                            e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.2)";
+                                            e.currentTarget.style.boxShadow = "0 8px 32px rgba(11,18,32,0.3)";
                                         }}
                                         onMouseLeave={(e) => {
-                                            e.currentTarget.style.background = "rgba(255,255,255,0.04)";
-                                            e.currentTarget.style.borderColor = "rgba(201,168,76,0.18)";
+                                            e.currentTarget.style.background = "rgba(255,255,255,0.12)";
+                                            e.currentTarget.style.borderColor = "rgba(255,255,255,0.28)";
                                             e.currentTarget.style.transform = "none";
                                             e.currentTarget.style.boxShadow = "none";
                                         }}
                                     >
                                         <div style={{
                                             width: 46, height: 46, borderRadius: 12, flexShrink: 0,
-                                            background: "rgba(201,168,76,0.1)",
-                                            border: "1px solid rgba(201,168,76,0.2)",
+                                            background: "rgba(255,255,255,0.18)",
+                                            border: "1px solid rgba(255,255,255,0.3)",
                                             display: "flex", alignItems: "center", justifyContent: "center",
                                             fontSize: 20, transition: "all 0.3s ease",
                                         }}>
@@ -1845,13 +1857,13 @@ export default function ViewServices() {
                                             </div>
                                             <div style={{
                                                 fontFamily: "var(--f-body)", fontSize: 11,
-                                                color: "rgba(201,168,76,0.6)",
+                                                color: "rgba(255,255,255,0.7)",
                                             }}>
                                                 {s.features.length} specialisations
                                             </div>
                                         </div>
                                         <span style={{
-                                            color: "rgba(201,168,76,0.4)", fontSize: 18, flexShrink: 0,
+                                            color: "rgba(255,255,255,0.55)", fontSize: 18, flexShrink: 0,
                                             transition: "transform 0.3s ease",
                                         }}>→</span>
                                     </button>
@@ -1870,13 +1882,13 @@ export default function ViewServices() {
                         <span style={{
                             fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 700,
                             letterSpacing: "0.22em", textTransform: "uppercase",
-                            color: "rgba(255,255,255,0.3)",
+                            color: "rgba(255,255,255,0.55)",
                         }}>
                             Scroll
                         </span>
                         <div style={{
                             width: 1, height: 48,
-                            background: "linear-gradient(to bottom, rgba(201,168,76,0.6), transparent)",
+                            background: "linear-gradient(to bottom, rgba(255,255,255,0.7), transparent)",
                             animation: "lineGrow 1s ease 1.2s both",
                         }} />
                     </div>
@@ -1885,9 +1897,9 @@ export default function ViewServices() {
                 {/* ── STICKY PILL BAR ── */}
                 <div style={{
                     position: "sticky", top: 72, zIndex: 100,
-                    background: "rgba(2,7,48,0.97)",
+                    background: "rgba(255,255,255,0.97)",
                     backdropFilter: "blur(20px)",
-                    boxShadow: "0 4px 24px rgba(0,0,0,0.4), 0 1px 0 rgba(201,168,76,0.1)",
+                    boxShadow: "0 4px 24px rgba(11,18,32,0.08), 0 1px 0 rgba(37,99,235,0.12)",
                     transition: "box-shadow 0.3s ease",
                 }}>
                     <div
@@ -1938,7 +1950,7 @@ export default function ViewServices() {
                             <h2 style={{
                                 fontFamily: "var(--f-display)", fontWeight: 700,
                                 fontSize: "clamp(2.2rem, 5vw, 3.6rem)",
-                                color: "#fff", marginBottom: 20, lineHeight: 1.1, letterSpacing: "-0.015em",
+                                color: "var(--ink)", marginBottom: 20, lineHeight: 1.1, letterSpacing: "-0.015em",
                             }}>
                                 Over 200 projects delivered —<br />
                                 <em style={{ color: "var(--gold)", fontStyle: "italic" }}>browse our portfolio.</em>
@@ -1946,7 +1958,7 @@ export default function ViewServices() {
                             <p style={{
                                 fontFamily: "var(--f-body)",
                                 fontSize: "clamp(14px, 1.6vw, 16px)",
-                                color: "rgba(255,255,255,0.5)", lineHeight: 1.8,
+                                color: "rgba(11,18,32,0.55)", lineHeight: 1.8,
                                 maxWidth: 580, margin: "0 auto 48px",
                             }}>
                                 From luxury hotels and EXPO pavilions to landmark towers and community residences — every service we offer is visible in our growing portfolio of completed works across the UAE.

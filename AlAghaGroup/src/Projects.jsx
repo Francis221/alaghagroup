@@ -119,22 +119,23 @@ const PAGE_CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap');
 
   :root {
-    --gold: #C9A84C;
-    --gold-dk: #a8883c;
-    --gold-lt: #e0c068;
-    --ink: #02071c;
-    --bg-deep: #02071c;
-    --bg-mid: #040b3a;
-    --surface: #f5f3ef;
-    --border: #e0d9cc;
+    --gold: #2563EB;
+    --gold-dk: #1D4ED8;
+    --gold-lt: #60A5FA;
+    --ink: #0B1220;
+    --bg-deep: #FFFFFF;
+    --bg-mid: #F5F8FF;
+    --surface: #F5F8FF;
+    --border: #DCE6FA;
+    --footer-ink: #0B1220;
     --f-display: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
     --f-body: 'DM Sans', 'Inter', 'Helvetica Neue', Arial, sans-serif;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
-  body { background: var(--bg-deep); color: #fff; }
-  ::selection { background: rgba(201,168,76,0.25); }
+  body { background: var(--bg-deep); color: var(--ink); }
+  ::selection { background: rgba(37,99,235,0.18); }
 
   /* ── Core animations ── */
   @keyframes fadeUp {
@@ -160,11 +161,17 @@ const PAGE_CSS = `
     100% { transform: translateX(220%) skewX(-15deg); }
   }
 
-  /* ── Gold pulse ring ── */
+  /* ── Hero shimmer sweep ── */
+  @keyframes heroShimmerSweep {
+    0%   { transform: translateX(-150%) skewX(-20deg); }
+    100% { transform: translateX(250%) skewX(-20deg); }
+  }
+
+  /* ── Blue pulse ring ── */
   @keyframes goldPulseRing {
-    0%   { box-shadow: 0 0 0 0 rgba(201,168,76,0.55); }
-    70%  { box-shadow: 0 0 0 10px rgba(201,168,76,0); }
-    100% { box-shadow: 0 0 0 0 rgba(201,168,76,0); }
+    0%   { box-shadow: 0 0 0 0 rgba(37,99,235,0.45); }
+    70%  { box-shadow: 0 0 0 10px rgba(37,99,235,0); }
+    100% { box-shadow: 0 0 0 0 rgba(37,99,235,0); }
   }
 
   /* ── Floating badge ── */
@@ -202,8 +209,8 @@ const PAGE_CSS = `
 
   /* ── Hero orb pulse ── */
   @keyframes orbPulse {
-    0%, 100% { transform: scale(1); opacity: 0.05; }
-    50%       { transform: scale(1.15); opacity: 0.09; }
+    0%, 100% { transform: scale(1); opacity: 0.14; }
+    50%       { transform: scale(1.15); opacity: 0.22; }
   }
 
   /* ── Number count-up shimmer ── */
@@ -236,6 +243,7 @@ const PAGE_CSS = `
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center center;
     z-index: 0;
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
@@ -243,6 +251,23 @@ const PAGE_CSS = `
     -webkit-transform: translateZ(0);
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+  }
+
+  .video-player-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(37,99,235,0.25);
+    box-shadow: 0 20px 60px rgba(11,18,32,0.2);
+    background: #000;
+  }
+  .video-player-wrapper iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
   }
 
   /* Android-specific video fix */
@@ -259,7 +284,7 @@ const PAGE_CSS = `
     position: relative;
     overflow: hidden;
     height: 200px;
-    background: #01044A;
+    background: var(--surface);
   }
 
   /* Shimmer sweep overlay */
@@ -270,7 +295,7 @@ const PAGE_CSS = `
     background: linear-gradient(
       105deg,
       transparent 35%,
-      rgba(201,168,76,0.22) 50%,
+      rgba(37,99,235,0.18) 50%,
       transparent 65%
     );
     transform: translateX(-120%) skewX(-15deg);
@@ -289,7 +314,7 @@ const PAGE_CSS = `
     background: linear-gradient(
       to bottom,
       transparent 0%,
-      rgba(201,168,76,0.08) 50%,
+      rgba(37,99,235,0.10) 50%,
       transparent 100%
     );
     height: 40%;
@@ -302,7 +327,7 @@ const PAGE_CSS = `
     animation: scanLine 1.2s ease 0.1s forwards;
   }
 
-  /* Gold pulse ring on hover */
+  /* Blue pulse ring on hover */
   .proj-card:hover .proj-img-wrap {
     animation: goldPulseRing 0.75s ease;
   }
@@ -320,17 +345,17 @@ const PAGE_CSS = `
   }
   .proj-card:hover .proj-img {
     transform: scale(1.1) translateY(-4px);
-    filter: brightness(0.72) contrast(1.1) saturate(1.12);
+    filter: brightness(0.86) contrast(1.08) saturate(1.1);
   }
 
-  /* Dark gradient overlay */
+  /* Gradient overlay — lighter, tuned for light theme so it still reads as a scrim without muddying the card */
   .proj-img-overlay {
     position: absolute;
     inset: 0;
     background: linear-gradient(
       to top,
-      rgba(2,7,48,0.94) 0%,
-      rgba(2,7,48,0.3) 50%,
+      rgba(11,18,32,0.82) 0%,
+      rgba(11,18,32,0.18) 50%,
       transparent 75%
     );
     transition: opacity 0.45s ease;
@@ -340,7 +365,7 @@ const PAGE_CSS = `
     opacity: 0.97;
   }
 
-  /* Gold frame corners that slide in from edges */
+  /* Blue frame corners that slide in from edges */
   .proj-img-frame {
     position: absolute;
     inset: 0;
@@ -393,8 +418,8 @@ const PAGE_CSS = `
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--gold);
-    background: linear-gradient(to top, rgba(2,7,48,0.92), transparent);
+    color: var(--gold-lt);
+    background: linear-gradient(to top, rgba(11,18,32,0.9), transparent);
     transform: translateY(100%);
     opacity: 0;
     transition: transform 0.4s cubic-bezier(0.22,1,0.36,1),
@@ -420,29 +445,30 @@ const PAGE_CSS = `
       box-shadow 0.45s cubic-bezier(0.22,1,0.36,1),
       border-color 0.3s ease,
       transform 0.45s cubic-bezier(0.22,1,0.36,1);
-    border: 1px solid rgba(201,168,76,0.12);
-    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    background: #FFFFFF;
+    box-shadow: 0 2px 14px rgba(37,99,235,0.06);
     transform-style: preserve-3d;
     position: relative;
   }
   .proj-card:hover {
     box-shadow:
-      0 32px 72px rgba(0,0,0,0.55),
-      0 0 0 1px rgba(201,168,76,0.45),
-      0 0 40px rgba(201,168,76,0.08);
-    border-color: rgba(201,168,76,0.55);
+      0 32px 72px rgba(37,99,235,0.14),
+      0 0 0 1px rgba(37,99,235,0.35),
+      0 0 40px rgba(37,99,235,0.10);
+    border-color: rgba(37,99,235,0.5);
     transform: translateY(-8px) rotateX(1.5deg);
   }
 
   /* Name strip */
   .proj-name-strip {
     padding: 14px 16px 18px;
-    background: rgba(255,255,255,0.025);
+    background: #FFFFFF;
     position: relative;
     overflow: hidden;
   }
 
-  /* Animated gold underline */
+  /* Animated blue underline */
   .proj-name-strip::after {
     content: '';
     position: absolute;
@@ -465,8 +491,8 @@ const PAGE_CSS = `
     left: 50%;
     transform: translate(-50%, -50%) scale(0.7);
     z-index: 6;
-    background: rgba(201,168,76,0.9);
-    color: var(--ink);
+    background: var(--gold);
+    color: #FFFFFF;
     font-family: var(--f-body);
     font-size: 9px;
     font-weight: 700;
@@ -486,7 +512,7 @@ const PAGE_CSS = `
     transform: translate(-50%, -50%) scale(1);
   }
 
-  /* Nav */
+  /* Nav — text is white over the hero video, then flips to ink once the bar goes opaque/white on scroll */
   .nav-btn {
     background: none;
     border: none;
@@ -519,7 +545,7 @@ const PAGE_CSS = `
     align-items: center;
     gap: 8px;
     background: linear-gradient(135deg, var(--gold-dk), var(--gold), var(--gold-lt));
-    color: var(--ink);
+    color: #FFFFFF;
     font-family: var(--f-body);
     font-size: 12px;
     font-weight: 700;
@@ -531,33 +557,33 @@ const PAGE_CSS = `
     cursor: pointer;
     text-decoration: none;
     transition: all 0.28s ease;
-    box-shadow: 0 4px 20px rgba(201,168,76,0.25);
+    box-shadow: 0 4px 20px rgba(37,99,235,0.28);
   }
   .btn-gold:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 36px rgba(201,168,76,0.42);
+    box-shadow: 0 10px 36px rgba(37,99,235,0.42);
   }
 
   .btn-outline-white {
     display: inline-flex;
     align-items: center; gap: 8px;
-    background: transparent; color: rgba(255,255,255,0.8);
+    background: rgba(255,255,255,0.08); color: #FFFFFF;
     font-family: var(--f-body); font-size: 12px; font-weight: 700;
     letter-spacing: 0.1em; text-transform: uppercase;
     padding: 10px 22px; border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.45);
     cursor: pointer; transition: all 0.25s ease;
   }
   .btn-outline-white:hover {
-    background: rgba(255,255,255,0.07);
-    border-color: rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.18);
+    border-color: rgba(255,255,255,0.7);
     transform: translateY(-2px);
   }
 
   /* Filter pills */
   .cat-pill {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(201,168,76,0.2);
+    background: #FFFFFF;
+    border: 1px solid var(--border);
     font-family: var(--f-body);
     font-size: 11px;
     font-weight: 500;
@@ -566,7 +592,7 @@ const PAGE_CSS = `
     cursor: pointer;
     transition: all 0.22s ease;
     white-space: nowrap;
-    color: rgba(255,255,255,0.7);
+    color: rgba(11,18,32,0.65);
     display: flex;
     align-items: center;
     gap: 4px;
@@ -575,7 +601,7 @@ const PAGE_CSS = `
   .cat-pill.active {
     background: var(--gold);
     border-color: var(--gold);
-    color: var(--ink);
+    color: #FFFFFF;
     animation: pillPop 0.3s ease;
   }
 
@@ -583,11 +609,11 @@ const PAGE_CSS = `
   .pill-bar { overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
   .pill-bar::-webkit-scrollbar { display: none; }
 
-  /* Hero orbs */
+  /* Hero orbs — kept over the video, so still light-on-dark here */
   .hero-orb {
     position: absolute;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(201,168,76,0.12), transparent 70%);
+    background: radial-gradient(circle, rgba(96,165,250,0.35), transparent 70%);
     animation: orbPulse 6s ease-in-out infinite;
     pointer-events: none;
   }
@@ -598,7 +624,7 @@ const PAGE_CSS = `
     width: 3px;
     height: 3px;
     border-radius: 50%;
-    background: var(--gold);
+    background: var(--gold-lt);
     pointer-events: none;
   }
 
@@ -816,14 +842,14 @@ const STATS = [
 ];
 
 const CAT_META = {
-    "All": { color: "#C9A84C", bg: "#01044A" },
-    "False Ceiling & Partition": { color: "#C9A84C", bg: "#01044A" },
-    "Interior Design & Fit-Out": { color: "#01044A", bg: "#C9A84C" },
-    "MEP Works": { color: "#C9A84C", bg: "#1a3a5c" },
-    "Civil Works": { color: "#C9A84C", bg: "#3d2408" },
+    "All": { color: "#FFFFFF", bg: "#2563EB" },
+    "False Ceiling & Partition": { color: "#FFFFFF", bg: "#2563EB" },
+    "Interior Design & Fit-Out": { color: "#1D4ED8", bg: "#DCE6FA" },
+    "MEP Works": { color: "#FFFFFF", bg: "#1D4ED8" },
+    "Civil Works": { color: "#FFFFFF", bg: "#0B1220" },
 };
 
-const NAV = ["Home", "Services", "Projects", "Career", "Clients", "Team", "About"];
+const NAV = ["Home", "About", "Services", "Projects", "Clients", "Career", "Team"];
 
 /* ─── HOOKS ──────────────────────────────────────────────────────────────── */
 function useInView(threshold = 0.06) {
@@ -891,8 +917,8 @@ function Reveal({ children, delay = 0, dir = "up" }) {
 function ReadingProgress() {
     const p = useReadingProgress();
     return (
-        <div style={{ position: "fixed", top: 0, left: 0, right: 0, height: 3, zIndex: 9999, background: "rgba(201,168,76,0.1)" }}>
-            <div style={{ height: "100%", width: `${p}%`, background: "linear-gradient(90deg,#a8883c,#C9A84C,#e0c068)", transition: "width 0.12s linear", boxShadow: "0 0 10px rgba(201,168,76,0.55)" }} />
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, height: 3, zIndex: 9999, background: "rgba(37,99,235,0.08)" }}>
+            <div style={{ height: "100%", width: `${p}%`, background: "linear-gradient(90deg,#1D4ED8,#2563EB,#60A5FA)", transition: "width 0.12s linear", boxShadow: "0 0 10px rgba(37,99,235,0.5)" }} />
         </div>
     );
 }
@@ -923,7 +949,7 @@ function Particles() {
                         width: p.size,
                         height: p.size,
                         borderRadius: "50%",
-                        background: "var(--gold)",
+                        background: "var(--gold-lt)",
                         opacity: p.op,
                         animation: `particleDrift ${p.dur} ease-in-out ${p.delay} infinite`,
                         pointerEvents: "none",
@@ -969,7 +995,7 @@ function ProjectModal({ project, onClose }) {
             onClick={onClose}
             style={{
                 position: "fixed", inset: 0, zIndex: 2000,
-                background: "rgba(0,2,20,0.92)",
+                background: "rgba(11,18,32,0.55)",
                 backdropFilter: "blur(14px)",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 padding: "20px",
@@ -979,15 +1005,15 @@ function ProjectModal({ project, onClose }) {
             <div
                 onClick={e => e.stopPropagation()}
                 style={{
-                    background: "linear-gradient(160deg, #040b3a 0%, #02071c 100%)",
+                    background: "#FFFFFF",
                     borderRadius: 22,
                     overflow: "hidden",
                     width: "100%",
                     maxWidth: 720,
                     maxHeight: "88vh",
                     overflowY: "auto",
-                    boxShadow: "0 60px 120px rgba(0,0,0,0.65), 0 0 0 1px rgba(201,168,76,0.25)",
-                    border: "1px solid rgba(201,168,76,0.2)",
+                    boxShadow: "0 60px 120px rgba(11,18,32,0.35), 0 0 0 1px rgba(37,99,235,0.15)",
+                    border: "1px solid var(--border)",
                     animation: "modalIn 0.35s cubic-bezier(0.22,1,0.36,1)",
                 }}
             >
@@ -998,7 +1024,7 @@ function ProjectModal({ project, onClose }) {
                         id={project.id}
                         style={{ width: "100%", height: "100%", objectFit: "cover", transform: "scale(1.04)", transition: "transform 6s ease" }}
                     />
-                    <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(2,7,48,0.97) 0%, rgba(2,7,48,0.1) 55%, transparent 100%)" }} />
+                    <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(11,18,32,0.9) 0%, rgba(11,18,32,0.12) 55%, transparent 100%)" }} />
 
                     <button
                         onClick={onClose}
@@ -1006,15 +1032,15 @@ function ProjectModal({ project, onClose }) {
                         style={{
                             position: "absolute", top: 18, right: 18,
                             width: 40, height: 40, borderRadius: "50%",
-                            background: "rgba(255,255,255,0.1)",
-                            border: "1px solid rgba(255,255,255,0.2)",
+                            background: "rgba(255,255,255,0.18)",
+                            border: "1px solid rgba(255,255,255,0.35)",
                             color: "#fff", fontSize: 17, cursor: "pointer",
                             display: "flex", alignItems: "center", justifyContent: "center",
                             backdropFilter: "blur(10px)",
                             transition: "background 0.2s, transform 0.2s",
                         }}
-                        onMouseEnter={e => { e.currentTarget.style.background = "rgba(201,168,76,0.65)"; e.currentTarget.style.transform = "rotate(90deg)"; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.1)"; e.currentTarget.style.transform = "none"; }}
+                        onMouseEnter={e => { e.currentTarget.style.background = "rgba(37,99,235,0.75)"; e.currentTarget.style.transform = "rotate(90deg)"; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.18)"; e.currentTarget.style.transform = "none"; }}
                     >✕</button>
 
                     <div style={{ position: "absolute", bottom: 0, left: 0, padding: "0 28px 24px" }}>
@@ -1031,7 +1057,7 @@ function ProjectModal({ project, onClose }) {
                             {project.featured && (
                                 <span style={{
                                     display: "inline-block",
-                                    background: "var(--gold)", color: "var(--ink)",
+                                    background: "var(--gold)", color: "#FFFFFF",
                                     fontSize: 9, fontWeight: 700, letterSpacing: "0.13em",
                                     textTransform: "uppercase", padding: "4px 12px",
                                     borderRadius: 20, fontFamily: "var(--f-body)",
@@ -1049,21 +1075,21 @@ function ProjectModal({ project, onClose }) {
 
                 <div style={{ padding: "24px 28px 28px" }}>
                     <div style={{
-                        background: "rgba(255,255,255,0.03)",
+                        background: "var(--surface)",
                         borderRadius: 14,
                         padding: "16px 20px",
                         display: "flex", alignItems: "center", gap: 14,
-                        border: "1px solid rgba(201,168,76,0.15)",
+                        border: "1px solid var(--border)",
                     }}>
                         <div style={{
                             width: 36, height: 36, borderRadius: "50%",
                             background: "linear-gradient(135deg, var(--gold), var(--gold-dk))",
                             display: "flex", alignItems: "center", justifyContent: "center",
-                            color: "var(--ink)", fontWeight: 700, fontSize: 14, flexShrink: 0,
+                            color: "#FFFFFF", fontWeight: 700, fontSize: 14, flexShrink: 0,
                         }}>Q</div>
                         <div>
                             <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 2 }}>Quality Assured</div>
-                            <div style={{ fontFamily: "var(--f-body)", fontSize: 11, color: "rgba(255,255,255,0.45)" }}>ISO 9001:2015 · ISO 14001:2015 · OHSAS 18001:2007</div>
+                            <div style={{ fontFamily: "var(--f-body)", fontSize: 11, color: "rgba(11,18,32,0.5)" }}>ISO 9001:2015 · ISO 14001:2015 · OHSAS 18001:2007</div>
                         </div>
                     </div>
                 </div>
@@ -1126,11 +1152,11 @@ function ProjectCard({ project, onOpen, index }) {
                         <div style={{ position: "absolute", top: 10, left: 10, zIndex: 5 }}>
                             <span className="feat-badge" style={{
                                 display: "inline-block",
-                                background: "var(--gold)", color: "var(--ink)",
+                                background: "var(--gold)", color: "#FFFFFF",
                                 fontSize: 8, fontWeight: 700, letterSpacing: "0.14em",
                                 textTransform: "uppercase", padding: "2px 8px",
                                 borderRadius: 20, fontFamily: "var(--f-body)",
-                                boxShadow: "0 2px 14px rgba(201,168,76,0.45)",
+                                boxShadow: "0 2px 14px rgba(37,99,235,0.45)",
                             }}>★ Featured</span>
                         </div>
                     )}
@@ -1141,7 +1167,7 @@ function ProjectCard({ project, onOpen, index }) {
                         fontFamily: "var(--f-display)",
                         fontSize: "clamp(14px, 1.1vw, 16px)",
                         fontWeight: 700,
-                        color: "#fff",
+                        color: "var(--ink)",
                         lineHeight: 1.3,
                         margin: 0,
                         display: "-webkit-box",
@@ -1171,9 +1197,9 @@ function SearchBar({ value, onChange }) {
                 placeholder="Search projects…"
                 style={{
                     width: "100%",
-                    background: focused ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.04)",
-                    border: `1.5px solid ${focused ? "var(--gold)" : "rgba(201,168,76,0.25)"}`,
-                    color: "#fff", padding: "8px 12px 8px 38px",
+                    background: focused ? "#FFFFFF" : "var(--surface)",
+                    border: `1.5px solid ${focused ? "var(--gold)" : "var(--border)"}`,
+                    color: "var(--ink)", padding: "8px 12px 8px 38px",
                     fontFamily: "var(--f-body)", fontSize: 13,
                     outline: "none", borderRadius: 10,
                     transition: "all 0.22s", boxSizing: "border-box",
@@ -1182,7 +1208,7 @@ function SearchBar({ value, onChange }) {
             {value && (
                 <button
                     onClick={() => onChange("")}
-                    style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "rgba(255,255,255,0.4)", fontSize: 14, lineHeight: 1 }}
+                    style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "rgba(11,18,32,0.4)", fontSize: 14, lineHeight: 1 }}
                 >✕</button>
             )}
         </div>
@@ -1198,14 +1224,14 @@ function SocialBtn({ href, label, children }) {
             onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
             style={{
                 width: 40, height: 40, borderRadius: 10,
-                background: hov ? "var(--gold)" : "rgba(201,168,76,0.08)",
-                border: `1px solid ${hov ? "var(--gold)" : "rgba(201,168,76,0.25)"}`,
+                background: hov ? "var(--gold)" : "rgba(96,165,250,0.12)",
+                border: `1px solid ${hov ? "var(--gold)" : "rgba(96,165,250,0.35)"}`,
                 display: "flex", alignItems: "center", justifyContent: "center",
                 textDecoration: "none",
                 transition: "all 0.22s",
                 transform: hov ? "translateY(-3px)" : "none",
                 flexShrink: 0,
-                color: hov ? "var(--ink)" : "var(--gold)",
+                color: hov ? "#FFFFFF" : "var(--gold-lt)",
             }}
         >
             {children}
@@ -1247,7 +1273,6 @@ export default function ViewProjects() {
         if (location.pathname === '/projects') {
             const loadVideo = () => {
                 if (videoRef.current) {
-                    // Set a timeout to handle slow loading on Android
                     const timeoutId = setTimeout(() => {
                         if (!videoLoaded && !videoError) {
                             console.log('Video loading timeout, showing fallback');
@@ -1263,14 +1288,12 @@ export default function ViewProjects() {
                         })
                         .catch(err => {
                             console.log('Video autoplay prevented:', err);
-                            // Don't set error, just show fallback after timeout
                             clearTimeout(timeoutId);
                             setVideoLoaded(true);
                         });
                 }
             };
 
-            // Small delay to ensure DOM is ready
             const timer = setTimeout(loadVideo, 200);
             return () => clearTimeout(timer);
         }
@@ -1285,11 +1308,9 @@ export default function ViewProjects() {
         };
         document.addEventListener('click', handleInteraction);
         document.addEventListener('touchstart', handleInteraction);
-        document.addEventListener('scroll', handleInteraction);
         return () => {
             document.removeEventListener('click', handleInteraction);
             document.removeEventListener('touchstart', handleInteraction);
-            document.removeEventListener('scroll', handleInteraction);
         };
     }, [videoError]);
 
@@ -1324,52 +1345,52 @@ export default function ViewProjects() {
     });
 
     return (
-        <div style={{ background: "var(--bg-deep)", color: "#fff", minHeight: "100vh", overflowX: "hidden" }}>
+        <div style={{ background: "var(--bg-deep)", color: "var(--ink)", minHeight: "100vh", overflowX: "hidden" }}>
             <style>{PAGE_CSS}</style>
             <ReadingProgress />
 
             {/* ── NAVIGATION ── */}
             <nav style={{
                 position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000,
-                background: scrolled ? "rgba(2,7,48,0.97)" : "transparent",
+                background: scrolled ? "rgba(255,255,255,0.97)" : "transparent",
                 backdropFilter: scrolled ? "blur(22px)" : "none",
-                boxShadow: scrolled ? "0 1px 0 rgba(201,168,76,0.1)" : "none",
+                boxShadow: scrolled ? "0 1px 0 var(--border), 0 8px 24px rgba(37,99,235,0.06)" : "none",
                 transition: "all 0.4s ease",
             }}>
                 <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 20px", height: "clamp(64px, 6vh, 74px)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                     <button onClick={() => goTo("Home")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 12 }}>
-                        <div style={{ width: "clamp(36px, 3.5vw, 44px)", height: "clamp(36px, 3.5vw, 44px)", borderRadius: 10, overflow: "hidden", flexShrink: 0, background: "#01044A", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                            <img src={logo} alt="Al Agha Group" style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => e.target.style.display = "none"} />
+                        <div style={{ width: "clamp(36px, 3.5vw, 44px)", height: "clamp(36px, 3.5vw, 44px)", borderRadius: 10, overflow: "hidden", flexShrink: 0, background: "transparent", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <img src={logo} alt="Al Agha Group" style={{ width: "100%", height: "100%", objectFit: "contain" }} onError={e => e.target.style.display = "none"} />
                         </div>
                         <div style={{ textAlign: "left" }}>
-                            <div style={{ fontFamily: "var(--f-display)", fontWeight: 700, fontSize: "clamp(16px, 1.5vw, 19px)", color: "#fff", lineHeight: 1.15 }}>Al Agha Group</div>
+                            <div style={{ fontFamily: "var(--f-display)", fontWeight: 700, fontSize: "clamp(16px, 1.5vw, 19px)", color: scrolled ? "var(--ink)" : "#fff", lineHeight: 1.15, transition: "color 0.3s" }}>Al Agha Group</div>
                             <div style={{ fontFamily: "var(--f-body)", fontSize: "clamp(6px, 0.6vw, 8px)", fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--gold)" }}>of Companies</div>
                         </div>
                     </button>
 
                     <div style={{ display: "flex", gap: "clamp(16px, 2.5vw, 32px)", alignItems: "center" }} className="desktop-nav">
                         {NAV.map(l => (
-                            <button key={l} onClick={() => goTo(l)} className={`nav-btn ${l === "Projects" ? "nav-active" : ""}`} style={{ color: "rgba(255,255,255,0.8)", fontSize: "clamp(11px, 1vw, 13px)" }}>{l}</button>
+                            <button key={l} onClick={() => goTo(l)} className={`nav-btn ${l === "Projects" ? "nav-active" : ""}`} style={{ color: l === "Projects" ? "var(--gold)" : (scrolled ? "rgba(11,18,32,0.8)" : "rgba(255,255,255,0.9)"), fontSize: "clamp(11px, 1vw, 13px)", transition: "color 0.3s" }}>{l}</button>
                         ))}
                         <button className="btn-gold" style={{ padding: "8px 18px", fontSize: "clamp(10px, 0.8vw, 12px)" }} onClick={() => goTo("Career")}>Join Us</button>
                     </div>
 
-                    <button onClick={() => setMenuOpen(o => !o)} style={{ background: "none", border: "none", color: "#fff", fontSize: 22, cursor: "pointer", display: "none", alignItems: "center" }} className="mobile-toggle">
+                    <button onClick={() => setMenuOpen(o => !o)} style={{ background: "none", border: "none", color: scrolled ? "var(--ink)" : "#fff", fontSize: 22, cursor: "pointer", display: "none", alignItems: "center", transition: "color 0.3s" }} className="mobile-toggle">
                         {menuOpen ? "✕" : "☰"}
                     </button>
                 </div>
 
                 {menuOpen && (
-                    <div style={{ background: "rgba(2,7,48,0.98)", borderTop: "1px solid rgba(201,168,76,0.1)" }}>
+                    <div style={{ background: "rgba(255,255,255,0.98)", borderTop: "1px solid var(--border)" }}>
                         {NAV.map(l => (
-                            <button key={l} onClick={() => goTo(l)} style={{ display: "block", width: "100%", background: "none", border: "none", borderBottom: "1px solid rgba(201,168,76,0.08)", color: l === "Projects" ? "var(--gold)" : "rgba(255,255,255,0.75)", fontFamily: "var(--f-body)", fontSize: 14, fontWeight: 500, padding: "15px 20px", textAlign: "left", cursor: "pointer" }}>{l}</button>
+                            <button key={l} onClick={() => goTo(2)} style={{ display: "block", width: "100%", background: "none", border: "none", borderBottom: "1px solid var(--border)", color: l === "Projects" ? "var(--gold)" : "rgba(11,18,32,0.75)", fontFamily: "var(--f-body)", fontSize: 14, fontWeight: 500, padding: "15px 20px", textAlign: "left", cursor: "pointer" }}>{l}</button>
                         ))}
                     </div>
                 )}
             </nav>
 
-            {/* ── HERO WITH VIDEO ── */}
-            <header style={{ minHeight: "50vh", position: "relative", display: "flex", alignItems: "center", overflow: "hidden" }}>
+            {/* ── HERO WITH VIDEO (same as homepage) ── */}
+            <header style={{ minHeight: "100vh", minHeight: "calc(var(--vh, 1vh) * 100)", position: "relative", display: "flex", alignItems: "center", overflow: "hidden" }}>
                 <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 0 }}>
                     <video
                         ref={videoRef}
@@ -1378,14 +1399,10 @@ export default function ViewProjects() {
                         muted
                         loop
                         playsInline
+                        webkit-playsinline="true"
                         preload="metadata"
-                        onCanPlay={() => { console.log('Video can play'); setVideoLoaded(true); }}
-                        onPlay={() => console.log('Video is playing')}
-                        onError={(e) => {
-                            console.error('Video error:', e);
-                            setVideoError(true);
-                            setVideoLoaded(true);
-                        }}
+                        onCanPlay={() => { setVideoLoaded(true); }}
+                        onError={(e) => { setVideoError(true); setVideoLoaded(true); }}
                         className="hero-video-bg"
                         style={{
                             opacity: videoLoaded ? 1 : 0,
@@ -1395,7 +1412,6 @@ export default function ViewProjects() {
                             objectFit: "cover",
                             position: "absolute",
                             inset: 0,
-                            // Android performance optimization
                             willChange: 'transform',
                             transform: 'translateZ(0)',
                             WebkitTransform: 'translateZ(0)',
@@ -1405,18 +1421,27 @@ export default function ViewProjects() {
                         Your browser does not support the video tag.
                     </video>
                     {(!videoLoaded || videoError) && (
-                        <div style={{
-                            position: "absolute",
-                            inset: 0,
-                            background: "linear-gradient(135deg, #02071c 0%, #060d50 50%, #02071c 100%)",
-                            zIndex: 1,
-                        }} />
+                        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #1D4ED8 100%)", zIndex: 1 }} />
                     )}
                 </div>
 
-                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(115deg, rgba(2,7,48,0.6) 0%, rgba(1,4,74,0.5) 45%, rgba(6,13,80,0.4) 100%)", zIndex: 1 }} />
-                <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, transparent 40%, rgba(2,7,48,0.5) 100%)", zIndex: 1, pointerEvents: "none" }} />
-                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "60%", background: "linear-gradient(to top, rgba(2,7,48,0.6) 0%, transparent 100%)", zIndex: 1, pointerEvents: "none" }} />
+                {/* ══ SHIMMER SWEEP OVERLAY ══ */}
+                <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 1, pointerEvents: "none" }}>
+                    <div style={{
+                        position: "absolute",
+                        top: "-20%",
+                        left: 0,
+                        width: "35%",
+                        height: "140%",
+                        background: "linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.06) 35%, rgba(147,197,253,0.35) 50%, rgba(255,255,255,0.06) 65%, transparent 100%)",
+                        animation: "heroShimmerSweep 6s ease-in-out 1s infinite",
+                        filter: "blur(2px)",
+                    }} />
+                </div>
+
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(115deg, rgba(11,18,32,0.5) 0%, rgba(29,78,216,0.4) 45%, rgba(37,99,235,0.32) 100%)", zIndex: 1 }} />
+                <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, transparent 40%, rgba(11,18,32,0.45) 100%)", zIndex: 1, pointerEvents: "none" }} />
+                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "60%", background: "linear-gradient(to top, rgba(11,18,32,0.55) 0%, transparent 100%)", zIndex: 1, pointerEvents: "none" }} />
 
                 {/* Ambient orbs */}
                 <div className="hero-orb" style={{ width: 400, height: 400, top: "-15%", left: "-10%", animationDelay: "0s", zIndex: 1 }} />
@@ -1424,20 +1449,20 @@ export default function ViewProjects() {
 
                 <Particles />
 
-                <div style={{ position: "absolute", left: 0, top: "10%", bottom: "10%", width: 2, background: "linear-gradient(to bottom, transparent, var(--gold), transparent)", zIndex: 1, opacity: 0.6 }} />
+                <div style={{ position: "absolute", left: 0, top: "10%", bottom: "10%", width: 2, background: "linear-gradient(to bottom, transparent, var(--gold-lt), transparent)", zIndex: 1, opacity: 0.7 }} />
 
-                <div style={{ maxWidth: 1320, margin: "0 auto", padding: "clamp(80px, 10vh, 130px) 20px clamp(40px, 5vh, 60px)", position: "relative", zIndex: 2, width: "100%" }}>
+                <div style={{ maxWidth: 1320, margin: "0 auto", padding: "clamp(110px, 16vw, 130px) 20px clamp(60px, 8vw, 90px)", position: "relative", zIndex: 2, width: "100%" }}>
                     <div style={{ maxWidth: 650 }}>
                         <div style={{ marginBottom: 24, animation: "fadeUp 0.8s 0.1s both" }}>
-                            <span style={{ background: "rgba(201,168,76,0.15)", border: "1px solid rgba(201,168,76,0.3)", backdropFilter: "blur(20px)", padding: "6px 16px", borderRadius: 40, fontSize: "clamp(8px, 0.8vw, 10px)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--gold)", boxShadow: "0 4px 15px rgba(201,168,76,0.1)" }}>
+                            <span style={{ background: "rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.4)", backdropFilter: "blur(20px)", padding: "6px 16px", borderRadius: 40, fontSize: "clamp(8px, 0.8vw, 10px)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "#fff", boxShadow: "0 4px 15px rgba(37,99,235,0.15)" }}>
                                 Project Portfolio
                             </span>
                         </div>
-                        <h1 style={{ fontFamily: "var(--f-display)", fontWeight: 700, lineHeight: 1.04, letterSpacing: "-0.02em", fontSize: "clamp(2rem, 5vw, 3.8rem)", color: "#fff", marginBottom: 20, animation: "fadeUp 0.9s 0.2s both", textShadow: "0 2px 20px rgba(0,0,0,0.3)" }}>
+                        <h1 style={{ fontFamily: "var(--f-display)", fontWeight: 700, lineHeight: 1.04, letterSpacing: "-0.02em", fontSize: "clamp(2rem, 5vw, 3.8rem)", color: "#fff", marginBottom: 20, animation: "fadeUp 0.9s 0.2s both", textShadow: "0 2px 20px rgba(11,18,32,0.4)" }}>
                             Our Work,<br />
-                            <em style={{ color: "var(--gold)", fontStyle: "italic" }}>Built to Last.</em>
+                            <em style={{ color: "var(--gold-lt)", fontStyle: "italic" }}>Built to Last.</em>
                         </h1>
-                        <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(14px, 1.1vw, 16px)", color: "rgba(255,255,255,0.8)", lineHeight: 1.8, maxWidth: 480, marginBottom: 32, animation: "fadeUp 1s 0.35s both", textShadow: "0 1px 10px rgba(0,0,0,0.3)" }}>
+                        <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(14px, 1.1vw, 16px)", color: "rgba(255,255,255,0.9)", lineHeight: 1.8, maxWidth: 480, marginBottom: 32, animation: "fadeUp 1s 0.35s both", textShadow: "0 1px 10px rgba(11,18,32,0.4)" }}>
                             Over 200 completed projects across the UAE — from landmark towers and luxury hotels to government buildings, EXPO pavilions, and community developments.
                         </p>
                         <div style={{ display: "flex", gap: 14, flexWrap: "wrap", animation: "fadeUp 1s 0.45s both" }}>
@@ -1449,7 +1474,7 @@ export default function ViewProjects() {
             </header>
 
             {/* ── FILTER BAR ── */}
-            <div style={{ background: "rgba(2,7,48,0.96)", backdropFilter: "blur(22px)", borderBottom: "1px solid rgba(201,168,76,0.15)", position: "sticky", top: "clamp(64px, 6vh, 74px)", zIndex: 99 }}>
+            <div style={{ background: "rgba(255,255,255,0.96)", backdropFilter: "blur(22px)", borderBottom: "1px solid var(--border)", position: "sticky", top: "clamp(64px, 6vh, 74px)", zIndex: 99 }}>
                 <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 20px" }}>
                     <div className="filter-row" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap", padding: "12px 0" }}>
                         <div className="pill-bar" style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
@@ -1465,12 +1490,12 @@ export default function ViewProjects() {
                             <select
                                 value={sortBy}
                                 onChange={e => setSortBy(e.target.value)}
-                                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(201,168,76,0.25)", color: "#fff", fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", padding: "7px 10px", borderRadius: 10, cursor: "pointer", outline: "none" }}
+                                style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--ink)", fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", padding: "7px 10px", borderRadius: 10, cursor: "pointer", outline: "none" }}
                             >
                                 <option value="default">Featured first</option>
                                 <option value="name">A – Z</option>
                             </select>
-                            <label style={{ display: "flex", alignItems: "center", gap: 5, cursor: "pointer", fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", color: "rgba(255,255,255,0.7)", whiteSpace: "nowrap" }}>
+                            <label style={{ display: "flex", alignItems: "center", gap: 5, cursor: "pointer", fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", color: "rgba(11,18,32,0.7)", whiteSpace: "nowrap" }}>
                                 <input type="checkbox" checked={showFeatured} onChange={e => setShowFeatured(e.target.checked)} style={{ accentColor: "var(--gold)", width: 14, height: 14 }} />
                                 Featured
                             </label>
@@ -1481,8 +1506,8 @@ export default function ViewProjects() {
 
             {/* ── RESULT COUNT ── */}
             <div style={{ maxWidth: 1320, margin: "0 auto", padding: "16px 20px 0" }}>
-                <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(12px, 0.9vw, 13px)", color: "rgba(255,255,255,0.4)" }}>
-                    Showing <strong style={{ color: "#fff" }}>{filtered.length}</strong> of {PROJECTS.length} projects
+                <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(12px, 0.9vw, 13px)", color: "rgba(11,18,32,0.45)" }}>
+                    Showing <strong style={{ color: "var(--ink)" }}>{filtered.length}</strong> of {PROJECTS.length} projects
                     {search && <> matching "<span style={{ color: "var(--gold)" }}>{search}</span>"</>}
                     {activeCategory !== "All" && <> in <span style={{ color: "var(--gold)" }}>{activeCategory}</span></>}
                 </p>
@@ -1493,11 +1518,11 @@ export default function ViewProjects() {
                 {filtered.length === 0 ? (
                     <div style={{ textAlign: "center", padding: "60px 24px" }}>
                         <div style={{ fontSize: 36, marginBottom: 12 }}>🔍</div>
-                        <div style={{ fontFamily: "var(--f-display)", fontSize: 22, color: "#fff", fontWeight: 700, marginBottom: 6 }}>No projects found</div>
-                        <div style={{ fontFamily: "var(--f-body)", fontSize: 13, color: "rgba(255,255,255,0.4)" }}>Try adjusting your search or filters.</div>
+                        <div style={{ fontFamily: "var(--f-display)", fontSize: 22, color: "var(--ink)", fontWeight: 700, marginBottom: 6 }}>No projects found</div>
+                        <div style={{ fontFamily: "var(--f-body)", fontSize: 13, color: "rgba(11,18,32,0.45)" }}>Try adjusting your search or filters.</div>
                         <button
                             onClick={() => { setSearch(""); setActiveCategory("All"); setShowFeatured(false); }}
-                            style={{ marginTop: 16, background: "var(--gold)", color: "var(--ink)", border: "none", fontFamily: "var(--f-body)", fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", padding: "8px 18px", borderRadius: 8, cursor: "pointer" }}
+                            style={{ marginTop: 16, background: "var(--gold)", color: "#FFFFFF", border: "none", fontFamily: "var(--f-body)", fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", padding: "8px 18px", borderRadius: 8, cursor: "pointer" }}
                         >Clear All Filters</button>
                     </div>
                 ) : (
@@ -1513,33 +1538,31 @@ export default function ViewProjects() {
             </main>
 
             {/* ── FOOTER ── */}
-            <footer style={{ background: "rgba(0,2,20,0.96)", padding: "clamp(40px, 5vw, 72px) 20px clamp(24px, 2.5vw, 36px)", borderTop: "1px solid rgba(201,168,76,0.12)" }}>
+            <footer style={{ background: "var(--footer-ink)", padding: "clamp(40px, 5vw, 72px) 20px clamp(24px, 2.5vw, 36px)", borderTop: "1px solid rgba(255, 255, 255, 0.18)" }}>
                 <div style={{ maxWidth: 1320, margin: "0 auto" }}>
                     <div className="footer-grid">
                         <div>
                             <div style={{ display: "flex", alignItems: "center", gap: 11, marginBottom: 16 }}>
-                                <div style={{ width: 40, height: 40, borderRadius: 8, overflow: "hidden", background: "#070d5a" }}>
+                                <div style={{ width: 40, height: 40, borderRadius: 8, overflow: "hidden", background: "#ffffffff", flexShrink: 0 }}>
                                     <img src={logo} alt="Al Agha Group" style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => e.target.style.display = "none"} />
                                 </div>
                                 <div>
-                                    <div style={{ fontFamily: "var(--f-display)", fontSize: "clamp(16px, 1.3vw, 17px)", fontWeight: 700, color: "#fff" }}>Al Agha Group</div>
-                                    <div style={{ fontFamily: "var(--f-body)", fontSize: "clamp(7px, 0.6vw, 9px)", fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--gold)" }}>of Companies</div>
+                                    <div style={{ fontFamily: "var(--f-display)", fontSize: "clamp(15px, 1.3vw, 17px)", fontWeight: 700, color: "#fff" }}>Al Agha Group</div>
+                                    <div style={{ fontFamily: "var(--f-body)", fontSize: "clamp(7px, 0.6vw, 9px)", fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: "#60A5FA" }}>of Companies</div>
                                 </div>
                             </div>
-                            <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(12px, 0.9vw, 13px)", color: "rgba(255,255,255,0.35)", lineHeight: 1.8, maxWidth: 260, marginBottom: 22 }}>
+                            <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(12px, 0.9vw, 13px)", color: "rgba(255,255,255,0.4)", lineHeight: 1.8, maxWidth: 260, marginBottom: 22 }}>
                                 False ceiling, gypsum works, interior fit-out, and MEP services across the UAE since 2008.
                             </p>
                             <div style={{ display: "flex", gap: 8, marginBottom: 26, flexWrap: "wrap" }}>
                                 <SocialBtn href="https://www.facebook.com/profile.php?id=61551030990492" label="Facebook"><Icons.Facebook /></SocialBtn>
                                 <SocialBtn href="https://www.instagram.com/reel/DAVwH2TpoJP/" label="Instagram"><Icons.Instagram /></SocialBtn>
-                                <SocialBtn href="https://wa.me/97142675229" label="WhatsApp"><Icons.WhatsApp /></SocialBtn>
-                                <SocialBtn href="https://linkedin.com/company/alaghagroup" label="LinkedIn"><Icons.LinkedIn /></SocialBtn>
                             </div>
-                            <div style={{ display: "flex", gap: 12, alignItems: "center", background: "rgba(201,168,76,0.06)", border: "1px solid rgba(201,168,76,0.15)", borderRadius: 12, padding: "12px 14px" }}>
+                            <div style={{ display: "flex", gap: 12, alignItems: "center", background: "rgba(37,99,235,0.1)", border: "1px solid rgba(96,165,250,0.25)", borderRadius: 12, padding: "12px 14px" }}>
                                 <QRCode />
                                 <div>
-                                    <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 4 }}>Scan to connect</div>
-                                    <div style={{ fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 12px)", color: "rgba(201,168,76,0.5)", lineHeight: 1.5 }}>Point your camera to visit Al Agha Group online</div>
+                                    <div style={{ fontFamily: "var(--f-body)", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold-lt)", marginBottom: 4 }}>Scan to connect</div>
+                                    <div style={{ fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 12px)", color: "rgba(96,165,250,0.6)", lineHeight: 1.5 }}>Point your camera to visit Al Agha Group online</div>
                                 </div>
                             </div>
                         </div>
@@ -1547,14 +1570,14 @@ export default function ViewProjects() {
                         <div>
                             <h4 style={{ fontFamily: "var(--f-display)", fontSize: "clamp(16px, 1.3vw, 18px)", fontWeight: 700, marginBottom: 18, color: "#fff" }}>Quick Links</h4>
                             {NAV.map(l => (
-                                <button key={l} onClick={() => goTo(l)} style={{ display: "block", background: "none", border: "none", color: "rgba(255,255,255,0.35)", fontFamily: "var(--f-body)", fontSize: "clamp(12px, 0.9vw, 13px)", padding: "6px 0", cursor: "pointer", textAlign: "left", transition: "color 0.2s" }} onMouseEnter={e => e.currentTarget.style.color = "var(--gold)"} onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.35)"}>{l}</button>
+                                <button key={l} onClick={() => goTo(3)} style={{ display: "block", background: "none", border: "none", color: "rgba(255,255,255,0.4)", fontFamily: "var(--f-body)", fontSize: "clamp(12px, 0.9vw, 13px)", padding: "6px 0", cursor: "pointer", textAlign: "left", transition: "color 0.2s" }} onMouseEnter={e => e.currentTarget.style.color = "var(--gold-lt)"} onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.4)"}>{l}</button>
                             ))}
                         </div>
 
                         <div>
                             <h4 style={{ fontFamily: "var(--f-display)", fontSize: "clamp(16px, 1.3vw, 18px)", fontWeight: 700, marginBottom: 18, color: "#fff" }}>Services</h4>
                             {["False Ceiling & Gypsum Decor", "Interior Design & Fit-Out", "Mechanical, Electrical, Plumbing (MEP)", "General Civil Works", "Paint & Wall Finishes"].map(s => (
-                                <div key={s} style={{ fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", color: "rgba(255,255,255,0.3)", padding: "5px 0", lineHeight: 1.5 }}>{s}</div>
+                                <div key={s} style={{ fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", color: "rgba(255,255,255,0.35)", padding: "5px 0", lineHeight: 1.5 }}>{s}</div>
                             ))}
                         </div>
 
@@ -1565,24 +1588,24 @@ export default function ViewProjects() {
                                 ["📞", "+971 4 267 5229"],
                                 ["✉️", "info@alaghagroup.com"],
                             ].map(([icon, txt]) => (
-                                <div key={txt} style={{ display: "flex", gap: 10, padding: "5px 0", fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", color: "rgba(255,255,255,0.35)", lineHeight: 1.55 }}>
+                                <div key={txt} style={{ display: "flex", gap: 10, padding: "5px 0", fontFamily: "var(--f-body)", fontSize: "clamp(11px, 0.8vw, 13px)", color: "rgba(255,255,255,0.4)", lineHeight: 1.55 }}>
                                     <span style={{ flexShrink: 0 }}>{icon}</span><span>{txt}</span>
                                 </div>
                             ))}
-                            <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid rgba(201,168,76,0.15)", height: "clamp(140px, 15vw, 180px)", marginTop: 16 }}>
+                            <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid rgba(37,99,235,0.25)", height: "clamp(140px, 15vw, 180px)", marginTop: 18 }}>
                                 <iframe
                                     title="Al Agha Group Office"
                                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3607.2764583093857!2d55.35445537600424!3d25.28574307758295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5cfe11994ee1%3A0x8bdd77fec9a0e9c3!2sAbraj%20Al%20Mamzar%20-%20Al%20Mamzar%20-%20Dubai!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae"
-                                    width="100%" height="100%" style={{ border: "none", display: "block", filter: "invert(90%) hue-rotate(180deg)" }}
+                                    width="100%" height="100%" style={{ border: "none", display: "block" }}
                                     allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
                                 />
                             </div>
                         </div>
                     </div>
 
-                    <div style={{ borderTop: "1px solid rgba(201,168,76,0.12)", paddingTop: "clamp(18px, 1.8vw, 22px)", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
-                        <span style={{ fontFamily: "var(--f-body)", fontSize: "clamp(10px, 0.8vw, 12px)", color: "rgba(255,255,255,0.2)" }}>© 2025 Al Agha Group of Companies · All rights reserved</span>
-                        <span style={{ fontFamily: "var(--f-body)", fontSize: "clamp(10px, 0.8vw, 12px)", color: "rgba(255,255,255,0.2)" }}>Privacy Policy · Terms of Service</span>
+                    <div style={{ borderTop: "1px solid rgba(96,165,250,0.18)", paddingTop: "clamp(18px, 1.8vw, 22px)", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
+                        <span style={{ fontFamily: "var(--f-body)", fontSize: "clamp(10px, 0.8vw, 12px)", color: "rgba(255,255,255,0.25)" }}>© 2025 Al Agha Group of Companies · All rights reserved</span>
+                        <span style={{ fontFamily: "var(--f-body)", fontSize: "clamp(10px, 0.8vw, 12px)", color: "rgba(255,255,255,0.25)" }}>Privacy Policy · Terms of Service</span>
                     </div>
                 </div>
             </footer>
