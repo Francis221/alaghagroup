@@ -39,6 +39,10 @@ import siteEngineerPhoto2 from "./img/ProjectSiteEngineer2.jpeg";
 import siteEngineerPhoto3 from "./img/ProjectSiteEngineer3.jpeg";
 import siteEngineerPhoto4 from "./img/ProjectSiteEngineer4.jpeg";
 import secretaryPhoto from "./img/Secretary.jpg";
+import architecturalDraftsman from "./img/ArchitecturalDraftsman.jpg";
+import PurchaseOfficer from "./img/PurchaseOfficer.jpg";
+import MechanicalProjectEngineer from "./img/MechanicalProjectEngineer.jpg";
+
 
 /* ── Client logos ── */
 import clientEmaar from "./Clientimg/01.png";
@@ -1996,6 +2000,10 @@ const ENGINEERS = [
   { name: "Mohammed Firoz R.", role: "Project Site Engineer", dept: "Operations", photo: siteEngineerPhoto3 },
   { name: "Muhammed Fayiz N.P", role: "Project Site Engineer", dept: "Operations", photo: siteEngineerPhoto4 },
   { name: "Camille De Guzman", role: "Secretary", dept: "Operations", photo: secretaryPhoto },
+  { name: "Thaha Muzzamil", role: "Architectural Draftsman", dept: "Operations", photo: architecturalDraftsman },
+  { name: "Arshiya Tabbasum", role: "Purchase Officer", dept: "Operations", photo: PurchaseOfficer },
+  { name: "Abdullah Othman", role: "Mechanical Project Engineer", dept: "Operations", photo: MechanicalProjectEngineer },
+
 ];
 
 const GROUP_COMPANIES = [
