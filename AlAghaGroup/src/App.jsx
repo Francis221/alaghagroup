@@ -39,8 +39,8 @@ import siteEngineerPhoto2 from "./img/ProjectSiteEngineer2.jpeg";
 import siteEngineerPhoto3 from "./img/ProjectSiteEngineer3.jpeg";
 import siteEngineerPhoto4 from "./img/ProjectSiteEngineer4.jpeg";
 import secretaryPhoto from "./img/Secretary.jpg";
-import architecturalDraftsman from "./img/ArchitecturalDraftsman.jpg";
-import PurchaseOfficer from "./img/PurchaseOfficer.jpg";
+import architecturalDraftsman from "./img/ArchitectureDesigner.png";
+import PurchaseOfficer from "./img/Purchaseofficer.jpg";
 import MechanicalProjectEngineer from "./img/MechanicalProjectEngineer.jpg";
 
 
