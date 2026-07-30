@@ -24,7 +24,7 @@ import accountingManagerPhoto from "./img/AccountingManager.jpeg";
 import accountantPhoto from "./img/Accountant.jpeg";
 import seniorPurchasingOfficerPhoto from "./img/SeniorPurchasingOfficer.png";
 import proPhoto from "./img/Pro.jpeg";
-import qsPhoto1 from "./img/Qs.jpeg";
+import qsPhoto1 from "./img/Jannath.jpg";
 import qsPhoto2 from "./img/Qs2.jpeg";
 import qsPhoto3 from "./img/Qs3.jpeg";
 import qsPhoto4 from "./img/Qs4.jpeg";
@@ -39,10 +39,10 @@ import siteEngineerPhoto2 from "./img/ProjectSiteEngineer2.jpeg";
 import siteEngineerPhoto3 from "./img/ProjectSiteEngineer3.jpeg";
 import siteEngineerPhoto4 from "./img/ProjectSiteEngineer4.jpeg";
 import secretaryPhoto from "./img/Secretary.jpg";
-import architecturalDraftsman from "./img/ArchitectureDesigner.png";
-import PurchaseOfficer from "./img/Purchaseofficer.jpg";
+import architecturalDraftsman from "./img/thaha.jpg";
+import PurchaseOfficer from "./img/Arshiya.jpg";
 import MechanicalProjectEngineer from "./img/MechanicalProjectEngineer.jpg";
-
+import QsEngineer from "./img/QsEngineer.jpg";
 
 /* ── Client logos ── */
 import clientEmaar from "./Clientimg/01.png";
@@ -127,7 +127,7 @@ const PROJECT_VIDEOS = [
   },
   {
     url: "https://res.cloudinary.com/iwfmnnaa/video/upload/v1784888965/SaveClip.App_AQM2ljy9dnv4rHa4ziL-fTp2ie73pCPWciznOqUb4VD0gq7ALB_gzENdc-1Evm7TmXhX_EVHe_HUY3Ch37PVNHpfVy9Ucyw59gEKNnc_xavse7.mp4",
-    title: "Civil Works & Structural Progress",
+    title: "False Ceiling & Partition Works",
     subtitle: "Foundation to façade — a timelapse walkthrough of our civil works teams delivering structural milestones on schedule.",
     poster: "https://cf.bstatic.com/xdata/images/hotel/max500/388733598.jpg?k=ca7b3ae0ceb82bd519181824f6781955388831ad835ecae80c9a233409ea5357&o=&hp=1",
   },
@@ -1977,11 +1977,11 @@ const MANAGEMENT = [
   { name: "Sayedur Rahman", role: "Project Manager", dept: "Operations", photo: projectManagerPhoto },
   { name: "Hesham Abouzeid", role: "HR Officer", dept: "Human Resources", photo: hrOfficerPhoto },
   { name: "M Taha Ali Agha", role: "P.R.O. Manager", dept: "Administration", photo: proManagerPhoto },
+  { name: "Omar Ibrahim", role: "Accounting Manager", dept: "Finance", photo: accountingManagerPhoto },
 ];
 
 const ENGINEERS = [
   { name: "Olga Regala", role: "Proposal & Estimating Engineer", dept: "Commercial", photo: proposalManagerPhoto },
-  { name: "Omar Ibrahim", role: "Accounting Manager", dept: "Finance", photo: accountingManagerPhoto },
   { name: "Abdulkader Mouine", role: "Accountant", dept: "Finance", photo: accountantPhoto },
   { name: "Fayaz Hyder Ali", role: "Senior Purchasing Officer", dept: "Procurement", photo: seniorPurchasingOfficerPhoto },
   { name: "Nour Al Hayek", role: "P.R.O.", dept: "Administration", photo: proPhoto },
@@ -2003,6 +2003,7 @@ const ENGINEERS = [
   { name: "Thaha Muzzamil", role: "Architectural Draftsman", dept: "Operations", photo: architecturalDraftsman },
   { name: "Arshiya Tabbasum", role: "Purchase Officer", dept: "Operations", photo: PurchaseOfficer },
   { name: "Abdullah Othman", role: "Mechanical Project Engineer", dept: "Operations", photo: MechanicalProjectEngineer },
+  { name: "Sreelekshmi Prasanan", role: "QS Engineer", dept: "Operations", photo: QsEngineer },
 
 ];
 
