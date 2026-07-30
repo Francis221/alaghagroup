@@ -18,6 +18,7 @@ const GLOBAL_CSS = `
     --border: #DCE6FA;
     --f-display: 'Georgia', 'Times New Roman', serif;
     --f-body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    --vh: 1vh;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -67,6 +68,10 @@ const GLOBAL_CSS = `
   @keyframes revealLine {
     from { width: 0; }
     to { width: 48px; }
+  }
+  @keyframes heroShimmerSweep {
+    0%   { transform: translateX(-150%) skewX(-20deg); }
+    100% { transform: translateX(250%) skewX(-20deg); }
   }
 
   .eyebrow {
@@ -278,7 +283,6 @@ const GLOBAL_CSS = `
     box-shadow: 0 0 12px rgba(37,99,235,0.5);
   }
 
-  /* Footer specific (kept dark for contrast) */
   .footer-link {
     background: none; border: none; padding: 0;
     font-family: var(--f-body);
@@ -417,17 +421,38 @@ const GLOBAL_CSS = `
     transition: height 1.2s cubic-bezier(0.22,1,0.36,1);
   }
 
-  .hero-video-bg {
+  .hero-video-container {
     position: absolute;
     inset: 0;
+    overflow: hidden;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .hero-video-wrap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    min-width: 100%;
+    min-height: 100%;
+  }
+  .hero-video-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center center;
-    z-index: 0;
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
+    will-change: opacity, transform;
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
   }
 
   @media (max-width: 900px) {
@@ -1068,7 +1093,7 @@ function SocialIcon({ href, label, children }) {
 }
 
 /* ─── RICH FOOTER (dark for contrast against light body; matches App.jsx QR code) ── */
-function Footer({ goHome, goProjects, scrollToService }) {
+function Footer({ goHome, goProjects, scrollToService, navigateTo }) {
     const [ref, visible] = useInView(0.05);
 
     return (
@@ -1229,7 +1254,9 @@ function Footer({ goHome, goProjects, scrollToService }) {
                                     onClick={() => {
                                         if (l === "Projects") goProjects();
                                         else if (l === "Services") scrollToService(0);
-                                        else goHome();
+                                        else if (l === "About") navigateTo("About");
+                                        else if (l === "Home") goHome();
+                                        else navigateTo(l);
                                     }}
                                 >
                                     {l}
@@ -1346,7 +1373,7 @@ function Footer({ goHome, goProjects, scrollToService }) {
                         {/* Map embed */}
                         <div className="map-embed" style={{ height: 160, overflow: "hidden" }}>
                             <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3607.2764583093857!2d55.35445537600424!3d25.28574307758295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5cfe11994ee1%3A0x8bdd77fec9a0e9c3!2sAbraj%20Al%20Mamzar%20-%20Al%20Mamzar%20-%20Dubai!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae"
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3607.2764583093857!2d55.35445537600424!3d25.28574307758295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5cfe11994ee1%3A0x8bdd77fec9a0e9c3!2sAbraj%20Al%20Mamzar%20-%20Al%20Mamzar%20-%20Dubai!5e0!3m2!1en!2sae!4v1700000000000!5m2!1sen!2sae"
                                 width="100%"
                                 height="160"
                                 style={{ border: 0, display: "block" }}
@@ -1477,6 +1504,30 @@ export default function ViewServices() {
     const [videoError, setVideoError] = useState(false);
     const videoRef = useRef(null);
 
+    // IMPORTANT: This function handles navigation from Services page
+    // When "About" is clicked, it navigates to home and scrolls to the about section
+    const navigateTo = (section) => {
+        if (section === "Home") {
+            navigate("/");
+            return;
+        }
+        if (section === "Projects") {
+            navigate("/projects");
+            return;
+        }
+        if (section === "Services") {
+            // Already on services page, scroll to service section
+            scrollToService(0);
+            return;
+        }
+        // For About, Clients, Career, Team - navigate home then scroll
+        navigate("/");
+        setTimeout(() => {
+            const el = document.getElementById(section.toLowerCase().replace(/\s+/g, "-"));
+            if (el) el.scrollIntoView({ behavior: "smooth" });
+        }, 150);
+    };
+
     useEffect(() => {
         const loadVideo = () => {
             if (videoRef.current) {
@@ -1601,9 +1652,9 @@ export default function ViewServices() {
                                 <button
                                     key={l}
                                     onClick={() => {
-                                        if (l === "Projects") goHome(4);
+                                        if (l === "Projects") navigateTo("Projects");
                                         else if (l === "Services") scrollToService(0);
-                                        else goHome();
+                                        else navigateTo(l);
                                     }}
                                     className="nav-btn"
                                     style={{ color: l === "Services" ? "var(--gold)" : (scrolled ? "rgba(11,18,32,0.75)" : "rgba(255,255,255,0.92)") }}
@@ -1611,7 +1662,7 @@ export default function ViewServices() {
                                     {l}
                                 </button>
                             ))}
-                            <button className="btn-gold btn-magnetic" style={{ padding: "10px 22px" }} onClick={goProjects}>
+                            <button className="btn-gold btn-magnetic" style={{ padding: "10px 22px" }} onClick={() => navigateTo("Projects")}>
                                 <span>View Projects →</span>
                             </button>
                         </div>
@@ -1643,9 +1694,9 @@ export default function ViewServices() {
                                     key={l}
                                     onClick={() => {
                                         setMenu(false);
-                                        if (l === "Projects") goHome(4);
+                                        if (l === "Projects") navigateTo("Projects");
                                         else if (l === "Services") scrollToService(0);
-                                        else goHome();
+                                        else navigateTo(l);
                                     }}
                                     style={{
                                         display: "block", width: "100%", background: "none",
@@ -1663,45 +1714,100 @@ export default function ViewServices() {
                     )}
                 </nav>
 
-                {/* ── HERO (video background, matching App.jsx) ── */}
+                {/* ── HERO VIDEO SECTION (FIXED) ── */}
                 <section style={{
                     minHeight: "100vh",
                     display: "flex", flexDirection: "column", justifyContent: "center",
                     position: "relative", overflow: "hidden",
                     padding: "clamp(110px, 14vw, 140px) clamp(20px, 5vw, 60px) clamp(80px, 10vw, 100px)",
+                    background: "linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #1D4ED8 100%)",
                 }}>
-                    {/* Video background */}
-                    <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 0 }}>
-                        <video
-                            ref={videoRef}
-                            autoPlay
-                            muted
-                            loop
-                            playsInline
-                            webkit-playsinline="true"
-                            preload="metadata"
-                            onCanPlay={() => setVideoLoaded(true)}
-                            onError={() => { setVideoError(true); setVideoLoaded(true); }}
-                            className="hero-video-bg"
-                            style={{
-                                opacity: videoLoaded ? 1 : 0,
-                                transition: "opacity 1s ease",
-                            }}
-                        >
-                            <source src={heroVideo} type="video/mp4" />
-                            Your browser does not support the video tag.
-                        </video>
+                    {/* Video Container with proper aspect ratio */}
+                    <div className="hero-video-container">
+                        <div className="hero-video-wrap">
+                            <video
+                                ref={videoRef}
+                                autoPlay
+                                muted
+                                loop
+                                playsInline
+                                webkit-playsinline="true"
+                                preload="metadata"
+                                onCanPlay={() => setVideoLoaded(true)}
+                                onError={() => { setVideoError(true); setVideoLoaded(true); }}
+                                className="hero-video-bg"
+                                style={{
+                                    opacity: videoLoaded ? 1 : 0,
+                                    transition: "opacity 1.2s ease-in-out",
+                                }}
+                            >
+                                <source src={heroVideo} type="video/mp4" />
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+
+                        {/* Fallback gradient - visible while video loads */}
                         {(!videoLoaded || videoError) && (
-                            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #1D4ED8 100%)", zIndex: 1 }} />
+                            <div style={{
+                                position: "absolute", inset: 0,
+                                background: "linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #1D4ED8 100%)",
+                                zIndex: 1,
+                                transition: "opacity 0.8s ease-in-out",
+                                opacity: videoLoaded ? 0 : 1,
+                            }} />
                         )}
                     </div>
 
-                    {/* Overlays for legibility over video */}
-                    <div style={{ position: "absolute", inset: 0, background: "linear-gradient(115deg, rgba(11,18,32,0.62) 0%, rgba(30,58,138,0.5) 45%, rgba(37,99,235,0.4) 100%)", zIndex: 1 }} />
-                    <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, transparent 35%, rgba(11,18,32,0.55) 100%)", zIndex: 1, pointerEvents: "none" }} />
-                    <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "55%", background: "linear-gradient(to top, rgba(11,18,32,0.6) 0%, transparent 100%)", zIndex: 1, pointerEvents: "none" }} />
+                    {/* ══ SHIMMER SWEEP OVERLAY (DELAYED) ══ */}
+                    <div style={{
+                        position: "absolute", inset: 0, overflow: "hidden", zIndex: 1,
+                        pointerEvents: "none",
+                        opacity: videoLoaded ? 1 : 0,
+                        transition: "opacity 1.5s ease-in-out 0.6s",
+                    }}>
+                        <div style={{
+                            position: "absolute",
+                            top: "-20%",
+                            left: 0,
+                            width: "35%",
+                            height: "140%",
+                            background: "linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.06) 35%, rgba(147,197,253,0.35) 50%, rgba(255,255,255,0.06) 65%, transparent 100%)",
+                            animation: "heroShimmerSweep 6s ease-in-out 1.5s infinite",
+                            filter: "blur(2px)",
+                        }} />
+                    </div>
 
-                    <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none" }}>
+                    {/* Overlays for legibility over video - delayed */}
+                    <div style={{
+                        position: "absolute", inset: 0,
+                        background: "linear-gradient(115deg, rgba(11,18,32,0.62) 0%, rgba(30,58,138,0.5) 45%, rgba(37,99,235,0.4) 100%)",
+                        zIndex: 1,
+                        opacity: videoLoaded ? 1 : 0.5,
+                        transition: "opacity 1.2s ease-in-out 0.3s",
+                    }} />
+
+                    <div style={{
+                        position: "absolute", inset: 0,
+                        background: "radial-gradient(ellipse at center, transparent 35%, rgba(11,18,32,0.55) 100%)",
+                        zIndex: 1, pointerEvents: "none",
+                        opacity: videoLoaded ? 1 : 0.5,
+                        transition: "opacity 1.2s ease-in-out 0.5s",
+                    }} />
+
+                    <div style={{
+                        position: "absolute", bottom: 0, left: 0, right: 0, height: "55%",
+                        background: "linear-gradient(to top, rgba(11,18,32,0.6) 0%, transparent 100%)",
+                        zIndex: 1, pointerEvents: "none",
+                        opacity: videoLoaded ? 1 : 0.5,
+                        transition: "opacity 1.2s ease-in-out 0.7s",
+                    }} />
+
+                    {/* Geometric accents - delayed */}
+                    <div style={{
+                        position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
+                        opacity: videoLoaded ? 1 : 0,
+                        transition: "opacity 1.5s ease-in-out 0.9s",
+                    }}>
                         <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice"
                             style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
                             <polygon points="160,20 310,105 310,275 160,360 10,275 10,105" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="1.5" />
@@ -1710,17 +1816,25 @@ export default function ViewServices() {
                         </svg>
                     </div>
 
-                    {/* Left accent line */}
+                    {/* Left accent line - delayed */}
                     <div style={{
                         position: "absolute", left: 0, top: 0, bottom: 0, width: 3,
                         background: "linear-gradient(to bottom, transparent 0%, var(--gold-lt) 30%, var(--gold-lt) 70%, transparent 100%)",
-                        animation: "lineGrow 1.2s cubic-bezier(0.22,1,0.36,1) 0.3s both",
+                        animation: videoLoaded ? "lineGrow 1.2s cubic-bezier(0.22,1,0.36,1) 0.3s both" : "none",
                         zIndex: 2,
                     }} />
 
-                    <div style={{ maxWidth: 1320, margin: "0 auto", width: "100%", position: "relative", zIndex: 2 }}>
+                    <div style={{
+                        maxWidth: 1320, margin: "0 auto", width: "100%", position: "relative", zIndex: 2,
+                        opacity: videoLoaded ? 1 : 0.6,
+                        transition: "opacity 1s ease-in-out 0.4s, transform 1s ease-in-out 0.4s",
+                        transform: videoLoaded ? "translateY(0)" : "translateY(20px)",
+                    }}>
                         {/* Breadcrumb */}
-                        <div style={{ marginBottom: 48, animation: "fadeUp 0.7s 0.1s both" }}>
+                        <div style={{
+                            marginBottom: 48,
+                            animation: videoLoaded ? "fadeUp 0.7s 0.6s both" : "none",
+                        }}>
                             <button
                                 onClick={goHome}
                                 style={{
@@ -1752,7 +1866,9 @@ export default function ViewServices() {
                         }}>
                             {/* Left — headline */}
                             <div>
-                                <div style={{ animation: "fadeUp 0.8s 0.15s both" }}>
+                                <div style={{
+                                    animation: videoLoaded ? "fadeUp 0.8s 0.8s both" : "none",
+                                }}>
                                     <span style={{
                                         display: "inline-flex", alignItems: "center", gap: 8,
                                         background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.35)",
@@ -1777,7 +1893,7 @@ export default function ViewServices() {
                                         lineHeight: 1.05, letterSpacing: "-0.02em",
                                         fontSize: "clamp(3rem, 8vw, 5rem)",
                                         color: "#fff", marginBottom: 28,
-                                        animation: "fadeUp 0.9s 0.25s both",
+                                        animation: videoLoaded ? "fadeUp 0.9s 1s both" : "none",
                                         textShadow: "0 2px 24px rgba(11,18,32,0.35)",
                                     }}
                                 >
@@ -1791,7 +1907,7 @@ export default function ViewServices() {
                                     fontSize: "clamp(15px, 1.8vw, 17px)",
                                     color: "rgba(255,255,255,0.88)", lineHeight: 1.8,
                                     maxWidth: 520, marginBottom: 44,
-                                    animation: "fadeUp 1s 0.35s both",
+                                    animation: videoLoaded ? "fadeUp 1s 1.2s both" : "none",
                                     textShadow: "0 1px 10px rgba(11,18,32,0.3)",
                                 }}>
                                     From the first coat of paint to a fully fitted-out luxury interior — Al Agha Group delivers each service with the same obsession for quality that has defined our name since 2008.
@@ -1799,19 +1915,22 @@ export default function ViewServices() {
 
                                 <div style={{
                                     display: "flex", gap: 14, flexWrap: "wrap",
-                                    animation: "fadeUp 1s 0.45s both",
+                                    animation: videoLoaded ? "fadeUp 1s 1.4s both" : "none",
                                 }}>
                                     <button className="btn-gold btn-magnetic" style={{ padding: "13px 30px" }} onClick={() => scrollToService(0)}>
                                         <span>Explore Services</span>
                                     </button>
-                                    <button className="btn-outline-white" style={{ padding: "13px 30px" }} onClick={goProjects}>
+                                    <button className="btn-outline-white" style={{ padding: "13px 30px" }} onClick={() => navigateTo("Projects")}>
                                         View Projects →
                                     </button>
                                 </div>
                             </div>
 
                             {/* Right — service cards */}
-                            <div style={{ display: "flex", flexDirection: "column", gap: 14, animation: "fadeUp 1s 0.5s both" }}>
+                            <div style={{
+                                display: "flex", flexDirection: "column", gap: 14,
+                                animation: videoLoaded ? `fadeUp 1s ${1.5}s both` : "none",
+                            }}>
                                 {SERVICES.map((s, i) => (
                                     <button
                                         key={s.id}
@@ -1824,7 +1943,9 @@ export default function ViewServices() {
                                             display: "flex", alignItems: "center", gap: 18,
                                             cursor: "pointer", transition: "all 0.35s cubic-bezier(0.22,1,0.36,1)",
                                             textAlign: "left", width: "100%",
-                                            animationDelay: `${i * 80 + 600}ms`,
+                                            opacity: videoLoaded ? 1 : 0,
+                                            transform: videoLoaded ? "none" : "translateY(20px)",
+                                            transition: `opacity 0.6s ease ${i * 80 + 1600}ms, transform 0.6s ease ${i * 80 + 1600}ms, background 0.35s ease, border-color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease`,
                                         }}
                                         onMouseEnter={(e) => {
                                             e.currentTarget.style.background = "rgba(37,99,235,0.28)";
@@ -1872,12 +1993,13 @@ export default function ViewServices() {
                         </div>
                     </div>
 
-                    {/* Scroll indicator */}
+                    {/* Scroll indicator - delayed */}
                     <div style={{
                         position: "absolute", bottom: 36, left: "50%",
                         transform: "translateX(-50%)",
                         display: "flex", flexDirection: "column", alignItems: "center", gap: 6, zIndex: 2,
-                        animation: "fadeUp 1s 0.8s both",
+                        opacity: videoLoaded ? 1 : 0,
+                        transition: "opacity 1.5s ease-in-out 1.6s",
                     }}>
                         <span style={{
                             fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 700,
@@ -1889,7 +2011,7 @@ export default function ViewServices() {
                         <div style={{
                             width: 1, height: 48,
                             background: "linear-gradient(to bottom, rgba(255,255,255,0.7), transparent)",
-                            animation: "lineGrow 1s ease 1.2s both",
+                            animation: videoLoaded ? "lineGrow 1s ease 1.8s both" : "none",
                         }} />
                     </div>
                 </section>
@@ -1926,7 +2048,7 @@ export default function ViewServices() {
                         <button
                             className="btn-gold"
                             style={{ padding: "9px 20px", fontSize: 11, flexShrink: 0, whiteSpace: "nowrap" }}
-                            onClick={goProjects}
+                            onClick={() => navigateTo("Projects")}
                         >
                             Projects →
                         </button>
@@ -1967,7 +2089,7 @@ export default function ViewServices() {
                                 <button
                                     className="btn-gold btn-magnetic"
                                     style={{ padding: "15px 34px", fontSize: 13 }}
-                                    onClick={goProjects}
+                                    onClick={() => navigateTo("Projects")}
                                 >
                                     <span>View All Projects →</span>
                                 </button>
@@ -1984,7 +2106,7 @@ export default function ViewServices() {
                 </section>
 
                 {/* ── RICH FOOTER ── */}
-                <Footer goHome={goHome} goProjects={goProjects} scrollToService={scrollToService} />
+                <Footer goHome={goHome} goProjects={goProjects} scrollToService={scrollToService} navigateTo={navigateTo} />
             </div>
         </>
     );

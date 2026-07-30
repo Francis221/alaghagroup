@@ -130,6 +130,7 @@ const PAGE_CSS = `
     --footer-ink: #0B1220;
     --f-display: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
     --f-body: 'DM Sans', 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    --vh: 1vh;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -237,20 +238,39 @@ const PAGE_CSS = `
     to   { width: 100%; opacity: 1; }
   }
 
-  .hero-video-bg {
+  /* ── Hero Video Container (FIXED) ── */
+  .hero-video-container {
     position: absolute;
     inset: 0;
+    overflow: hidden;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .hero-video-wrap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    min-width: 100%;
+    min-height: 100%;
+  }
+  .hero-video-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center center;
-    z-index: 0;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
+    will-change: opacity, transform;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
   }
 
   .video-player-wrapper {
@@ -849,6 +869,7 @@ const CAT_META = {
     "Civil Works": { color: "#FFFFFF", bg: "#0B1220" },
 };
 
+// IMPORTANT: NAV must include "About" for the scroll-to-about functionality to work
 const NAV = ["Home", "About", "Services", "Projects", "Clients", "Career", "Team"];
 
 /* ─── HOOKS ──────────────────────────────────────────────────────────────── */
@@ -1314,14 +1335,24 @@ export default function ViewProjects() {
         };
     }, [videoError]);
 
+    // IMPORTANT: This function handles navigation from Projects page
+    // When "About" is clicked, it navigates to home and scrolls to the about section
     const goTo = (id) => {
         setMenuOpen(false);
-        if (id === "Home") { navigate("/"); return; }
+
+        // If navigating to Home, just go to home page
+        if (id === "Home") {
+            navigate("/");
+            return;
+        }
+
+        // For all other sections (About, Services, Clients, Career, Team)
+        // Navigate to home page first, then scroll to the section
         navigate("/");
         setTimeout(() => {
             const el = document.getElementById(id.toLowerCase().replace(/\s+/g, "-"));
             if (el) el.scrollIntoView({ behavior: "smooth" });
-        }, 100);
+        }, 150);
     };
 
     const filtered = PROJECTS.filter(p => {
@@ -1383,50 +1414,73 @@ export default function ViewProjects() {
                 {menuOpen && (
                     <div style={{ background: "rgba(255,255,255,0.98)", borderTop: "1px solid var(--border)" }}>
                         {NAV.map(l => (
-                            <button key={l} onClick={() => goTo(2)} style={{ display: "block", width: "100%", background: "none", border: "none", borderBottom: "1px solid var(--border)", color: l === "Projects" ? "var(--gold)" : "rgba(11,18,32,0.75)", fontFamily: "var(--f-body)", fontSize: 14, fontWeight: 500, padding: "15px 20px", textAlign: "left", cursor: "pointer" }}>{l}</button>
+                            <button key={l} onClick={() => goTo(l)} style={{ display: "block", width: "100%", background: "none", border: "none", borderBottom: "1px solid var(--border)", color: l === "Projects" ? "var(--gold)" : "rgba(11,18,32,0.75)", fontFamily: "var(--f-body)", fontSize: 14, fontWeight: 500, padding: "15px 20px", textAlign: "left", cursor: "pointer" }}>{l}</button>
                         ))}
                     </div>
                 )}
             </nav>
 
-            {/* ── HERO WITH VIDEO (same as homepage) ── */}
-            <header style={{ minHeight: "100vh", minHeight: "calc(var(--vh, 1vh) * 100)", position: "relative", display: "flex", alignItems: "center", overflow: "hidden" }}>
-                <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 0 }}>
-                    <video
-                        ref={videoRef}
-                        key={`hero-video-${location.pathname}`}
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        webkit-playsinline="true"
-                        preload="metadata"
-                        onCanPlay={() => { setVideoLoaded(true); }}
-                        onError={(e) => { setVideoError(true); setVideoLoaded(true); }}
-                        className="hero-video-bg"
-                        style={{
-                            opacity: videoLoaded ? 1 : 0,
-                            transition: "opacity 1s ease",
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover",
-                            position: "absolute",
-                            inset: 0,
-                            willChange: 'transform',
-                            transform: 'translateZ(0)',
-                            WebkitTransform: 'translateZ(0)',
-                        }}
-                    >
-                        <source src={heroVideo} type="video/mp4" />
-                        Your browser does not support the video tag.
-                    </video>
+            {/* ── HERO WITH VIDEO (FIXED) ── */}
+            <header style={{
+                minHeight: "100vh",
+                minHeight: "calc(var(--vh, 1vh) * 100)",
+                position: "relative",
+                display: "flex",
+                alignItems: "center",
+                overflow: "hidden",
+                background: "linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #1D4ED8 100%)"
+            }}>
+                {/* Video Container with proper aspect ratio */}
+                <div className="hero-video-container">
+                    <div className="hero-video-wrap">
+                        <video
+                            ref={videoRef}
+                            key={`hero-video-${location.pathname}`}
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                            webkit-playsinline="true"
+                            preload="metadata"
+                            onCanPlay={() => {
+                                setVideoLoaded(true);
+                                console.log('Video loaded successfully');
+                            }}
+                            onError={(e) => {
+                                setVideoError(true);
+                                setVideoLoaded(true);
+                                console.error('Video load error:', e);
+                            }}
+                            className="hero-video-bg"
+                            style={{
+                                opacity: videoLoaded ? 1 : 0,
+                                transition: "opacity 1.2s ease-in-out",
+                            }}
+                        >
+                            <source src={heroVideo} type="video/mp4" />
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+
+                    {/* Fallback gradient - visible while video loads */}
                     {(!videoLoaded || videoError) && (
-                        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #1D4ED8 100%)", zIndex: 1 }} />
+                        <div style={{
+                            position: "absolute", inset: 0,
+                            background: "linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #1D4ED8 100%)",
+                            zIndex: 1,
+                            transition: "opacity 0.8s ease-in-out",
+                            opacity: videoLoaded ? 0 : 1,
+                        }} />
                     )}
                 </div>
 
-                {/* ══ SHIMMER SWEEP OVERLAY ══ */}
-                <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 1, pointerEvents: "none" }}>
+                {/* ══ SHIMMER SWEEP OVERLAY (DELAYED) ══ */}
+                <div style={{
+                    position: "absolute", inset: 0, overflow: "hidden", zIndex: 1,
+                    pointerEvents: "none",
+                    opacity: videoLoaded ? 1 : 0,
+                    transition: "opacity 1.5s ease-in-out 0.6s",
+                }}>
                     <div style={{
                         position: "absolute",
                         top: "-20%",
@@ -1434,42 +1488,129 @@ export default function ViewProjects() {
                         width: "35%",
                         height: "140%",
                         background: "linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.06) 35%, rgba(147,197,253,0.35) 50%, rgba(255,255,255,0.06) 65%, transparent 100%)",
-                        animation: "heroShimmerSweep 6s ease-in-out 1s infinite",
+                        animation: "heroShimmerSweep 6s ease-in-out 1.5s infinite",
                         filter: "blur(2px)",
                     }} />
                 </div>
 
-                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(115deg, rgba(11,18,32,0.5) 0%, rgba(29,78,216,0.4) 45%, rgba(37,99,235,0.32) 100%)", zIndex: 1 }} />
-                <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, transparent 40%, rgba(11,18,32,0.45) 100%)", zIndex: 1, pointerEvents: "none" }} />
-                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "60%", background: "linear-gradient(to top, rgba(11,18,32,0.55) 0%, transparent 100%)", zIndex: 1, pointerEvents: "none" }} />
+                <div style={{
+                    position: "absolute", inset: 0,
+                    background: "linear-gradient(115deg, rgba(11,18,32,0.5) 0%, rgba(29,78,216,0.4) 45%, rgba(37,99,235,0.32) 100%)",
+                    zIndex: 1,
+                    opacity: videoLoaded ? 1 : 0.5,
+                    transition: "opacity 1.2s ease-in-out 0.3s",
+                }} />
 
-                {/* Ambient orbs */}
-                <div className="hero-orb" style={{ width: 400, height: 400, top: "-15%", left: "-10%", animationDelay: "0s", zIndex: 1 }} />
-                <div className="hero-orb" style={{ width: 350, height: 350, bottom: "-20%", right: "5%", animationDelay: "3s", zIndex: 1 }} />
+                <div style={{
+                    position: "absolute", inset: 0,
+                    background: "radial-gradient(ellipse at center, transparent 40%, rgba(11,18,32,0.45) 100%)",
+                    zIndex: 1, pointerEvents: "none",
+                    opacity: videoLoaded ? 1 : 0.5,
+                    transition: "opacity 1.2s ease-in-out 0.5s",
+                }} />
+
+                <div style={{
+                    position: "absolute", bottom: 0, left: 0, right: 0, height: "60%",
+                    background: "linear-gradient(to top, rgba(11,18,32,0.55) 0%, transparent 100%)",
+                    zIndex: 1, pointerEvents: "none",
+                    opacity: videoLoaded ? 1 : 0.5,
+                    transition: "opacity 1.2s ease-in-out 0.7s",
+                }} />
+
+                {/* Ambient orbs - delayed */}
+                <div className="hero-orb" style={{
+                    width: 400, height: 400, top: "-15%", left: "-10%",
+                    animationDelay: "0s", zIndex: 1,
+                    opacity: videoLoaded ? 1 : 0,
+                    transition: "opacity 1.5s ease-in-out 0.8s",
+                }} />
+                <div className="hero-orb" style={{
+                    width: 350, height: 350, bottom: "-20%", right: "5%",
+                    animationDelay: "3s", zIndex: 1,
+                    opacity: videoLoaded ? 1 : 0,
+                    transition: "opacity 1.5s ease-in-out 0.9s",
+                }} />
 
                 <Particles />
 
-                <div style={{ position: "absolute", left: 0, top: "10%", bottom: "10%", width: 2, background: "linear-gradient(to bottom, transparent, var(--gold-lt), transparent)", zIndex: 1, opacity: 0.7 }} />
+                <div style={{
+                    position: "absolute", left: 0, top: "10%", bottom: "10%", width: 2,
+                    background: "linear-gradient(to bottom, transparent, var(--gold-lt), transparent)",
+                    zIndex: 1,
+                    opacity: videoLoaded ? 0.7 : 0,
+                    transition: "opacity 1.5s ease-in-out 1s",
+                }} />
 
-                <div style={{ maxWidth: 1320, margin: "0 auto", padding: "clamp(110px, 16vw, 130px) 20px clamp(60px, 8vw, 90px)", position: "relative", zIndex: 2, width: "100%" }}>
+                <div style={{
+                    maxWidth: 1320, margin: "0 auto", padding: "clamp(110px, 16vw, 130px) 20px clamp(60px, 8vw, 90px)",
+                    position: "relative", zIndex: 2, width: "100%",
+                    opacity: videoLoaded ? 1 : 0.6,
+                    transition: "opacity 1s ease-in-out 0.4s, transform 1s ease-in-out 0.4s",
+                    transform: videoLoaded ? "translateY(0)" : "translateY(20px)",
+                }}>
                     <div style={{ maxWidth: 650 }}>
-                        <div style={{ marginBottom: 24, animation: "fadeUp 0.8s 0.1s both" }}>
-                            <span style={{ background: "rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.4)", backdropFilter: "blur(20px)", padding: "6px 16px", borderRadius: 40, fontSize: "clamp(8px, 0.8vw, 10px)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "#fff", boxShadow: "0 4px 15px rgba(37,99,235,0.15)" }}>
+                        <div style={{
+                            marginBottom: 24,
+                            animation: videoLoaded ? "fadeUp 0.8s 0.6s both" : "none",
+                        }}>
+                            <span style={{
+                                background: "rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.4)",
+                                backdropFilter: "blur(20px)", padding: "6px 16px",
+                                borderRadius: 40, fontSize: "clamp(8px, 0.8vw, 10px)",
+                                fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase",
+                                color: "#fff", boxShadow: "0 4px 15px rgba(37,99,235,0.15)"
+                            }}>
                                 Project Portfolio
                             </span>
                         </div>
-                        <h1 style={{ fontFamily: "var(--f-display)", fontWeight: 700, lineHeight: 1.04, letterSpacing: "-0.02em", fontSize: "clamp(2rem, 5vw, 3.8rem)", color: "#fff", marginBottom: 20, animation: "fadeUp 0.9s 0.2s both", textShadow: "0 2px 20px rgba(11,18,32,0.4)" }}>
+                        <h1 style={{
+                            fontFamily: "var(--f-display)", fontWeight: 700, lineHeight: 1.04,
+                            letterSpacing: "-0.02em", fontSize: "clamp(2rem, 5vw, 3.8rem)",
+                            color: "#fff", marginBottom: 20,
+                            animation: videoLoaded ? "fadeUp 0.9s 0.8s both" : "none",
+                            textShadow: "0 2px 20px rgba(11,18,32,0.4)"
+                        }}>
                             Our Work,<br />
                             <em style={{ color: "var(--gold-lt)", fontStyle: "italic" }}>Built to Last.</em>
                         </h1>
-                        <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(14px, 1.1vw, 16px)", color: "rgba(255,255,255,0.9)", lineHeight: 1.8, maxWidth: 480, marginBottom: 32, animation: "fadeUp 1s 0.35s both", textShadow: "0 1px 10px rgba(11,18,32,0.4)" }}>
+                        <p style={{
+                            fontFamily: "var(--f-body)", fontSize: "clamp(14px, 1.1vw, 16px)",
+                            color: "rgba(255,255,255,0.9)", lineHeight: 1.8, maxWidth: 480, marginBottom: 32,
+                            animation: videoLoaded ? "fadeUp 1s 1s both" : "none",
+                            textShadow: "0 1px 10px rgba(11,18,32,0.4)"
+                        }}>
                             Over 200 completed projects across the UAE — from landmark towers and luxury hotels to government buildings, EXPO pavilions, and community developments.
                         </p>
-                        <div style={{ display: "flex", gap: 14, flexWrap: "wrap", animation: "fadeUp 1s 0.45s both" }}>
+                        <div style={{
+                            display: "flex", gap: 14, flexWrap: "wrap",
+                            animation: videoLoaded ? "fadeUp 1s 1.2s both" : "none"
+                        }}>
                             <button className="btn-gold" style={{ padding: "clamp(10px, 1vw, 14px) clamp(18px, 2vw, 28px)", fontSize: "clamp(10px, 0.8vw, 12px)" }}>Browse Projects</button>
                             <button className="btn-outline-white" style={{ padding: "clamp(10px, 1vw, 14px) clamp(18px, 2vw, 28px)", fontSize: "clamp(10px, 0.8vw, 12px)" }} onClick={() => goTo("About")}>Our Story</button>
                         </div>
                     </div>
+                </div>
+
+                {/* Scroll indicator - delayed */}
+                <div style={{
+                    position: "absolute", bottom: 36, left: "50%",
+                    transform: "translateX(-50%)",
+                    display: "flex", flexDirection: "column", alignItems: "center", gap: 6, zIndex: 2,
+                    opacity: videoLoaded ? 1 : 0,
+                    transition: "opacity 1.5s ease-in-out 1.6s",
+                }}>
+                    <span style={{
+                        fontFamily: "var(--f-body)", fontSize: 9, fontWeight: 700,
+                        letterSpacing: "0.22em", textTransform: "uppercase",
+                        color: "rgba(255,255,255,0.55)",
+                    }}>
+                        Scroll
+                    </span>
+                    <div style={{
+                        width: 1, height: 48,
+                        background: "linear-gradient(to bottom, rgba(255,255,255,0.7), transparent)",
+                        animation: videoLoaded ? "lineGrow 1s ease 1.8s both" : "none",
+                    }} />
                 </div>
             </header>
 
@@ -1570,7 +1711,7 @@ export default function ViewProjects() {
                         <div>
                             <h4 style={{ fontFamily: "var(--f-display)", fontSize: "clamp(16px, 1.3vw, 18px)", fontWeight: 700, marginBottom: 18, color: "#fff" }}>Quick Links</h4>
                             {NAV.map(l => (
-                                <button key={l} onClick={() => goTo(3)} style={{ display: "block", background: "none", border: "none", color: "rgba(255,255,255,0.4)", fontFamily: "var(--f-body)", fontSize: "clamp(12px, 0.9vw, 13px)", padding: "6px 0", cursor: "pointer", textAlign: "left", transition: "color 0.2s" }} onMouseEnter={e => e.currentTarget.style.color = "var(--gold-lt)"} onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.4)"}>{l}</button>
+                                <button key={l} onClick={() => goTo(l)} style={{ display: "block", background: "none", border: "none", color: "rgba(255,255,255,0.4)", fontFamily: "var(--f-body)", fontSize: "clamp(12px, 0.9vw, 13px)", padding: "6px 0", cursor: "pointer", textAlign: "left", transition: "color 0.2s" }} onMouseEnter={e => e.currentTarget.style.color = "var(--gold-lt)"} onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.4)"}>{l}</button>
                             ))}
                         </div>
 
@@ -1595,7 +1736,7 @@ export default function ViewProjects() {
                             <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid rgba(37,99,235,0.25)", height: "clamp(140px, 15vw, 180px)", marginTop: 18 }}>
                                 <iframe
                                     title="Al Agha Group Office"
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3607.2764583093857!2d55.35445537600424!3d25.28574307758295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5cfe11994ee1%3A0x8bdd77fec9a0e9c3!2sAbraj%20Al%20Mamzar%20-%20Al%20Mamzar%20-%20Dubai!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae"
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3607.2764583093857!2d55.35445537600424!3d25.28574307758295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5cfe11994ee1%3A0x8bdd77fec9a0e9c3!2sAbraj%20Al%20Mamzar%20-%20Al%20Mamzar%20-%20Dubai!5e0!3m2!1en!2sae!4v1700000000000!5m2!1sen!2sae"
                                     width="100%" height="100%" style={{ border: "none", display: "block" }}
                                     allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
                                 />

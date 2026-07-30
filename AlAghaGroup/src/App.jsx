@@ -759,22 +759,6 @@ const GLOBAL_CSS = `
     fill: #fff !important;
   }
 
-  .hero-video-bg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center center;
-    z-index: 0;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-  }
-
   .video-player-wrapper {
     position: relative;
     width: 100%;
@@ -2004,7 +1988,6 @@ const ENGINEERS = [
   { name: "Arshiya Tabbasum", role: "Purchase Officer", dept: "Operations", photo: PurchaseOfficer },
   { name: "Abdullah Othman", role: "Mechanical Project Engineer", dept: "Operations", photo: MechanicalProjectEngineer },
   { name: "Sreelekshmi Prasanan", role: "QS Engineer", dept: "Operations", photo: QsEngineer },
-
 ];
 
 const GROUP_COMPANIES = [
@@ -2180,43 +2163,102 @@ export default function AlAghaGroup() {
           )}
         </nav>
 
-        <section id="home" style={{ minHeight: "100vh", minHeight: "calc(var(--vh, 1vh) * 100)", position: "relative", display: "flex", alignItems: "center", overflow: "hidden" }}>
-          <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 0 }}>
-            <video
-              ref={videoRef}
-              key={`hero-video-${location.pathname}`}
-              autoPlay
-              muted
-              loop
-              playsInline
-              webkit-playsinline="true"
-              preload="metadata"
-              onCanPlay={() => { setVideoLoaded(true); }}
-              onError={(e) => { setVideoError(true); setVideoLoaded(true); }}
-              className="hero-video-bg"
-              style={{
-                opacity: videoLoaded ? 1 : 0,
-                transition: "opacity 1s ease",
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
+        {/* ══ HERO VIDEO SECTION (FIXED) ══ */}
+        <section id="home" style={{
+          minHeight: "100vh",
+          minHeight: "calc(var(--vh, 1vh) * 100)",
+          position: "relative",
+          display: "flex",
+          alignItems: "center",
+          overflow: "hidden",
+          background: "linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #1D4ED8 100%)"
+        }}>
+          {/* Video Container with proper aspect ratio */}
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            overflow: "hidden",
+            zIndex: 0,
+            width: "100%",
+            height: "100%",
+          }}>
+            {/* Video wrapper with maintain aspect ratio */}
+            <div style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "100%",
+              height: "100%",
+              minWidth: "100%",
+              minHeight: "100%",
+              objectFit: "cover",
+              transition: "opacity 1.2s ease-in-out",
+            }}>
+              <video
+                ref={videoRef}
+                key={`hero-video-${location.pathname}`}
+                autoPlay
+                muted
+                loop
+                playsInline
+                webkit-playsinline="true"
+                preload="metadata"
+                onCanPlay={() => {
+                  setVideoLoaded(true);
+                  console.log('Video loaded successfully');
+                }}
+                onError={(e) => {
+                  setVideoError(true);
+                  setVideoLoaded(true);
+                  console.error('Video load error:', e);
+                }}
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  objectPosition: "center center",
+                  opacity: videoLoaded ? 1 : 0,
+                  transition: "opacity 1.2s ease-in-out",
+                  willChange: 'opacity, transform',
+                  imageRendering: '-webkit-optimize-contrast',
+                  imageRendering: 'crisp-edges',
+                  backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden',
+                }}
+              >
+                <source src={heroVideo} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+
+            {/* Fallback gradient - visible while video loads */}
+            {(!videoLoaded || videoError) && (
+              <div style={{
                 position: "absolute",
                 inset: 0,
-                willChange: 'transform',
-                transform: 'translateZ(0)',
-                WebkitTransform: 'translateZ(0)',
-              }}
-            >
-              <source src={heroVideo} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-            {(!videoLoaded || videoError) && (
-              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #1D4ED8 100%)", zIndex: 1 }} />
+                background: "linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #1D4ED8 100%)",
+                zIndex: 1,
+                transition: "opacity 0.8s ease-in-out",
+                opacity: videoLoaded ? 0 : 1,
+              }} />
             )}
           </div>
 
-          {/* ══ SHIMMER SWEEP OVERLAY (NEW) ══ */}
-          <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 1, pointerEvents: "none" }}>
+          {/* ══ SHIMMER SWEEP OVERLAY (DELAYED) ══ */}
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            overflow: "hidden",
+            zIndex: 1,
+            pointerEvents: "none",
+            opacity: videoLoaded ? 1 : 0,
+            transition: "opacity 1.5s ease-in-out 0.6s",
+          }}>
             <div style={{
               position: "absolute",
               top: "-20%",
@@ -2224,22 +2266,64 @@ export default function AlAghaGroup() {
               width: "35%",
               height: "140%",
               background: "linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.06) 35%, rgba(147,197,253,0.35) 50%, rgba(255,255,255,0.06) 65%, transparent 100%)",
-              animation: "heroShimmerSweep 6s ease-in-out 1s infinite",
+              animation: "heroShimmerSweep 6s ease-in-out 1.5s infinite",
               filter: "blur(2px)",
             }} />
           </div>
 
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(115deg, rgba(11,18,32,0.5) 0%, rgba(30,58,138,0.4) 45%, rgba(37,99,235,0.35) 100%)", zIndex: 1 }} />
-          <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, transparent 40%, rgba(11,18,32,0.5) 100%)", zIndex: 1, pointerEvents: "none" }} />
-          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "60%", background: "linear-gradient(to top, rgba(11,18,32,0.55) 0%, transparent 100%)", zIndex: 1, pointerEvents: "none" }} />
+          {/* Gradients - delayed fade in */}
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            background: "linear-gradient(115deg, rgba(11,18,32,0.5) 0%, rgba(30,58,138,0.4) 45%, rgba(37,99,235,0.35) 100%)",
+            zIndex: 1,
+            opacity: videoLoaded ? 1 : 0.5,
+            transition: "opacity 1.2s ease-in-out 0.3s",
+          }} />
 
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            background: "radial-gradient(ellipse at center, transparent 40%, rgba(11,18,32,0.5) 100%)",
+            zIndex: 1,
+            pointerEvents: "none",
+            opacity: videoLoaded ? 1 : 0.5,
+            transition: "opacity 1.2s ease-in-out 0.5s",
+          }} />
 
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(115deg, rgba(11,18,32,0.5) 0%, rgba(30,58,138,0.4) 45%, rgba(37,99,235,0.35) 100%)", zIndex: 1 }} />
-          <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, transparent 40%, rgba(11,18,32,0.5) 100%)", zIndex: 1, pointerEvents: "none" }} />
-          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "60%", background: "linear-gradient(to top, rgba(11,18,32,0.55) 0%, transparent 100%)", zIndex: 1, pointerEvents: "none" }} />
-          <div style={{ position: "absolute", inset: 0, backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E\")", opacity: 0.35, zIndex: 1, pointerEvents: "none" }} />
+          <div style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: "60%",
+            background: "linear-gradient(to top, rgba(11,18,32,0.55) 0%, transparent 100%)",
+            zIndex: 1,
+            pointerEvents: "none",
+            opacity: videoLoaded ? 1 : 0.5,
+            transition: "opacity 1.2s ease-in-out 0.7s",
+          }} />
 
-          <div style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 1 }}>
+          {/* Noise texture */}
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E\")",
+            opacity: 0.35,
+            zIndex: 1,
+            pointerEvents: "none",
+            transition: "opacity 1.2s ease-in-out 0.8s",
+          }} />
+
+          {/* Geometric accents - delayed */}
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            pointerEvents: "none",
+            zIndex: 1,
+            opacity: videoLoaded ? 1 : 0,
+            transition: "opacity 1.5s ease-in-out 0.9s",
+          }}>
             <svg viewBox="0 0 1440 900" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} preserveAspectRatio="xMidYMid slice">
               <line x1="0" y1="0" x2="400" y2="900" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
               <line x1="80" y1="0" x2="480" y2="900" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
@@ -2249,25 +2333,102 @@ export default function AlAghaGroup() {
             </svg>
           </div>
 
-          <div style={{ position: "absolute", left: 0, top: "10%", bottom: "10%", width: 2, background: "linear-gradient(to bottom, transparent, var(--gold-lt), transparent)", zIndex: 1, opacity: 0.7 }} />
+          {/* Left accent line - delayed */}
+          <div style={{
+            position: "absolute",
+            left: 0,
+            top: "10%",
+            bottom: "10%",
+            width: 2,
+            background: "linear-gradient(to bottom, transparent, var(--gold-lt), transparent)",
+            zIndex: 1,
+            opacity: videoLoaded ? 0.7 : 0,
+            transition: "opacity 1.5s ease-in-out 1s",
+          }} />
 
-          <div className="safe-area-top" style={{ maxWidth: 1320, margin: "0 auto", padding: "clamp(110px, 16vw, 130px) 20px clamp(60px, 8vw, 90px)", position: "relative", zIndex: 2, width: "100%" }}>
+          {/* Content - staggered delay */}
+          <div className="safe-area-top" style={{
+            maxWidth: 1320,
+            margin: "0 auto",
+            padding: "clamp(110px, 16vw, 130px) 20px clamp(60px, 8vw, 90px)",
+            position: "relative",
+            zIndex: 2,
+            width: "100%",
+            opacity: videoLoaded ? 1 : 0.6,
+            transition: "opacity 1s ease-in-out 0.4s, transform 1s ease-in-out 0.4s",
+            transform: videoLoaded ? "translateY(0)" : "translateY(20px)",
+          }}>
             <div style={{ maxWidth: 700 }}>
-              <div style={{ marginBottom: 28, animation: "fadeUp 0.8s 0.1s both" }}>
-                <span style={{ background: "rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.35)", backdropFilter: "blur(20px)", padding: "8px 20px", borderRadius: 40, fontSize: "clamp(9px, 1vw, 10px)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "#fff", boxShadow: "0 4px 15px rgba(11,18,32,0.15)", display: "inline-block" }}>
+              <div style={{
+                marginBottom: 28,
+                animation: videoLoaded ? "fadeUp 0.8s 0.6s both" : "none",
+              }}>
+                <span style={{
+                  background: "rgba(255,255,255,0.18)",
+                  border: "1px solid rgba(255,255,255,0.35)",
+                  backdropFilter: "blur(20px)",
+                  padding: "8px 20px",
+                  borderRadius: 40,
+                  fontSize: "clamp(9px, 1vw, 10px)",
+                  fontWeight: 700,
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  color: "#fff",
+                  boxShadow: "0 4px 15px rgba(11,18,32,0.15)",
+                  display: "inline-block"
+                }}>
                   Est. 2008 · Dubai, UAE
                 </span>
               </div>
-              <h1 style={{ fontFamily: "var(--f-display)", fontWeight: 700, lineHeight: 1.04, letterSpacing: "-0.02em", fontSize: "clamp(2.2rem, 7.5vw, 5.5rem)", color: "#fff", marginBottom: 28, animation: "fadeUp 0.9s 0.2s both", textShadow: "0 2px 20px rgba(11,18,32,0.3)" }}>
+
+              <h1 style={{
+                fontFamily: "var(--f-display)",
+                fontWeight: 700,
+                lineHeight: 1.04,
+                letterSpacing: "-0.02em",
+                fontSize: "clamp(2.2rem, 7.5vw, 5.5rem)",
+                color: "#fff",
+                marginBottom: 28,
+                animation: videoLoaded ? "fadeUp 0.9s 0.8s both" : "none",
+                textShadow: "0 2px 20px rgba(11,18,32,0.3)"
+              }}>
                 BUILDING THE<br />
                 <em style={{ color: "#93C5FD", fontStyle: "italic" }}>FUTURE TOGETHER.</em>
               </h1>
-              <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(14px, 1.3vw, 17px)", color: "rgba(255,255,255,0.9)", lineHeight: 1.8, maxWidth: 520, marginBottom: 44, animation: "fadeUp 1s 0.35s both", textShadow: "0 1px 10px rgba(11,18,32,0.3)" }}>
+
+              <p style={{
+                fontFamily: "var(--f-body)",
+                fontSize: "clamp(14px, 1.3vw, 17px)",
+                color: "rgba(255,255,255,0.9)",
+                lineHeight: 1.8,
+                maxWidth: 520,
+                marginBottom: 44,
+                animation: videoLoaded ? "fadeUp 1s 1s both" : "none",
+                textShadow: "0 1px 10px rgba(11,18,32,0.3)"
+              }}>
                 Al Agha Group delivers world-class false ceiling, gypsum works, interior fit-out, and MEP services across the UAE — with trust and quality at the core of every project.
               </p>
-              <div style={{ display: "flex", gap: 14, flexWrap: "wrap", animation: "fadeUp 1s 0.45s both" }}>
-                <button className="btn-gold" style={{ padding: "clamp(12px, 1.2vw, 16px) clamp(20px, 2.5vw, 36px)", fontSize: "clamp(11px, 1vw, 13px)" }} onClick={() => navigate("/projects")}>View Our Projects</button>
-                <button className="btn-outline-white" style={{ padding: "clamp(12px, 1.2vw, 16px) clamp(20px, 2.5vw, 36px)", fontSize: "clamp(11px, 1vw, 13px)", color: "#fff", borderColor: "rgba(255,255,255,0.4)" }} onClick={() => scrollTo("About")}>Our Story</button>
+
+              <div style={{
+                display: "flex",
+                gap: 14,
+                flexWrap: "wrap",
+                animation: videoLoaded ? "fadeUp 1s 1.2s both" : "none"
+              }}>
+                <button className="btn-gold" style={{
+                  padding: "clamp(12px, 1.2vw, 16px) clamp(20px, 2.5vw, 36px)",
+                  fontSize: "clamp(11px, 1vw, 13px)"
+                }} onClick={() => navigate("/projects")}>
+                  View Our Projects
+                </button>
+                <button className="btn-outline-white" style={{
+                  padding: "clamp(12px, 1.2vw, 16px) clamp(20px, 2.5vw, 36px)",
+                  fontSize: "clamp(11px, 1vw, 13px)",
+                  color: "#fff",
+                  borderColor: "rgba(255,255,255,0.4)"
+                }} onClick={() => scrollTo("About")}>
+                  Our Story
+                </button>
               </div>
             </div>
           </div>
@@ -2650,7 +2811,7 @@ export default function AlAghaGroup() {
                 <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid rgba(37,99,235,0.25)", height: "clamp(140px, 15vw, 180px)", marginTop: 18 }}>
                   <iframe
                     title="Al Agha Group Office"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3607.2764583093857!2d55.35445537600424!3d25.28574307758295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5cfe11994ee1%3A0x8bdd77fec9a0e9c3!2sAbraj%20Al%20Mamzar%20-%20Al%20Mamzar%20-%20Dubai!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3607.2764583093857!2d55.35445537600424!3d25.28574307758295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5cfe11994ee1%3A0x8bdd77fec9a0e9c3!2sAbraj%20Al%20Mamzar%20-%20Al%20Mamzar%20-%20Dubai!5e0!3m2!1en!2sae!4v1700000000000!5m2!1sen!2sae"
                     width="100%" height="100%" style={{ border: "none", display: "block" }}
                     allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
                   />
