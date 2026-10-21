@@ -28,9 +28,10 @@ function useInView(threshold = 0.06) {
 }
 
 function useScrollY() {
-    const [y, setY] = useState(0);
+    const [y, setY] = useState(() => (typeof window !== "undefined" ? window.scrollY : 0));
     useEffect(() => {
         const fn = () => setY(window.scrollY);
+        fn();
         window.addEventListener("scroll", fn, { passive: true });
         return () => window.removeEventListener("scroll", fn);
     }, []);
@@ -476,23 +477,26 @@ export default function Projects() {
     }, [videoError]);
 
     // IMPORTANT: This function handles navigation from Projects page
-    // When "About" is clicked, it navigates to home and scrolls to the about section
+    // When a nav item is clicked, it navigates to home and scrolls to the exact section
     const goTo = (id) => {
         setMenuOpen(false);
 
-        // If navigating to Home, just go to home page
+        // If navigating to Home, scroll to top of home page
         if (id === "Home") {
             navigate("/");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            return;
+        }
+
+        // If already on Projects page
+        if (id === "Projects") {
+            window.scrollTo({ top: 0, behavior: "smooth" });
             return;
         }
 
         // For all other sections (About, Services, Clients, Career, Team)
-        // Navigate to home page first, then scroll to the section
-        navigate("/");
-        setTimeout(() => {
-            const el = document.getElementById(id.toLowerCase().replace(/\s+/g, "-"));
-            if (el) el.scrollIntoView({ behavior: "smooth" });
-        }, 150);
+        // Navigate with hash so ScrollToSection handles smooth scrolling reliably
+        navigate("/#" + id.toLowerCase().replace(/\s+/g, "-"));
     };
 
     const filtered = PROJECTS.filter(p => {
@@ -516,12 +520,12 @@ export default function Projects() {
     });
 
     return (
-        <div style={{ background: "var(--bg-deep)", color: "var(--ink)", minHeight: "100vh", overflowX: "hidden" }}>
+        <div className="page-transition" style={{ background: "var(--bg-deep)", color: "var(--ink)", minHeight: "100vh", overflowX: "hidden" }}>
                         <ReadingProgress />
 
             {/* ── NAVIGATION ── */}
             <nav style={{
-                position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000,
+                position: "fixed", top: 0, left: 0, right: 0, zIndex: 99999,
                 background: scrolled ? "rgba(255,255,255,0.97)" : "transparent",
                 backdropFilter: scrolled ? "blur(22px)" : "none",
                 boxShadow: scrolled ? "0 1px 0 var(--border), 0 8px 24px rgba(37,99,235,0.06)" : "none",

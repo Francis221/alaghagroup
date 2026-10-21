@@ -11,11 +11,7 @@ export default function About() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    navigate("/");
-    setTimeout(() => {
-      const el = document.getElementById("about");
-      if (el) el.scrollIntoView({ behavior: "smooth" });
-    }, 150);
+    navigate("/#about", { replace: true });
   }, [navigate]);
 
   return <Home />;

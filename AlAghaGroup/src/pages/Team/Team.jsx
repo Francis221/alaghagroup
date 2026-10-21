@@ -11,11 +11,7 @@ export default function Team() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    navigate("/");
-    setTimeout(() => {
-      const el = document.getElementById("team");
-      if (el) el.scrollIntoView({ behavior: "smooth" });
-    }, 150);
+    navigate("/#team", { replace: true });
   }, [navigate]);
 
   return <Home />;

@@ -29,6 +29,12 @@ html {
   --bg-deep: #FFFFFF;
   --bg-mid: #F5F8FF;
   --bg-accent: #DCE6FA;
+
+  /* button colour tokens */
+  --btn-blue: #1d4ed8;
+  --btn-blue-hover: #2563eb;
+  --btn-blue-active: #1e40af;
+  --btn-text: #ffffff;
 }
 
 body {
@@ -151,7 +157,7 @@ body {
   }
 }
 
-/* ── reusable classes ── */
+/* reusable classes */
 .eyebrow {
   font-family: var(--f-body);
   font-size: 10px;
@@ -206,76 +212,138 @@ body {
   width: 100%;
 }
 
-/* buttons */
-.btn-gold {
-  background: linear-gradient(135deg, var(--gold), var(--gold-dk));
-  color: var(--ink);
-  border: none;
-  font-family: var(--f-body);
-  font-weight: 700;
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 12px 28px;
-  cursor: pointer;
-  transition: all 0.3s;
-  border-radius: 8px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  text-decoration: none;
-}
-
-.btn-gold:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(37, 99, 235, 0.3);
-}
-
-.btn-outline-gold {
-  background: transparent;
-  color: var(--gold);
-  border: 1.5px solid var(--gold);
-  font-family: var(--f-body);
-  font-weight: 700;
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 12px 28px;
-  cursor: pointer;
-  transition: all 0.3s;
-  border-radius: 8px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.btn-outline-gold:hover {
-  background: var(--gold);
-  color: var(--ink);
-  transform: translateY(-2px);
-}
-
+/* =======================================================================
+   UNIFIED BUTTON SYSTEM - Single source of truth
+   Reference: View All Services button
+   color and -webkit-text-fill-color: #ffffff are set on EVERY state
+   so text NEVER disappears on hover or pointer move.
+======================================================================= */
+.btn-gold,
+.btn-outline-gold,
 .btn-outline-white {
-  background: transparent;
-  color: rgba(255, 255, 255, 0.85);
-  border: 1.5px solid rgba(255, 255, 255, 0.35);
-  font-family: var(--f-body);
-  font-weight: 600;
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 12px 28px;
-  cursor: pointer;
-  transition: all 0.3s;
-  border-radius: 8px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  background: linear-gradient(180deg, #1E50D8 0%, #1744BF 100%) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: 1px solid rgba(255,255,255,0.20) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 6px 24px rgba(26,75,204,0.45), 0 0 32px rgba(37,99,235,0.30) !important;
+  font-family: var(--f-body) !important;
+  font-size: 13px;
+  font-weight: 800 !important;
+  letter-spacing: 0.09em !important;
+  text-transform: uppercase !important;
+  padding: 13px 30px;
+  min-height: 46px;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  position: relative !important;
+  z-index: 1 !important;
+  transition: transform 0.28s cubic-bezier(0.2,0.8,0.2,1),
+              background 0.25s ease,
+              box-shadow 0.28s ease,
+              color 0.2s ease,
+              border-color 0.2s ease !important;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none !important;
 }
 
+/* Ensure no pseudo-element overlay covers button text */
+.btn-gold::before,
+.btn-gold::after,
+.btn-outline-gold::before,
+.btn-outline-gold::after,
+.btn-outline-white::before,
+.btn-outline-white::after {
+  content: none !important;
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Fix: all child text/elements inside buttons stay visible and white */
+.btn-gold *,
+.btn-outline-gold *,
+.btn-outline-white * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* Hover - text stays white always */
+.btn-gold:hover,
+.btn-outline-gold:hover,
 .btn-outline-white:hover {
-  border-color: rgba(255, 255, 255, 0.8);
-  color: #fff;
+  background: linear-gradient(180deg, #1744BF 0%, #1237A3 100%) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border-color: rgba(255,255,255,0.30) !important;
+  transform: scale(1.04) translateY(-2px) !important;
+  box-shadow: 0 10px 32px rgba(26,75,204,0.65), 0 0 45px rgba(37,99,235,0.50) !important;
+}
+
+.btn-gold:hover *,
+.btn-outline-gold:hover *,
+.btn-outline-white:hover * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Active / pressed */
+.btn-gold:active,
+.btn-outline-gold:active,
+.btn-outline-white:active {
+  background: #1237A3 !important;
+  color: #ffffff !important;
+  transform: scale(0.98) translateY(0) !important;
+  box-shadow: 0 4px 16px rgba(26,75,204,0.40) !important;
+}
+
+/* Focus (keyboard) */
+.btn-gold:focus-visible,
+.btn-outline-gold:focus-visible,
+.btn-outline-white:focus-visible {
+  outline: 3px solid #60A5FA;
+  outline-offset: 3px;
+  color: #ffffff !important;
+}
+
+/* Disabled */
+.btn-gold:disabled,    .btn-gold[disabled],
+.btn-outline-gold:disabled, .btn-outline-gold[disabled],
+.btn-outline-white:disabled, .btn-outline-white[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+  pointer-events: none;
+}
+
+/* Magnetic modifier (layout only) */
+.btn-magnetic {
+  display: inline-flex !important;
+}
+
+/* Client filter tab buttons - different style, explicit hover text */
+.client-tab-btn:hover:not(.client-tab-active) {
+  color: var(--gold) !important;
+  border-color: rgba(37,99,235,0.60) !important;
+  background: rgba(37,99,235,0.06) !important;
+}
+.client-tab-btn.client-tab-active {
+  background: var(--gold) !important;
+  color: #ffffff !important;
+  border-color: var(--gold) !important;
+}
+.client-tab-btn.client-tab-active:hover {
+  background: linear-gradient(180deg, #1744BF 0%, #1237A3 100%) !important;
+  color: #ffffff !important;
 }
 
 /* cards */

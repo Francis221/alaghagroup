@@ -11,11 +11,7 @@ export default function Clients() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    navigate("/");
-    setTimeout(() => {
-      const el = document.getElementById("clients");
-      if (el) el.scrollIntoView({ behavior: "smooth" });
-    }, 150);
+    navigate("/#clients", { replace: true });
   }, [navigate]);
 
   return <Home />;

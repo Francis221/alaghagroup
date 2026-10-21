@@ -1729,7 +1729,7 @@ export default function Home() {
                     Our <em style={{ color: "var(--gold)", fontStyle: "italic" }}>Services</em>
                   </h2>
                 </div>
-                <button className="btn-outline-gold" style={{ padding: "clamp(10px, 1vw, 14px) clamp(18px, 2vw, 36px)", fontSize: "clamp(10px, 0.9vw, 12px)" }} onClick={() => navigate("/services")}>View All Services →</button>
+                <button className="btn-outline-gold" style={{ padding: "clamp(10px, 1vw, 14px) clamp(18px, 2vw, 36px)", fontSize: "clamp(10px, 0.9vw, 12px)" }} onClick={() => navigate("/services")}>View All Services</button>
               </div>
             </Reveal>
             <div className="services-grid">
@@ -1791,7 +1791,7 @@ export default function Home() {
             </div>
 
             <div style={{ textAlign: "center", marginTop: 56 }}>
-              <button className="btn-gold" style={{ padding: "clamp(12px, 1vw, 14px) clamp(24px, 2.5vw, 36px)", fontSize: "clamp(10px, 0.9vw, 12px)" }} onClick={() => navigate("/projects")}>Browse All 90+ Projects →</button>
+              <button className="btn-gold" style={{ padding: "clamp(12px, 1vw, 14px) clamp(24px, 2.5vw, 36px)", fontSize: "clamp(10px, 0.9vw, 12px)" }} onClick={() => navigate("/projects")}>Browse All 90+ Projects</button>
             </div>
           </div>
         </Section>

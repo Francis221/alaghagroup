@@ -101,9 +101,10 @@ function useInView(threshold = 0.1) {
 }
 
 function useScrollY() {
-    const [y, setY] = useState(0);
+    const [y, setY] = useState(() => (typeof window !== "undefined" ? window.scrollY : 0));
     useEffect(() => {
         const fn = () => setY(window.scrollY);
+        fn();
         window.addEventListener("scroll", fn, { passive: true });
         return () => window.removeEventListener("scroll", fn);
     }, []);
@@ -971,12 +972,10 @@ export default function Services() {
     // IMPORTANT: This function handles navigation from Services page
     // When "About" is clicked, it navigates to home and scrolls to the about section
     const navigateTo = (section) => {
+        setMenu(false);
         if (section === "Home") {
             navigate("/");
-            return;
-        }
-        if (section === "Projects") {
-            navigate("/projects");
+            window.scrollTo({ top: 0, behavior: "smooth" });
             return;
         }
         if (section === "Services") {
@@ -984,12 +983,8 @@ export default function Services() {
             scrollToService(0);
             return;
         }
-        // For About, Clients, Career, Team - navigate home then scroll
-        navigate("/");
-        setTimeout(() => {
-            const el = document.getElementById(section.toLowerCase().replace(/\s+/g, "-"));
-            if (el) el.scrollIntoView({ behavior: "smooth" });
-        }, 150);
+        // For About, Projects, Clients, Career, Team - navigate home with hash so ScrollToSection handles it
+        navigate("/#" + section.toLowerCase().replace(/\s+/g, "-"));
     };
 
     useEffect(() => {
@@ -1065,7 +1060,7 @@ export default function Services() {
 
     return (
         <>
-                        <div style={{
+                        <div className="page-transition" style={{
                 background: "var(--bg-deep)", color: "var(--ink)",
                 fontFamily: "var(--f-body)", overflowX: "hidden",
             }}>
@@ -1096,7 +1091,7 @@ export default function Services() {
 
                 {/* ── NAV ── */}
                 <nav style={{
-                    position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000,
+                    position: "fixed", top: 0, left: 0, right: 0, zIndex: 99999,
                     background: scrolled ? "rgba(255,255,255,0.97)" : "transparent",
                     backdropFilter: scrolled ? "blur(20px)" : "none",
                     boxShadow: scrolled ? "0 1px 0 rgba(37,99,235,0.12)" : "none",
@@ -1115,8 +1110,7 @@ export default function Services() {
                                 <button
                                     key={l}
                                     onClick={() => {
-                                        if (l === "Projects") navigateTo("Projects");
-                                        else if (l === "Services") scrollToService(0);
+                                        if (l === "Services") scrollToService(0);
                                         else navigateTo(l);
                                     }}
                                     className="nav-btn"
@@ -1125,7 +1119,7 @@ export default function Services() {
                                     {l}
                                 </button>
                             ))}
-                            <button className="btn-gold btn-magnetic" style={{ padding: "10px 22px" }} onClick={() => navigateTo("Projects")}>
+                            <button className="btn-gold btn-magnetic" style={{ padding: "10px 22px" }} onClick={goProjects}>
                                 <span>View Projects →</span>
                             </button>
                         </div>
@@ -1157,8 +1151,7 @@ export default function Services() {
                                     key={l}
                                     onClick={() => {
                                         setMenu(false);
-                                        if (l === "Projects") navigateTo("Projects");
-                                        else if (l === "Services") scrollToService(0);
+                                        if (l === "Services") scrollToService(0);
                                         else navigateTo(l);
                                     }}
                                     style={{
@@ -1552,7 +1545,7 @@ export default function Services() {
                                 <button
                                     className="btn-gold btn-magnetic"
                                     style={{ padding: "15px 34px", fontSize: 13 }}
-                                    onClick={() => navigateTo("Projects")}
+                                    onClick={goProjects}
                                 >
                                     <span>View All Projects →</span>
                                 </button>

@@ -20,7 +20,7 @@
   body { background: var(--bg-deep); color: var(--ink); }
   ::selection { background: rgba(37,99,235,0.18); }
 
-  /* ── Core animations ── */
+  /* -- Core animations -- */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(32px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -38,32 +38,32 @@
     50%       { opacity: 0.5; box-shadow: 0 0 16px #10b981; }
   }
 
-  /* ── Image shimmer sweep ── */
+  /* -- Image shimmer sweep -- */
   @keyframes shimmerSweep {
     0%   { transform: translateX(-120%) skewX(-15deg); }
     100% { transform: translateX(220%) skewX(-15deg); }
   }
 
-  /* ── Hero shimmer sweep ── */
+  /* -- Hero shimmer sweep -- */
   @keyframes heroShimmerSweep {
     0%   { transform: translateX(-150%) skewX(-20deg); }
     100% { transform: translateX(250%) skewX(-20deg); }
   }
 
-  /* ── Blue pulse ring ── */
+  /* -- Blue pulse ring -- */
   @keyframes goldPulseRing {
     0%   { box-shadow: 0 0 0 0 rgba(37,99,235,0.45); }
     70%  { box-shadow: 0 0 0 10px rgba(37,99,235,0); }
     100% { box-shadow: 0 0 0 0 rgba(37,99,235,0); }
   }
 
-  /* ── Floating badge ── */
+  /* -- Floating badge -- */
   @keyframes floatUp {
     0%, 100% { transform: translateY(0px); }
     50%       { transform: translateY(-5px); }
   }
 
-  /* ── Particle drift ── */
+  /* -- Particle drift -- */
   @keyframes particleDrift {
     0%   { transform: translateY(0) translateX(0) scale(1); opacity: 0.6; }
     33%  { transform: translateY(-18px) translateX(8px) scale(1.1); opacity: 1; }
@@ -71,56 +71,56 @@
     100% { transform: translateY(0) translateX(0) scale(1); opacity: 0.6; }
   }
 
-  /* ── Gradient border rotate ── */
+  /* -- Gradient border rotate -- */
   @keyframes borderRotate {
     0%   { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
 
-  /* ── Category pill pop ── */
+  /* -- Category pill pop -- */
   @keyframes pillPop {
     0%   { transform: scale(1); }
     40%  { transform: scale(1.12); }
     100% { transform: scale(1); }
   }
 
-  /* ── Card scan line ── */
+  /* -- Card scan line -- */
   @keyframes scanLine {
     0%   { transform: translateY(-100%); opacity: 0.5; }
     100% { transform: translateY(400%); opacity: 0; }
   }
 
-  /* ── Hero orb pulse ── */
+  /* -- Hero orb pulse -- */
   @keyframes orbPulse {
     0%, 100% { transform: scale(1); opacity: 0.14; }
     50%       { transform: scale(1.15); opacity: 0.22; }
   }
 
-  /* ── Number count-up shimmer ── */
+  /* -- Number count-up shimmer -- */
   @keyframes statShimmer {
     0%   { background-position: -200% center; }
     100% { background-position: 200% center; }
   }
 
-  /* ── Modal backdrop ripple ── */
+  /* -- Modal backdrop ripple -- */
   @keyframes backdropIn {
     from { opacity: 0; }
     to   { opacity: 1; }
   }
 
-  /* ── Stagger reveal ── */
+  /* -- Stagger reveal -- */
   @keyframes staggerReveal {
     from { opacity: 0; transform: translateY(20px) scale(0.97); }
     to   { opacity: 1; transform: none; }
   }
 
-  /* ── Underline draw ── */
+  /* -- Underline draw -- */
   @keyframes underlineDraw {
     from { width: 0; opacity: 0; }
     to   { width: 100%; opacity: 1; }
   }
 
-  /* ── Hero Video Container (FIXED) ── */
+  /* -- Hero Video Container (FIXED) -- */
   .hero-video-container {
     position: absolute;
     inset: 0;
@@ -250,7 +250,7 @@
     filter: brightness(0.86) contrast(1.08) saturate(1.1);
   }
 
-  /* Gradient overlay — lighter, tuned for light theme so it still reads as a scrim without muddying the card */
+  /* Gradient overlay - lighter, tuned for light theme so it still reads as a scrim without muddying the card */
   .proj-img-overlay {
     position: absolute;
     inset: 0;
@@ -414,7 +414,7 @@
     transform: translate(-50%, -50%) scale(1);
   }
 
-  /* Nav — text is white over the hero video, then flips to ink once the bar goes opaque/white on scroll */
+  /* Nav - text is white over the hero video, then flips to ink once the bar goes opaque/white on scroll */
   .nav-btn {
     background: none;
     border: none;
@@ -442,44 +442,88 @@
   .nav-btn.nav-active { color: var(--gold) !important; }
 
   /* Buttons */
-  .btn-gold {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: linear-gradient(135deg, var(--gold-dk), var(--gold), var(--gold-lt));
-    color: #FFFFFF;
-    font-family: var(--f-body);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 10px 22px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.28s ease;
-    box-shadow: 0 4px 20px rgba(37,99,235,0.28);
-  }
-  .btn-gold:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 36px rgba(37,99,235,0.42);
+  .btn-gold,
+  .btn-outline-gold,
+  .btn-outline-white {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    background: linear-gradient(180deg, #1E50D8 0%, #1744BF 100%) !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    border: 1px solid rgba(255,255,255,0.20) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 6px 24px rgba(26,75,204,0.45), 0 0 32px rgba(37,99,235,0.30) !important;
+    font-family: var(--f-body) !important;
+    font-size: 13px;
+    font-weight: 800 !important;
+    letter-spacing: 0.09em !important;
+    text-transform: uppercase !important;
+    padding: 13px 30px;
+    min-height: 46px;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    position: relative !important;
+    z-index: 1 !important;
+    transition: transform 0.28s cubic-bezier(0.2,0.8,0.2,1),
+                background 0.25s ease,
+                box-shadow 0.28s ease,
+                color 0.2s ease,
+                border-color 0.2s ease !important;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none !important;
   }
 
-  .btn-outline-white {
-    display: inline-flex;
-    align-items: center; gap: 8px;
-    background: rgba(255,255,255,0.08); color: #FFFFFF;
-    font-family: var(--f-body); font-size: 12px; font-weight: 700;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    padding: 10px 22px; border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.45);
-    cursor: pointer; transition: all 0.25s ease;
+  .btn-gold *,
+  .btn-outline-gold *,
+  .btn-outline-white * {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    position: relative !important;
+    z-index: 2 !important;
   }
+
+  .btn-gold:hover,
+  .btn-outline-gold:hover,
   .btn-outline-white:hover {
-    background: rgba(255,255,255,0.18);
-    border-color: rgba(255,255,255,0.7);
-    transform: translateY(-2px);
+    background: linear-gradient(180deg, #1744BF 0%, #1237A3 100%) !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    border-color: rgba(255,255,255,0.30) !important;
+    transform: scale(1.04) translateY(-2px) !important;
+    box-shadow: 0 10px 32px rgba(26,75,204,0.65), 0 0 45px rgba(37,99,235,0.50) !important;
+  }
+
+  .btn-gold:hover *,
+  .btn-outline-gold:hover *,
+  .btn-outline-white:hover * {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }
+
+  .btn-gold:active,
+  .btn-outline-gold:active,
+  .btn-outline-white:active {
+    background: #1237A3 !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    transform: scale(0.98) translateY(0) !important;
+    box-shadow: 0 4px 16px rgba(26,75,204,0.40) !important;
+  }
+
+  .btn-gold::before,
+  .btn-gold::after,
+  .btn-outline-gold::before,
+  .btn-outline-gold::after,
+  .btn-outline-white::before,
+  .btn-outline-white::after {
+    content: none !important;
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
   }
 
   /* Filter pills */
@@ -511,7 +555,7 @@
   .pill-bar { overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
   .pill-bar::-webkit-scrollbar { display: none; }
 
-  /* Hero orbs — kept over the video, so still light-on-dark here */
+  /* Hero orbs - kept over the video, so still light-on-dark here */
   .hero-orb {
     position: absolute;
     border-radius: 50%;
