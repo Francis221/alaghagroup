@@ -1,0 +1,9 @@
+{
+  "name": "alaghagroup-root",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix AlAghaGroup run dev",
+    "build": "npm --prefix AlAghaGroup run build",
+    "preview": "npm --prefix AlAghaGroup run preview"
+  }
+}

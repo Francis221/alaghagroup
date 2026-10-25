@@ -1,0 +1,8 @@
+{
+  "buildCommand": "cd AlAghaGroup && npm install && npm run build",
+  "outputDirectory": "AlAghaGroup/dist",
+  "framework": "vite",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
