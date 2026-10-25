@@ -289,6 +289,4 @@ export {
   imgSobhaHartland,
   imgMakanHousing,
   rawProjectImages,
-  projectImageMap,
-  resolveProjectImage
 };
