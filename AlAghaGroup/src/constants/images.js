@@ -120,19 +120,76 @@ const rawProjectImages = import.meta.glob("../assets/images/projects/*.{png,jpg,
 });
 
 // Build unified lookup map for any project path format (legacy, relative, or basename)
-const projectImageMap = {
+export const projectImageMap = {
   ...rawProjectImages,
   "./AAAAAA.jpg": imgSobhaHartland,
+  "/AAAAAA.jpg": imgSobhaHartland,
+  "AAAAAA.jpg": imgSobhaHartland,
   "./img/QRCODE.jpeg": qrCodeImg,
+  "/img/QRCODE.jpeg": qrCodeImg,
+  "QRCODE.jpeg": qrCodeImg,
   "./projectimg/afssg.png": imgMakanHousing,
+  "/projectimg/afssg.png": imgMakanHousing,
+  "afssg.png": imgMakanHousing,
 };
 
-// Map each asset by basename and legacy path for backwards compatibility
+// Map each asset by basename, legacy paths, URL forms, and case-insensitive keys
 for (const [key, val] of Object.entries(rawProjectImages)) {
   const base = key.split("/").pop();
   projectImageMap[base] = val;
+  projectImageMap[base.toLowerCase()] = val;
   projectImageMap[`./projectimg/${base}`] = val;
+  projectImageMap[`/projectimg/${base}`] = val;
+  projectImageMap[`projectimg/${base}`] = val;
+  projectImageMap[`./projectimg/${base.toLowerCase()}`] = val;
   projectImageMap[`../assets/images/projects/${base}`] = val;
+
+  try {
+    const encoded = encodeURIComponent(base);
+    if (encoded !== base) {
+      projectImageMap[encoded] = val;
+      projectImageMap[`./projectimg/${encoded}`] = val;
+      projectImageMap[`/projectimg/${encoded}`] = val;
+    }
+  } catch (e) {}
+}
+
+/**
+ * Universal project image resolver:
+ * Safely resolves local assets via Vite bundles, public fallbacks, or remote URLs.
+ */
+export function resolveProjectImage(src) {
+  if (!src || typeof src !== "string") return "";
+  const trimmed = src.trim();
+  if (!trimmed) return "";
+  if (trimmed.startsWith("http://") || trimmed.startsWith("https://") || trimmed.startsWith("data:")) {
+    return trimmed;
+  }
+
+  // Exact lookup
+  if (projectImageMap[trimmed]) return projectImageMap[trimmed];
+
+  // Decoded URI lookup
+  try {
+    const decoded = decodeURIComponent(trimmed);
+    if (projectImageMap[decoded]) return projectImageMap[decoded];
+  } catch (e) {}
+
+  // Strip path prefix
+  const clean = trimmed.replace(/^(\.\/|\/)?(projectimg\/|\.\.\/assets\/images\/projects\/)?/, "");
+  if (projectImageMap[clean]) return projectImageMap[clean];
+  if (projectImageMap[`./projectimg/${clean}`]) return projectImageMap[`./projectimg/${clean}`];
+  if (projectImageMap[`/projectimg/${clean}`]) return projectImageMap[`/projectimg/${clean}`];
+
+  // Case-insensitive lookup
+  const lowerClean = clean.toLowerCase();
+  if (projectImageMap[lowerClean]) return projectImageMap[lowerClean];
+  if (projectImageMap[`./projectimg/${lowerClean}`]) return projectImageMap[`./projectimg/${lowerClean}`];
+
+  // Public directory fallback path for production Vercel deployment
+  if (clean) return `/projectimg/${clean}`;
+
+  return trimmed;
 }
 
 export {
@@ -232,5 +289,6 @@ export {
   imgSobhaHartland,
   imgMakanHousing,
   rawProjectImages,
-  projectImageMap
+  projectImageMap,
+  resolveProjectImage
 };
