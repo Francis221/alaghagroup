@@ -540,14 +540,14 @@ export const PROJECTS = [
   { id: 124, name: "THE ACRES Phase 1 — Dubai Land", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/qh3zic6r/image/upload/v1783691662/a278c122-fa90-48a5-8c65-35fe9e4e8e32_lqmd4k.jpg" },
   { id: 125, name: "CENTRAL BUSINESS DISTRICT — Mweileh Tejari", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/qh3zic6r/image/upload/v1783691662/ca0a4189-048e-4004-a5b7-8aa43689fee8_mkeail.jpg" },
   { id: 126, name: "Mural Tower", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/iwfmnnaa/image/upload/v1792515285/660633b1-ea0c-4e90-9ac9-22a42a972650_1_vu11vr.jpg" },
-  { id: 127, name: "North Gateway District - Plot A09 - Albero & Plot 410", category: "False Ceiling Partition", img: "https://res.cloudinary.com/iwfmnnaa/image/upload/v1792515285/fd22dd8e-1626-447e-b3ba-176a0f3b1e82_tyqdmh.jpg" },
-  { id: 128, category: "", img: "" },
-  { id: 129, category: "", img: "" },
-  { id: 130, category: "", img: "" },
-  { id: 131, category: "", img: "" },
-  { id: 132, category: "", img: "" },
-  { id: 133, category: "", img: "" },
-  { id: 134, category: "", img: "" },
+  { id: 127, name: "North Gateway District - Plot A09 - Albero & Plot 410", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/iwfmnnaa/image/upload/v1792515285/fd22dd8e-1626-447e-b3ba-176a0f3b1e82_tyqdmh.jpg" },
+  { id: 128, name: "Juma Masjid", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/iwfmnnaa/image/upload/v1792515285/b926467c-cfb1-4770-a2f9-c0296c669495_jcgphc.jpg" },
+  { id: 129, name: "The Actres Phase 1", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/iwfmnnaa/image/upload/v1792515286/a1ecb5a6-b083-4b33-8530-6c50094cae22_gcejjd.jpg" },
+  { id: 130, name: "The Actres Phase 2", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/iwfmnnaa/image/upload/v1792515285/5eff968b-f443-45b2-a902-86e5854fa3aa_yrrj8x.jpg" },
+  { id: 131, name: "The Actres Phase 3", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/iwfmnnaa/image/upload/v1792515285/6b1e92fb-77ba-4632-ad1c-86b1a44ce761_ock9jw.jpg" },
+  { id: 132, name: "Sidr Residence (Plot 3)", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/iwfmnnaa/image/upload/v1792515286/d0659d6a-1a95-4493-9d8a-e08d2885cb66_gqzhou.jpg" },
+  { id: 133, name: "Nobu Hotel & Residence", category: "False Ceiling & Partition", img: "https://res.cloudinary.com/iwfmnnaa/image/upload/v1792515286/9ab9b326-7fde-493a-b93d-fe89e77f424a_gooodv.jpg" },
+
 
 
 ];

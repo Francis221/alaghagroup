@@ -10,6 +10,7 @@ import {
   PROJECTS,
   CAT_META,
   projectImageMap,
+  resolveProjectImage,
 } from "../../constants";
 import { Icons } from "../../components";
 
@@ -125,14 +126,15 @@ function Particles() {
 /* ─── FALLBACK IMAGE ─────────────────────────────────────────────────────── */
 function ProjectImage({ src, alt, className, id, style }) {
     const [errored, setErrored] = useState(false);
-    const fallback = FALLBACKS[id % FALLBACKS.length];
-    const imported = projectImageMap[src] || src;
+    const fallback = FALLBACKS[id ? id % FALLBACKS.length : 0];
+    const imported = resolveProjectImage(src) || projectImageMap[src] || src;
     return (
         <img
             src={errored || !imported ? fallback : imported}
-            alt={alt}
+            alt={alt || "Al Agha Project"}
             className={className}
             style={style}
+            loading="lazy"
             onError={() => setErrored(true)}
         />
     );
@@ -261,7 +263,7 @@ function ProjectModal({ project, onClose }) {
 }
 
 /* ─── PROJECT CARD ───────────────────────────────────────────────────────── */
-function ProjectCard({ project, onOpen, index }) {
+function ProjectCard({ project, onOpen, index, skipReveal }) {
     const cardRef = useRef(null);
 
     const handleMouseMove = (e) => {
@@ -288,61 +290,62 @@ function ProjectCard({ project, onOpen, index }) {
         card.style.transition = "transform 0.1s ease, box-shadow 0.45s, border-color 0.3s";
     };
 
-    return (
-        <Reveal delay={(index % 4) * 60} dir="up">
-            <article
-                ref={cardRef}
-                className="proj-card"
-                onClick={() => onOpen(project)}
-                onMouseMove={handleMouseMove}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                style={{ perspective: 700 }}
-            >
-                <div className="proj-img-wrap">
-                    <ProjectImage
-                        src={project.img}
-                        alt={project.name}
-                        id={project.id}
-                        className="proj-img"
-                    />
-                    <div className="proj-img-overlay" />
-                    <div className="proj-img-frame" />
-                    <div className="proj-view-hint">View Project</div>
-                    <div className="proj-cat-label">{project.category}</div>
-                    {project.featured && (
-                        <div style={{ position: "absolute", top: 10, left: 10, zIndex: 5 }}>
-                            <span className="feat-badge" style={{
-                                display: "inline-block",
-                                background: "var(--gold)", color: "#FFFFFF",
-                                fontSize: 8, fontWeight: 700, letterSpacing: "0.14em",
-                                textTransform: "uppercase", padding: "2px 8px",
-                                borderRadius: 20, fontFamily: "var(--f-body)",
-                                boxShadow: "0 2px 14px rgba(37,99,235,0.45)",
-                            }}>★ Featured</span>
-                        </div>
-                    )}
-                </div>
+    const cardContent = (
+        <article
+            ref={cardRef}
+            className="proj-card"
+            onClick={() => onOpen(project)}
+            onMouseMove={handleMouseMove}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            style={{ perspective: 700 }}
+        >
+            <div className="proj-img-wrap">
+                <ProjectImage
+                    src={project.img}
+                    alt={project.name}
+                    id={project.id}
+                    className="proj-img"
+                />
+                <div className="proj-img-overlay" />
+                <div className="proj-img-frame" />
+                <div className="proj-view-hint">View Project</div>
+                <div className="proj-cat-label">{project.category}</div>
+                {project.featured && (
+                    <div style={{ position: "absolute", top: 10, left: 10, zIndex: 5 }}>
+                        <span className="feat-badge" style={{
+                            display: "inline-block",
+                            background: "var(--gold)", color: "#FFFFFF",
+                            fontSize: 8, fontWeight: 700, letterSpacing: "0.14em",
+                            textTransform: "uppercase", padding: "2px 8px",
+                            borderRadius: 20, fontFamily: "var(--f-body)",
+                            boxShadow: "0 2px 14px rgba(37,99,235,0.45)",
+                        }}>★ Featured</span>
+                    </div>
+                )}
+            </div>
 
-                <div className="proj-name-strip">
-                    <h3 style={{
-                        fontFamily: "var(--f-display)",
-                        fontSize: "clamp(14px, 1.1vw, 16px)",
-                        fontWeight: 700,
-                        color: "var(--ink)",
-                        lineHeight: 1.3,
-                        margin: 0,
-                        display: "-webkit-box",
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: "vertical",
-                        overflow: "hidden",
-                    }}>
-                        {project.name}
-                    </h3>
-                </div>
-            </article>
-        </Reveal>
+            <div className="proj-name-strip">
+                <h3 style={{
+                    fontFamily: "var(--f-display)",
+                    fontSize: "clamp(14px, 1.1vw, 16px)",
+                    fontWeight: 700,
+                    color: "var(--ink)",
+                    lineHeight: 1.3,
+                    margin: 0,
+                    display: "-webkit-box",
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                }}>
+                    {project.name}
+                </h3>
+            </div>
+        </article>
     );
+
+    if (skipReveal) return cardContent;
+    return <Reveal delay={(index % 4) * 60} dir="up">{cardContent}</Reveal>;
 }
 
 /* ─── SEARCH BAR ─────────────────────────────────────────────────────────── */
@@ -350,8 +353,17 @@ function SearchBar({ value, onChange }) {
     const [focused, setFocused] = useState(false);
     return (
         <div style={{ position: "relative", maxWidth: 320, width: "100%" }}>
-            <span style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", fontSize: 14, opacity: 0.5, pointerEvents: "none", color: "var(--gold)" }}>🔍</span>
+            <span style={{
+                position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                pointerEvents: "none", color: focused ? "var(--gold)" : "rgba(11,18,32,0.4)",
+                transition: "color 0.2s"
+            }}>
+                <Icons.Search />
+            </span>
             <input
+                id="project-search-input"
+                aria-label="Search projects"
                 value={value}
                 onChange={e => onChange(e.target.value)}
                 onFocus={() => setFocused(true)}
@@ -361,16 +373,27 @@ function SearchBar({ value, onChange }) {
                     width: "100%",
                     background: focused ? "#FFFFFF" : "var(--surface)",
                     border: `1.5px solid ${focused ? "var(--gold)" : "var(--border)"}`,
-                    color: "var(--ink)", padding: "8px 12px 8px 38px",
+                    color: "var(--ink)", padding: "8px 32px 8px 36px",
                     fontFamily: "var(--f-body)", fontSize: 13,
                     outline: "none", borderRadius: 10,
                     transition: "all 0.22s", boxSizing: "border-box",
+                    boxShadow: focused ? "0 0 0 3px rgba(37,99,235,0.12)" : "none",
                 }}
             />
             {value && (
                 <button
                     onClick={() => onChange("")}
-                    style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "rgba(11,18,32,0.4)", fontSize: 14, lineHeight: 1 }}
+                    aria-label="Clear search"
+                    style={{
+                        position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)",
+                        background: "rgba(11,18,32,0.06)", border: "none", borderRadius: "50%",
+                        width: 20, height: 20,
+                        cursor: "pointer", color: "rgba(11,18,32,0.5)", fontSize: 11, lineHeight: 1,
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        transition: "background 0.2s, color 0.2s"
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.background = "rgba(11,18,32,0.12)"; e.currentTarget.style.color = "var(--ink)"; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = "rgba(11,18,32,0.06)"; e.currentTarget.style.color = "rgba(11,18,32,0.5)"; }}
                 >✕</button>
             )}
         </div>
@@ -499,16 +522,22 @@ export default function Projects() {
         navigate("/#" + id.toLowerCase().replace(/\s+/g, "-"));
     };
 
-    const filtered = PROJECTS.filter(p => {
+    // Ensure only valid project records are processed
+    const validProjects = PROJECTS.filter(p => p && p.name && typeof p.name === "string");
+
+    const filtered = validProjects.filter(p => {
         if (activeCategory !== "All" && p.category !== activeCategory) return false;
         if (showFeatured && !p.featured) return false;
         if (search) {
-            const q = search.toLowerCase();
-            return [p.name, p.category].some(f => f.toLowerCase().includes(q));
+            const q = search.trim().toLowerCase();
+            if (!q) return true;
+            return [p.name, p.category, p.client, p.location].some(
+                f => f && typeof f === "string" && f.toLowerCase().includes(q)
+            );
         }
         return true;
     }).sort((a, b) => {
-        if (sortBy === "name") return a.name.localeCompare(b.name);
+        if (sortBy === "name") return (a.name || "").localeCompare(b.name || "");
         if (b.featured && !a.featured) return 1;
         if (a.featured && !b.featured) return -1;
         return 0;
@@ -516,7 +545,7 @@ export default function Projects() {
 
     const catCounts = {};
     CATEGORIES.forEach(c => {
-        catCounts[c] = c === "All" ? PROJECTS.length : PROJECTS.filter(p => p.category === c).length;
+        catCounts[c] = c === "All" ? validProjects.length : validProjects.filter(p => p.category === c).length;
     });
 
     return (
@@ -790,7 +819,7 @@ export default function Projects() {
             {/* ── RESULT COUNT ── */}
             <div style={{ maxWidth: 1320, margin: "0 auto", padding: "16px 20px 0" }}>
                 <p style={{ fontFamily: "var(--f-body)", fontSize: "clamp(12px, 0.9vw, 13px)", color: "rgba(11,18,32,0.45)" }}>
-                    Showing <strong style={{ color: "var(--ink)" }}>{filtered.length}</strong> of {PROJECTS.length} projects
+                    Showing <strong style={{ color: "var(--ink)" }}>{filtered.length}</strong> of {validProjects.length} projects
                     {search && <> matching "<span style={{ color: "var(--gold)" }}>{search}</span>"</>}
                     {activeCategory !== "All" && <> in <span style={{ color: "var(--gold)" }}>{activeCategory}</span></>}
                 </p>
@@ -814,7 +843,7 @@ export default function Projects() {
                         style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "clamp(16px, 1.5vw, 24px)" }}
                     >
                         {filtered.map((project, i) => (
-                            <ProjectCard key={project.id} project={project} onOpen={setSelectedProject} index={i} />
+                            <ProjectCard key={project.id} project={project} onOpen={setSelectedProject} index={i} skipReveal={!!(search || activeCategory !== "All" || showFeatured)} />
                         ))}
                     </div>
                 )}
